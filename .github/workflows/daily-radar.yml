@@ -32,6 +32,10 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # 不传这个的话,action 会尝试用 OIDC 换 Claude GitHub App 的 token,
+          # 既需要 id-token: write 权限,又要求该 App 已安装到本仓库。
+          # 我们只需要在工作区读写文件,没有 PR 交互,直接用 workflow 自带 token 即可。
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
             该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
