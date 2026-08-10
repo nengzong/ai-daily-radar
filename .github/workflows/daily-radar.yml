@@ -2,9 +2,10 @@ name: AI Daily Radar
 
 on:
   schedule:
-    # 23:30 UTC = 北京 07:30。不用整点是因为 Actions 的 cron 在整点高峰会排队
-    # 延迟 5-30 分钟,提前半小时起跑能让日报在 8 点前后送达。
-    - cron: "30 23 * * *"
+    # 目标是日报在北京 08:30 前后送达。倒推:整个任务跑完约 15 分钟,
+    # 加上 Actions cron 的排队延迟(整点最堵,通常 5-15 分钟),起跑定在 08:05。
+    # 00:05 UTC = 北京 08:05。刻意避开 00:00 整点,那是全球 cron 最拥堵的时刻。
+    - cron: "5 0 * * *"
   workflow_dispatch:
 
 permissions:
