@@ -35,6 +35,8 @@ jobs:
           prompt: |
             读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
             该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
+            只需把文件写到工作区,不要执行任何 git 操作(不要 commit、不要建分支、不要 push),
+            提交由后续的 workflow 步骤负责。
           claude_args: |
             --max-turns 120
             --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch,Task
@@ -53,7 +55,9 @@ jobs:
           done
           echo "full=$full" >> "$GITHUB_OUTPUT"
           echo "brief=$brief" >> "$GITHUB_OUTPUT"
-          echo "count=$(grep -c '^### ' "$full" || echo 0)" >> "$GITHUB_OUTPUT"
+          # grep -c 无匹配时会打印 0 并以 1 退出,用 || true 吞掉退出码
+          # (写成 || echo 0 会输出两行,污染 GITHUB_OUTPUT)
+          echo "count=$(grep -c '^### ' "$full" || true)" >> "$GITHUB_OUTPUT"
 
       - name: 推送钉钉
         env:
