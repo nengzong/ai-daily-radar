@@ -48,6 +48,24 @@ jobs:
           EOF
           echo "fixture ok"
 
+      - name: 测 Claude token 有效性
+        if: always()
+        env:
+          TOK: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          set -uo pipefail
+          # 只打印长度和 HTTP 状态码,绝不输出 token 本身
+          printf 'secret 长度: %s\n' "${#TOK}"
+          printf 'secret 是否含空白字符: '
+          case "$TOK" in *[[:space:]]*) echo "是(异常)";; *) echo "否";; esac
+          code=$(curl -s -o /tmp/tok.json -w '%{http_code}' https://api.anthropic.com/v1/messages \
+            -H "authorization: Bearer $TOK" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":4,"messages":[{"role":"user","content":"hi"}]}')
+          echo "Bearer 鉴权 HTTP=$code"
+          [ "$code" = "200" ] || { echo "响应体:"; cat /tmp/tok.json; }
+
       - name: 测钉钉
         env:
           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
