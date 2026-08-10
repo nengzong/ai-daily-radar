@@ -1,0 +1,57 @@
+name: 投递链路自检
+
+# 临时自检用:在真实 Linux runner 上验证钉钉推送和邮件发送两条链路,
+# 不调用 Claude,不消耗订阅额度。验证通过后可删除本文件。
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Asia/Shanghai
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 造测试用日报
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/fixture
+          cat > /tmp/fixture/brief.md <<'EOF'
+          ## 📡 投递链路自检
+
+          > 这是 GitHub Actions 在 Linux runner 上发出的自检消息,不是真实日报。
+
+          ### 🎯 验证项
+          - **钉钉加签推送** — 在 runner 上跑通
+          - **中文与链接渲染** — [仓库](https://github.com/nengzong/ai-daily-radar)
+
+          > 收到本条说明钉钉通道在云端可用。
+          EOF
+          cat > /tmp/fixture/full.md <<'EOF'
+          # 投递链路自检
+
+          这是 GitHub Actions 在 Linux runner 上发出的自检邮件,不是真实日报。
+
+          重点验证 `base64` 折行在 GNU coreutils 上的行为(BSD 用 -b,GNU 用 -w,
+          脚本已改为 `base64 | tr -d '\n' | fold -w 76` 的跨平台写法)。
+
+          - **中文编码**正常
+          - [链接](https://github.com/nengzong/ai-daily-radar)可点击
+          EOF
+          echo "fixture ok"
+
+      - name: 测钉钉
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+        run: python3 scripts/send_dingtalk.py "投递自检" /tmp/fixture/brief.md
+
+      - name: 测邮件
+        if: always()
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: bash scripts/send_email.sh "投递链路自检｜来自 GitHub Actions" /tmp/fixture/full.md
