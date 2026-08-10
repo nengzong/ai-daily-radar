@@ -54,6 +54,12 @@ GitHub Actions cron 设在 **23:30 UTC(北京 07:30)**。不用 8 点整是因�
 - **改时间**:编辑 [.github/workflows/daily-radar.yml](.github/workflows/daily-radar.yml) 里的 cron(注意是 UTC,北京时间减 8 小时)
 - **暂停**:在 GitHub 仓库 Actions 页面点 workflow → 右上角 `···` → Disable workflow
 
+## 排查投递问题
+
+仓库里有一个 **投递链路自检** workflow(`.github/workflows/test-delivery.yml`),在 Actions 页面手动触发即可,约 30 秒跑完。它用假数据在真实 runner 上把钉钉和邮件两条链路各走一遍,不调用 Claude、不消耗订阅额度。
+
+换了钉钉机器人、改了 Gmail 密码、或者日报没收到想先排除投递环节时,先跑它。
+
 ## 本地调试
 
 两个投递脚本都能在本机单独跑:

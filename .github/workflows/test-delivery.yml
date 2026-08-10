@@ -1,7 +1,11 @@
 name: 投递链路自检
 
-# 临时自检用:在真实 Linux runner 上验证钉钉推送和邮件发送两条链路,
-# 不调用 Claude,不消耗订阅额度。验证通过后可删除本文件。
+# 常驻诊断工具:在真实 Linux runner 上验证钉钉推送和邮件发送两条链路,
+# 不调用 Claude,不消耗订阅额度,一次约 30 秒。
+#
+# 什么时候跑:换了钉钉机器人/webhook、改了 Gmail 应用专用密码、
+# 改动了 scripts/ 下的投递脚本,或日报没收到但想先排除投递环节的问题时。
+# 在 Actions 页面选本 workflow → Run workflow 手动触发。
 
 on:
   workflow_dispatch:
