@@ -1,0 +1,88 @@
+name: AI Daily Radar
+
+on:
+  schedule:
+    # 23:30 UTC = 北京 07:30。不用整点是因为 Actions 的 cron 在整点高峰会排队
+    # 延迟 5-30 分钟,提前半小时起跑能让日报在 8 点前后送达。
+    - cron: "30 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-radar
+  cancel-in-progress: false
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Asia/Shanghai
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 确定日期
+        id: date
+        run: echo "today=$(date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: 生成日报
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
+            该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
+          claude_args: |
+            --max-turns 120
+            --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch,Task
+
+      - name: 校验日报已生成
+        id: verify
+        run: |
+          set -euo pipefail
+          full="reports/${{ steps.date.outputs.today }}.md"
+          brief="reports/${{ steps.date.outputs.today }}.dingtalk.md"
+          for f in "$full" "$brief"; do
+            if [ ! -s "$f" ]; then
+              echo "::error::$f 不存在或为空,日报生成失败,中止投递"
+              exit 1
+            fi
+          done
+          echo "full=$full" >> "$GITHUB_OUTPUT"
+          echo "brief=$brief" >> "$GITHUB_OUTPUT"
+          echo "count=$(grep -c '^### ' "$full" || echo 0)" >> "$GITHUB_OUTPUT"
+
+      - name: 推送钉钉
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+        run: |
+          python3 scripts/send_dingtalk.py \
+            "AI 日报 ${{ steps.date.outputs.today }}" \
+            "${{ steps.verify.outputs.brief }}"
+
+      - name: 发送邮件
+        if: always() && steps.verify.outcome == 'success'
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          bash scripts/send_email.sh \
+            "AI 日报 ${{ steps.date.outputs.today }}｜${{ steps.verify.outputs.count }} 条精选" \
+            "${{ steps.verify.outputs.full }}"
+
+      - name: 提交日报存档
+        if: always() && steps.verify.outcome == 'success'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          if git diff --staged --quiet; then
+            echo "无变更,跳过提交"
+          else
+            git commit -m "日报 ${{ steps.date.outputs.today }}"
+            git push
+          fi
