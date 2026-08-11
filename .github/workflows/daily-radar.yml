@@ -67,9 +67,12 @@ jobs:
             该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
             只需把文件写到工作区,不要执行任何 git 操作(不要 commit、不要建分支、不要 push),
             提交由后续的 workflow 步骤负责。
+
+            这是无头环境,结束回合就等于进程退出。不要启动后台/异步代理,
+            也不要为了等待任何东西而结束回合——必须一口气把两个日报文件写完再结束。
           claude_args: |
             --max-turns 120
-            --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch,Task
+            --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch
 
       - name: 排查用:列出工作区产物
         if: always() && steps.guard.outputs.skip != 'true'
