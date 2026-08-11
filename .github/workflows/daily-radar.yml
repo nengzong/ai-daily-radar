@@ -61,7 +61,6 @@ jobs:
           # 既需要 id-token: write 权限,又要求该 App 已安装到本仓库。
           # 我们只需要在工作区读写文件,没有 PR 交互,直接用 workflow 自带 token 即可。
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          show_full_output: true
           prompt: |
             读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
             该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
@@ -73,15 +72,6 @@ jobs:
           claude_args: |
             --max-turns 120
             --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch
-
-      - name: 排查用:列出工作区产物
-        if: always() && steps.guard.outputs.skip != 'true'
-        run: |
-          echo "--- pwd ---"; pwd
-          echo "--- reports/ ---"; ls -la reports/ || echo "reports/ 不存在"
-          echo "--- 全仓库最近修改的 md(排除 .git) ---"
-          find . -name '*.md' -newermt '-30 minutes' -not -path './.git/*' 2>/dev/null | head -20
-          echo "--- git status ---"; git status --short | head -20
 
       - name: 校验日报已生成
         id: verify
@@ -134,3 +124,14 @@ jobs:
             git commit -m "日报 ${{ steps.date.outputs.today }}"
             git push
           fi
+
+      # 只在出问题时留现场。日报没生成时,这里能直接看出是文件没写、
+      # 写错了地方,还是 Claude 压根没干活。
+      - name: 失败时导出现场
+        if: failure()
+        run: |
+          echo "--- pwd ---"; pwd
+          echo "--- reports/ ---"; ls -la reports/ || echo "reports/ 不存在"
+          echo "--- 近 30 分钟内改动过的 md ---"
+          find . -name '*.md' -newermt '-30 minutes' -not -path './.git/*' 2>/dev/null | head -20
+          echo "--- git status ---"; git status --short | head -20
