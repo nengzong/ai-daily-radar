@@ -2,10 +2,17 @@ name: AI Daily Radar
 
 on:
   schedule:
-    # 目标是日报在北京 08:30 前后送达。倒推:整个任务跑完约 15 分钟,
-    # 加上 Actions cron 的排队延迟(整点最堵,通常 5-15 分钟),起跑定在 08:05。
-    # 00:05 UTC = 北京 08:05。刻意避开 00:00 整点,那是全球 cron 最拥堵的时刻。
-    - cron: "5 0 * * *"
+    # 目标:日报在北京 08:30 前后送达。任务本身跑约 15 分钟。
+    #
+    # GitHub 的定时任务在高负载期会被延迟甚至【直接丢弃】,而午夜 UTC
+    # (= 北京 08:00 前后)正是全球 cron 最拥堵的时段。所以这里用两道 cron:
+    #
+    # 主:23:55 UTC = 北京 07:55 起跑 → 正常情况下 08:15-08:25 送达。
+    #    刻意压在午夜 UTC 之前,躲开那个高峰窗口。
+    # 备:00:45 UTC = 北京 08:45 起跑 → 仅当主触发被丢弃、今天还没出日报时才真正执行,
+    #    否则秒退。见下面的「判断今天是否已生成」步骤。
+    - cron: "55 23 * * *"
+    - cron: "45 0 * * *"
   workflow_dispatch:
 
 permissions:
@@ -29,7 +36,24 @@ jobs:
         id: date
         run: echo "today=$(date +%F)" >> "$GITHUB_OUTPUT"
 
+      - name: 判断今天是否已生成
+        id: guard
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          today="${{ steps.date.outputs.today }}"
+          # 备用 cron 的兜底逻辑:定时触发时,若今天的日报已在仓库里,直接跳过,
+          # 避免主/备两次触发都成功时重复推送。手动触发不受此限制,方便随时补跑。
+          if [ "$EVENT" = "schedule" ] && [ -s "reports/$today.md" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "reports/$today.md 已存在,今天已出过日报,本次跳过"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 生成日报
+        if: steps.guard.outputs.skip != 'true'
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -48,6 +72,7 @@ jobs:
 
       - name: 校验日报已生成
         id: verify
+        if: steps.guard.outputs.skip != 'true'
         run: |
           set -euo pipefail
           full="reports/${{ steps.date.outputs.today }}.md"
@@ -65,6 +90,7 @@ jobs:
           echo "count=$(grep -c '^### ' "$full" || true)" >> "$GITHUB_OUTPUT"
 
       - name: 推送钉钉
+        if: steps.guard.outputs.skip != 'true'
         env:
           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
           DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
