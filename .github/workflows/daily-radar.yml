@@ -2,20 +2,20 @@ name: AI Daily Radar
 
 on:
   schedule:
-    # 目标:日报在北京 08:30 前送达。任务本身跑约 15 分钟。
+    # 目标:日报在北京 08:30【准时】送达。任务本身跑约 15 分钟。
     #
     # GitHub 的定时任务【不准时】。本仓库实测(2026-08-12/13)延迟 1h05m、
-    # 1h07m、2h23m,而且三次触发机会里丢了一次。所以不能把起跑时间卡在
-    # 期望送达时间前 15 分钟——那样每次都会迟到。
+    # 1h07m、2h23m,而且三次触发机会里丢了一次。所以准点靠 cron 是不可能的。
     #
-    # 策略:大幅提前起跑,用时间余量吃掉延迟;再排三道 cron,任意一道活下来就够。
-    # 早到无害,迟到才是问题。
+    # 策略:大幅提前起跑,用时间余量吃掉延迟,先把日报生成好;然后在
+    # 「等到 08:30」一步挂机等待,到点才推送。早起跑只影响等多久,不影响送达时间。
     #
-    #   21:50 UTC = 北京 05:50 → 不延迟约 06:10 送达;延迟 2.5h 也能 08:20 到
+    #   21:50 UTC = 北京 05:50 → 延迟 2.5h 也能在 08:30 前生成完
     #   22:50 UTC = 北京 06:50 → 兜底
     #   23:50 UTC = 北京 07:50 → 兜底
     #
     # 当天只会真正执行一次:后触发的那几道会在「判断今天是否已生成」处秒退。
+    # (等待期间后触发的 run 会被 concurrency 排队,等本次跑完后进入秒退分支。)
     - cron: "50 21 * * *"
     - cron: "50 22 * * *"
     - cron: "50 23 * * *"
@@ -31,7 +31,9 @@ concurrency:
 jobs:
   radar:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    # 最坏情况:cron 完全不延迟,05:50 开跑,生成 ~15min 后一直等到 08:30 才投递,
+    # 全程约 165 分钟。留些余量。
+    timeout-minutes: 200
     env:
       TZ: Asia/Shanghai
 
@@ -105,6 +107,21 @@ jobs:
           # grep -c 无匹配时会打印 0 并以 1 退出,用 || true 吞掉退出码
           # (写成 || echo 0 会输出两行,污染 GITHUB_OUTPUT)
           echo "count=$(grep -c '^### ' "$full" || true)" >> "$GITHUB_OUTPUT"
+
+      - name: 等到 08:30 再投递
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          # 日报已生成完毕,在这里挂机等到北京时间 08:30 整再推送,实现准时送达。
+          # 若 cron 延迟太大、此刻已过 08:30,则不等,立即投递(晚到好过不到)。
+          target=$(date -d "${{ steps.date.outputs.today }} 08:30" +%s)
+          now=$(date +%s)
+          if [ "$now" -lt "$target" ]; then
+            echo "现在 $(date '+%H:%M:%S'),等待 $(( (target - now) / 60 )) 分钟到 08:30 投递"
+            sleep $(( target - now ))
+          else
+            echo "已过 08:30($(date '+%H:%M:%S')),立即投递"
+          fi
 
       - name: 推送钉钉
         if: steps.guard.outputs.skip != 'true'
