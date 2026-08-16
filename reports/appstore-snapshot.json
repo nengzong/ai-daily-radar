@@ -1,18 +1,18 @@
 {
- "date": "2026-08-15",
+ "date": "2026-08-16",
  "note": "top-free 50, source: rss.marketingtools.apple.com",
  "regions": {
   "cn": [
    {
     "rank": 1,
-    "name": "抖省省 - 抖音官方团购平台",
-    "id": "6756863766",
+    "name": "抖音商城-下单返积分、退货包运费",
+    "id": "1485191072",
     "genres": []
    },
    {
     "rank": 2,
-    "name": "抖音商城-下单返积分、退货包运费",
-    "id": "1485191072",
+    "name": "抖省省 - 抖音官方团购平台",
+    "id": "6756863766",
     "genres": []
    },
    {
@@ -35,32 +35,32 @@
    },
    {
     "rank": 6,
+    "name": "今日头条",
+    "id": "529092160",
+    "genres": []
+   },
+   {
+    "rank": 7,
     "name": "汽水音乐 - 随时听好歌",
     "id": "1605585211",
     "genres": []
    },
    {
-    "rank": 7,
+    "rank": 8,
     "name": "国家网络身份认证",
     "id": "1588080869",
     "genres": []
    },
    {
-    "rank": 8,
+    "rank": 9,
     "name": "铁路12306",
     "id": "564818797",
     "genres": []
    },
    {
-    "rank": 9,
+    "rank": 10,
     "name": "番茄小说 - 热门短剧全本小说电子书阅读器",
     "id": "1468454200",
-    "genres": []
-   },
-   {
-    "rank": 10,
-    "name": "千问 - 阿里AI助手",
-    "id": "6466733523",
     "genres": []
    },
    {
@@ -71,26 +71,26 @@
    },
    {
     "rank": 12,
-    "name": "京东-又好又便宜",
-    "id": "414245413",
-    "genres": []
-   },
-   {
-    "rank": 13,
     "name": "闲鱼 - 上闲鱼，赚一笔 !",
     "id": "510909506",
     "genres": []
    },
    {
+    "rank": 13,
+    "name": "千问 - 阿里AI助手",
+    "id": "6466733523",
+    "genres": []
+   },
+   {
     "rank": 14,
-    "name": "中国移动（手机营业厅）",
-    "id": "583700738",
+    "name": "京东-又好又便宜",
+    "id": "414245413",
     "genres": []
    },
    {
     "rank": 15,
-    "name": "企业微信",
-    "id": "1087897068",
+    "name": "高德地图-高德打车,导航公交地铁出行",
+    "id": "461703208",
     "genres": []
    },
    {
@@ -101,8 +101,8 @@
    },
    {
     "rank": 17,
-    "name": "高德地图-高德打车,导航公交地铁出行",
-    "id": "461703208",
+    "name": "中国移动（手机营业厅）",
+    "id": "583700738",
     "genres": []
    },
    {
@@ -113,92 +113,92 @@
    },
    {
     "rank": 19,
-    "name": "电子税务局",
-    "id": "6468941332",
-    "genres": []
-   },
-   {
-    "rank": 20,
-    "name": "多闪",
-    "id": "1435602536",
-    "genres": []
-   },
-   {
-    "rank": 21,
-    "name": "夸克-AI旗舰应用",
-    "id": "1160172628",
-    "genres": []
-   },
-   {
-    "rank": 22,
-    "name": "中国农业银行",
-    "id": "515651240",
-    "genres": []
-   },
-   {
-    "rank": 23,
-    "name": "同程旅行-订酒店机票火车票,低价打车",
-    "id": "475966832",
-    "genres": []
-   },
-   {
-    "rank": 24,
     "name": "大众点评 - 吃喝玩乐指南",
     "id": "351091731",
     "genres": []
    },
    {
-    "rank": 25,
-    "name": "支付宝-你的AI生活伙伴",
-    "id": "333206289",
-    "genres": []
-   },
-   {
-    "rank": 26,
-    "name": "交管12123",
-    "id": "1039727169",
-    "genres": []
-   },
-   {
-    "rank": 27,
+    "rank": 20,
     "name": "得物 - 得到美好事物",
     "id": "1012871328",
     "genres": []
    },
    {
-    "rank": 28,
-    "name": "百度网盘",
-    "id": "547166701",
-    "genres": []
-   },
-   {
-    "rank": 29,
+    "rank": 21,
     "name": "美团-问美团，都安排",
     "id": "423084029",
     "genres": []
    },
    {
-    "rank": 30,
-    "name": "拼多多 - 多多买菜，百亿补贴",
-    "id": "1044283059",
+    "rank": 22,
+    "name": "企业微信",
+    "id": "1087897068",
     "genres": []
    },
    {
-    "rank": 31,
-    "name": "小红书 - 你的生活兴趣社区",
-    "id": "741292507",
+    "rank": 23,
+    "name": "支付宝-你的AI生活伙伴",
+    "id": "333206289",
     "genres": []
    },
    {
-    "rank": 32,
+    "rank": 24,
+    "name": "多闪",
+    "id": "1435602536",
+    "genres": []
+   },
+   {
+    "rank": 25,
+    "name": "夸克-AI旗舰应用",
+    "id": "1160172628",
+    "genres": []
+   },
+   {
+    "rank": 26,
+    "name": "百度网盘",
+    "id": "547166701",
+    "genres": []
+   },
+   {
+    "rank": 27,
+    "name": "DJI Mimo",
+    "id": "1431720653",
+    "genres": []
+   },
+   {
+    "rank": 28,
+    "name": "同程旅行-订酒店机票火车票,低价打车",
+    "id": "475966832",
+    "genres": []
+   },
+   {
+    "rank": 29,
     "name": "淘宝-万能的淘宝！",
     "id": "387682726",
     "genres": []
    },
    {
+    "rank": 30,
+    "name": "Keep - AI 运动教练",
+    "id": "952694580",
+    "genres": []
+   },
+   {
+    "rank": 31,
+    "name": "拼多多 - 多多买菜，百亿补贴",
+    "id": "1044283059",
+    "genres": []
+   },
+   {
+    "rank": 32,
+    "name": "转转-二手官方验",
+    "id": "1002355194",
+    "genres": []
+   },
+   {
     "rank": 33,
-    "name": "快手",
-    "id": "440948110",
+    "name": "小红书 - 你的生活兴趣社区",
+    "id": "741292507",
     "genres": []
    },
    {
@@ -209,50 +209,50 @@
    },
    {
     "rank": 35,
-    "name": "转转-二手官方验",
-    "id": "1002355194",
-    "genres": []
-   },
-   {
-    "rank": 36,
     "name": "抖音",
     "id": "1142110895",
     "genres": []
    },
    {
+    "rank": 36,
+    "name": "快手",
+    "id": "440948110",
+    "genres": []
+   },
+   {
     "rank": 37,
-    "name": "中国工商银行",
-    "id": "423514795",
+    "name": "交管12123",
+    "id": "1039727169",
     "genres": []
    },
    {
     "rank": 38,
-    "name": "中国建设银行",
-    "id": "391965015",
-    "genres": []
-   },
-   {
-    "rank": 39,
-    "name": "去哪儿旅行-订酒店机票火车票",
-    "id": "395096736",
-    "genres": []
-   },
-   {
-    "rank": 40,
     "name": "UC浏览器-随心搜·畅快看",
     "id": "586871187",
     "genres": []
    },
    {
+    "rank": 39,
+    "name": "哔哩哔哩-弹幕番剧直播高清视频",
+    "id": "736536022",
+    "genres": []
+   },
+   {
+    "rank": 40,
+    "name": "中国农业银行",
+    "id": "515651240",
+    "genres": []
+   },
+   {
     "rank": 41,
-    "name": "DJI Mimo",
-    "id": "1431720653",
+    "name": "去哪儿旅行-订酒店机票火车票",
+    "id": "395096736",
     "genres": []
    },
    {
     "rank": 42,
-    "name": "哔哩哔哩-弹幕番剧直播高清视频",
-    "id": "736536022",
+    "name": "微信",
+    "id": "414478124",
     "genres": []
    },
    {
@@ -263,44 +263,44 @@
    },
    {
     "rank": 44,
-    "name": "腾讯会议-多人实时视频会议软件",
-    "id": "1484048379",
-    "genres": []
-   },
-   {
-    "rank": 45,
-    "name": "微信",
-    "id": "414478124",
-    "genres": []
-   },
-   {
-    "rank": 46,
     "name": "快手极速版",
     "id": "1472502819",
     "genres": []
    },
    {
-    "rank": 47,
+    "rank": 45,
     "name": "滴滴-打车骑车顺风车火车票租车代驾送货",
     "id": "554499054",
     "genres": []
    },
    {
-    "rank": 48,
-    "name": "携程旅行-订酒店机票火车票",
-    "id": "379395415",
-    "genres": []
-   },
-   {
-    "rank": 49,
+    "rank": 46,
     "name": "美图秀秀:视频/图片/Live人像精修工具",
     "id": "416048305",
     "genres": []
    },
    {
+    "rank": 47,
+    "name": "携程旅行-订酒店机票火车票",
+    "id": "379395415",
+    "genres": []
+   },
+   {
+    "rank": 48,
+    "name": "中国工商银行",
+    "id": "423514795",
+    "genres": []
+   },
+   {
+    "rank": 49,
+    "name": "大麦 - 电影、演出、体育购票平台",
+    "id": "513829338",
+    "genres": []
+   },
+   {
     "rank": 50,
-    "name": "个人所得税",
-    "id": "1436002627",
+    "name": "腾讯会议-多人实时视频会议软件",
+    "id": "1484048379",
     "genres": []
    }
   ],
@@ -325,8 +325,8 @@
    },
    {
     "rank": 4,
-    "name": "ParentSquare",
-    "id": "908126679",
+    "name": "Netflix Game Controller",
+    "id": "6447582581",
     "genres": []
    },
    {
@@ -343,14 +343,14 @@
    },
    {
     "rank": 7,
-    "name": "Capital One Mobile",
-    "id": "407558537",
+    "name": "WhatsApp Messenger",
+    "id": "310633997",
     "genres": []
    },
    {
     "rank": 8,
-    "name": "WhatsApp Messenger",
-    "id": "310633997",
+    "name": "Temu: Shop Like a Billionaire",
+    "id": "1641486558",
     "genres": []
    },
    {
@@ -361,44 +361,44 @@
    },
    {
     "rank": 10,
-    "name": "Gmail - Email by Google",
-    "id": "422689480",
-    "genres": []
-   },
-   {
-    "rank": 11,
-    "name": "Google Gemini",
-    "id": "6477489729",
-    "genres": []
-   },
-   {
-    "rank": 12,
-    "name": "Temu: Shop Like a Billionaire",
-    "id": "1641486558",
-    "genres": []
-   },
-   {
-    "rank": 13,
-    "name": "TikTok - Videos, Shop & LIVE",
-    "id": "835599320",
-    "genres": []
-   },
-   {
-    "rank": 14,
     "name": "CapCut: Photo & Video Editor",
     "id": "1500855883",
     "genres": []
    },
    {
+    "rank": 11,
+    "name": "TikTok - Videos, Shop & LIVE",
+    "id": "835599320",
+    "genres": []
+   },
+   {
+    "rank": 12,
+    "name": "Gmail - Email by Google",
+    "id": "422689480",
+    "genres": []
+   },
+   {
+    "rank": 13,
+    "name": "Google Maps",
+    "id": "585027354",
+    "genres": []
+   },
+   {
+    "rank": 14,
+    "name": "ParentSquare",
+    "id": "908126679",
+    "genres": []
+   },
+   {
     "rank": 15,
-    "name": "Microsoft Authenticator",
-    "id": "983156458",
+    "name": "Google Gemini",
+    "id": "6477489729",
     "genres": []
    },
    {
     "rank": 16,
-    "name": "Claude by Anthropic",
-    "id": "6473753684",
+    "name": "Capital One Mobile",
+    "id": "407558537",
     "genres": []
    },
    {
@@ -409,110 +409,110 @@
    },
    {
     "rank": 18,
-    "name": "ClassDojo",
-    "id": "552602056",
-    "genres": []
-   },
-   {
-    "rank": 19,
-    "name": "Google Maps",
-    "id": "585027354",
-    "genres": []
-   },
-   {
-    "rank": 20,
-    "name": "Microsoft Teams",
-    "id": "1113153706",
-    "genres": []
-   },
-   {
-    "rank": 21,
-    "name": "Instagram",
-    "id": "389801252",
-    "genres": []
-   },
-   {
-    "rank": 22,
-    "name": "X",
-    "id": "333903271",
-    "genres": []
-   },
-   {
-    "rank": 23,
     "name": "DramaWave - Dramas & Reels",
     "id": "6670430706",
     "genres": []
    },
    {
-    "rank": 24,
-    "name": "Facebook",
-    "id": "284882215",
+    "rank": 19,
+    "name": "Claude by Anthropic",
+    "id": "6473753684",
     "genres": []
    },
    {
-    "rank": 25,
-    "name": "Freecash - Get Paid Real Money",
-    "id": "1673567402",
+    "rank": 20,
+    "name": "Instagram",
+    "id": "389801252",
     "genres": []
    },
    {
-    "rank": 26,
+    "rank": 21,
+    "name": "X",
+    "id": "333903271",
+    "genres": []
+   },
+   {
+    "rank": 22,
     "name": "YouTube",
     "id": "544007664",
     "genres": []
    },
    {
-    "rank": 27,
-    "name": "Whatnot: Shop, Sell, Connect",
-    "id": "1488269261",
+    "rank": 23,
+    "name": "Facebook",
+    "id": "284882215",
     "genres": []
    },
    {
-    "rank": 28,
-    "name": "PineDrama - Short Dramas",
-    "id": "6754134922",
-    "genres": []
-   },
-   {
-    "rank": 29,
-    "name": "Shop: Track, Pay, Discover",
-    "id": "1223471316",
-    "genres": []
-   },
-   {
-    "rank": 30,
-    "name": "Microsoft Outlook",
-    "id": "951937596",
-    "genres": []
-   },
-   {
-    "rank": 31,
-    "name": "Spotify: Music and Podcasts",
-    "id": "324684580",
-    "genres": []
-   },
-   {
-    "rank": 32,
-    "name": "Google Chrome",
-    "id": "535886823",
-    "genres": []
-   },
-   {
-    "rank": 33,
-    "name": "Walmart: Shopping & Savings",
-    "id": "338137227",
-    "genres": []
-   },
-   {
-    "rank": 34,
+    "rank": 24,
     "name": "StoryReel: Exclusive Drama",
     "id": "6761538521",
     "genres": []
    },
    {
-    "rank": 35,
+    "rank": 25,
+    "name": "Whatnot: Shop, Sell, Connect",
+    "id": "1488269261",
+    "genres": []
+   },
+   {
+    "rank": 26,
+    "name": "Spotify: Music and Podcasts",
+    "id": "324684580",
+    "genres": []
+   },
+   {
+    "rank": 27,
+    "name": "PineDrama - Short Dramas",
+    "id": "6754134922",
+    "genres": []
+   },
+   {
+    "rank": 28,
+    "name": "Uber - Request a ride",
+    "id": "368677368",
+    "genres": []
+   },
+   {
+    "rank": 29,
+    "name": "Freecash - Get Paid Real Money",
+    "id": "1673567402",
+    "genres": []
+   },
+   {
+    "rank": 30,
+    "name": "Walmart: Shopping & Savings",
+    "id": "338137227",
+    "genres": []
+   },
+   {
+    "rank": 31,
+    "name": "Life360: Family Safety & GPS",
+    "id": "384830320",
+    "genres": []
+   },
+   {
+    "rank": 32,
+    "name": "DoorDash: Food, Grocery, More",
+    "id": "719972451",
+    "genres": []
+   },
+   {
+    "rank": 33,
+    "name": "Shop: Track, Pay, Discover",
+    "id": "1223471316",
+    "genres": []
+   },
+   {
+    "rank": 34,
     "name": "Ticketmaster－Buy, Sell Tickets",
     "id": "500003565",
+    "genres": []
+   },
+   {
+    "rank": 35,
+    "name": "Meta AI",
+    "id": "1558240027",
     "genres": []
    },
    {
@@ -523,100 +523,100 @@
    },
    {
     "rank": 37,
-    "name": "Uber - Request a ride",
-    "id": "368677368",
+    "name": "Google Chrome",
+    "id": "535886823",
     "genres": []
    },
    {
     "rank": 38,
-    "name": "Life360: Family Safety & GPS",
-    "id": "384830320",
-    "genres": []
-   },
-   {
-    "rank": 39,
-    "name": "Netflix Game Controller",
-    "id": "6447582581",
-    "genres": []
-   },
-   {
-    "rank": 40,
-    "name": "Meta AI",
-    "id": "1558240027",
-    "genres": []
-   },
-   {
-    "rank": 41,
-    "name": "Indeed Job Search",
-    "id": "309735670",
-    "genres": []
-   },
-   {
-    "rank": 42,
-    "name": "DoorDash: Food, Grocery, More",
-    "id": "719972451",
-    "genres": []
-   },
-   {
-    "rank": 43,
     "name": "Cash App",
     "id": "711923939",
     "genres": []
    },
    {
-    "rank": 44,
-    "name": "GroupMe",
-    "id": "392796698",
-    "genres": []
-   },
-   {
-    "rank": 45,
+    "rank": 39,
     "name": "Snapchat",
     "id": "447188370",
     "genres": []
    },
    {
-    "rank": 46,
-    "name": "VPN - Super Unlimited Proxy",
-    "id": "1370293473",
-    "genres": []
-   },
-   {
-    "rank": 47,
-    "name": "Pinterest",
-    "id": "429047995",
-    "genres": []
-   },
-   {
-    "rank": 48,
+    "rank": 40,
     "name": "Amazon Shopping",
     "id": "297606951",
     "genres": []
    },
    {
-    "rank": 49,
+    "rank": 41,
+    "name": "Pinterest",
+    "id": "429047995",
+    "genres": []
+   },
+   {
+    "rank": 42,
+    "name": "Rips by Triumph",
+    "id": "6751921248",
+    "genres": []
+   },
+   {
+    "rank": 43,
+    "name": "PayPal - Pay, Send, Save",
+    "id": "283646709",
+    "genres": []
+   },
+   {
+    "rank": 44,
     "name": "SHEIN - Shopping Online",
     "id": "878577184",
     "genres": []
    },
    {
+    "rank": 45,
+    "name": "Microsoft Authenticator",
+    "id": "983156458",
+    "genres": []
+   },
+   {
+    "rank": 46,
+    "name": "Venmo",
+    "id": "351727428",
+    "genres": []
+   },
+   {
+    "rank": 47,
+    "name": "T-Life",
+    "id": "1111876388",
+    "genres": []
+   },
+   {
+    "rank": 48,
+    "name": "Indeed Job Search",
+    "id": "309735670",
+    "genres": []
+   },
+   {
+    "rank": 49,
+    "name": "Grok AI",
+    "id": "6670324846",
+    "genres": []
+   },
+   {
     "rank": 50,
-    "name": "PayPal - Pay, Send, Save",
-    "id": "283646709",
+    "name": "Costco",
+    "id": "535509415",
     "genres": []
    }
   ],
   "jp": [
    {
     "rank": 1,
-    "name": "デジタル認証アプリ",
-    "id": "6454900894",
+    "name": "setlog",
+    "id": "6587576438",
     "genres": []
    },
    {
     "rank": 2,
-    "name": "setlog",
-    "id": "6587576438",
+    "name": "デジタル認証アプリ",
+    "id": "6454900894",
     "genres": []
    },
    {
@@ -627,116 +627,116 @@
    },
    {
     "rank": 4,
-    "name": "名古屋市プレミアム付き電子商品券",
-    "id": "6771445185",
-    "genres": []
-   },
-   {
-    "rank": 5,
     "name": "Google Gemini",
     "id": "6477489729",
     "genres": []
    },
    {
+    "rank": 5,
+    "name": "チャチャ - AIチャット&キャラ作成アプリ",
+    "id": "6748977935",
+    "genres": []
+   },
+   {
     "rank": 6,
-    "name": "U-NEXT - 映画やドラマ、アニメなどの動画が見放題",
-    "id": "882477693",
-    "genres": []
-   },
-   {
-    "rank": 7,
-    "name": "majica～電子マネー公式アプリ～",
-    "id": "1001883210",
-    "genres": []
-   },
-   {
-    "rank": 8,
-    "name": "SUMMER SONIC 2026",
-    "id": "1616767650",
-    "genres": []
-   },
-   {
-    "rank": 9,
-    "name": "ホットペッパーグルメ",
-    "id": "290033990",
-    "genres": []
-   },
-   {
-    "rank": 10,
-    "name": "Threads",
-    "id": "6446901002",
-    "genres": []
-   },
-   {
-    "rank": 11,
     "name": "ブックオフ公式アプリ",
     "id": "1369113760",
     "genres": []
    },
    {
-    "rank": 12,
-    "name": "GO タクシーが呼べるアプリ - AI予約・配車・迎車・決済",
-    "id": "1254341709",
+    "rank": 7,
+    "name": "U-NEXT - 映画やドラマ、アニメなどの動画が見放題",
+    "id": "882477693",
     "genres": []
    },
    {
-    "rank": 13,
+    "rank": 8,
+    "name": "Threads",
+    "id": "6446901002",
+    "genres": []
+   },
+   {
+    "rank": 9,
+    "name": "ReelShort - オリジナル短尺ドラマ見放題",
+    "id": "1636235979",
+    "genres": []
+   },
+   {
+    "rank": 10,
+    "name": "SUMMER SONIC 2026",
+    "id": "1616767650",
+    "genres": []
+   },
+   {
+    "rank": 11,
     "name": "ジハンピ",
     "id": "6667104573",
     "genres": []
    },
    {
-    "rank": 14,
+    "rank": 12,
     "name": "Rocket Now : 出前/フードデリバリー",
     "id": "6739188587",
     "genres": []
    },
    {
+    "rank": 13,
+    "name": "ホットペッパーグルメ",
+    "id": "290033990",
+    "genres": []
+   },
+   {
+    "rank": 14,
+    "name": "TVer(ティーバー) 民放公式テレビ配信サービス",
+    "id": "830340223",
+    "genres": []
+   },
+   {
     "rank": 15,
-    "name": "X",
-    "id": "333903271",
+    "name": "GO タクシーが呼べるアプリ",
+    "id": "1254341709",
     "genres": []
    },
    {
     "rank": 16,
-    "name": "Rakuten Link",
-    "id": "1498877539",
+    "name": "majica～電子マネー公式アプリ～",
+    "id": "1001883210",
     "genres": []
    },
    {
     "rank": 17,
+    "name": "NHKプラス（NHK ONE対応）",
+    "id": "6747368440",
+    "genres": []
+   },
+   {
+    "rank": 18,
     "name": "コメダ珈琲店",
     "id": "1667214457",
     "genres": []
    },
    {
-    "rank": 18,
-    "name": "アソビュー！：休日の便利でお得な遊び予約アプリ",
-    "id": "1303314426",
-    "genres": []
-   },
-   {
     "rank": 19,
-    "name": "ゆうちょ通帳アプリ-銀行 アプリ",
-    "id": "1496925861",
+    "name": "X",
+    "id": "333903271",
     "genres": []
    },
    {
     "rank": 20,
-    "name": "ウェザーニュース",
-    "id": "302955766",
-    "genres": []
-   },
-   {
-    "rank": 21,
     "name": "Netflix",
     "id": "363590051",
     "genres": []
    },
    {
+    "rank": 21,
+    "name": "Rakuten Link",
+    "id": "1498877539",
+    "genres": []
+   },
+   {
     "rank": 22,
-    "name": "マイナポータル",
-    "id": "1476359069",
+    "name": "はま寿司",
+    "id": "1523009390",
     "genres": []
    },
    {
@@ -747,8 +747,8 @@
    },
    {
     "rank": 24,
-    "name": "はま寿司",
-    "id": "1523009390",
+    "name": "アソビュー！",
+    "id": "1303314426",
     "genres": []
    },
    {
@@ -759,50 +759,50 @@
    },
    {
     "rank": 26,
-    "name": "TVer(ティーバー) 民放公式テレビ配信サービス",
-    "id": "830340223",
-    "genres": []
-   },
-   {
-    "rank": 27,
-    "name": "e＋(イープラス)　チケット・ニュース・スマチケ",
-    "id": "465887673",
-    "genres": []
-   },
-   {
-    "rank": 28,
-    "name": "DramaWave - 日本 / 韓国 / 人気短編ドラマ",
-    "id": "6670430706",
-    "genres": []
-   },
-   {
-    "rank": 29,
-    "name": "Disney+",
-    "id": "1446075923",
-    "genres": []
-   },
-   {
-    "rank": 30,
-    "name": "TikTok Lite",
-    "id": "6447160980",
-    "genres": []
-   },
-   {
-    "rank": 31,
     "name": "バーガーキング Burger King",
     "id": "1456118550",
     "genres": []
    },
    {
+    "rank": 27,
+    "name": "Disney+",
+    "id": "1446075923",
+    "genres": []
+   },
+   {
+    "rank": 28,
+    "name": "TikTok Lite",
+    "id": "6447160980",
+    "genres": []
+   },
+   {
+    "rank": 29,
+    "name": "Coke ON(コークオン)",
+    "id": "1088184021",
+    "genres": []
+   },
+   {
+    "rank": 30,
+    "name": "Google アプリ",
+    "id": "284815942",
+    "genres": []
+   },
+   {
+    "rank": 31,
+    "name": "e＋(イープラス)",
+    "id": "465887673",
+    "genres": []
+   },
+   {
     "rank": 32,
-    "name": "MOALA Pocket",
-    "id": "1626245204",
+    "name": "Gmail - Google のメール",
+    "id": "422689480",
     "genres": []
    },
    {
     "rank": 33,
-    "name": "Google アプリ",
-    "id": "284815942",
+    "name": "焼肉きんぐ公式アプリ",
+    "id": "1345275897",
     "genres": []
    },
    {
@@ -813,44 +813,44 @@
    },
    {
     "rank": 35,
-    "name": "Gmail - Google のメール",
-    "id": "422689480",
+    "name": "DramaWave",
+    "id": "6670430706",
     "genres": []
    },
    {
     "rank": 36,
-    "name": "カラオケまねきねこ",
-    "id": "1434510930",
-    "genres": []
-   },
-   {
-    "rank": 37,
-    "name": "NetShort - 人気短編ドラマ",
-    "id": "6504849169",
-    "genres": []
-   },
-   {
-    "rank": 38,
-    "name": "CHARGESPOT チャージスポット スマホ充電レンタル",
+    "name": "CHARGESPOT",
     "id": "1272481966",
     "genres": []
    },
    {
+    "rank": 37,
+    "name": "DAISOアプリ",
+    "id": "6466987025",
+    "genres": []
+   },
+   {
+    "rank": 38,
+    "name": "TikTok ティックトック",
+    "id": "1235601864",
+    "genres": []
+   },
+   {
     "rank": 39,
-    "name": "焼肉きんぐ公式アプリ",
-    "id": "1345275897",
+    "name": "d払い",
+    "id": "1328132872",
     "genres": []
    },
    {
     "rank": 40,
-    "name": "ReelShort - オリジナル短尺ドラマ見放題",
-    "id": "1636235979",
+    "name": "Instagram",
+    "id": "389801252",
     "genres": []
    },
    {
     "rank": 41,
-    "name": "zeta - AIキャラ・あなたの推しとロールプレイチャット",
-    "id": "1619030760",
+    "name": "MOALA Pocket",
+    "id": "1626245204",
     "genres": []
    },
    {
@@ -861,38 +861,38 @@
    },
    {
     "rank": 43,
-    "name": "DAISOアプリ",
-    "id": "6466987025",
+    "name": "カラオケまねきねこ",
+    "id": "1434510930",
     "genres": []
    },
    {
     "rank": 44,
-    "name": "TikTok ティックトック",
-    "id": "1235601864",
+    "name": "ENEOS公式アプリ",
+    "id": "1612229796",
     "genres": []
    },
    {
     "rank": 45,
-    "name": "Instagram",
-    "id": "389801252",
+    "name": "zeta - AIキャラ・あなたの推しとロールプレイチャット",
+    "id": "1619030760",
     "genres": []
    },
    {
     "rank": 46,
-    "name": "NHK ONE ニュース・防災",
-    "id": "6746427272",
+    "name": "楽天ペイ",
+    "id": "1139755229",
     "genres": []
    },
    {
     "rank": 47,
-    "name": "Spotify: 音楽とポッドキャスト",
-    "id": "324684580",
+    "name": "NetShort - 人気短編ドラマ",
+    "id": "6504849169",
     "genres": []
    },
    {
     "rank": 48,
-    "name": "ENEOS公式アプリ - カーライフまるごと！みんなのアプリ",
-    "id": "1612229796",
+    "name": "My SoftBank",
+    "id": "1416481094",
     "genres": []
    },
    {
@@ -903,8 +903,8 @@
    },
    {
     "rank": 50,
-    "name": "Temu: 億万長者気分でお買い物",
-    "id": "1641486558",
+    "name": "Spotify: 音楽とポッドキャスト",
+    "id": "324684580",
     "genres": []
    }
   ],
@@ -923,14 +923,14 @@
    },
    {
     "rank": 3,
-    "name": "InPost UK",
-    "id": "1591214233",
+    "name": "ChatGPT",
+    "id": "6448311069",
     "genres": []
    },
    {
     "rank": 4,
-    "name": "ChatGPT",
-    "id": "6448311069",
+    "name": "InPost UK",
+    "id": "1591214233",
     "genres": []
    },
    {
@@ -941,44 +941,44 @@
    },
    {
     "rank": 6,
-    "name": "Microsoft Authenticator",
-    "id": "983156458",
-    "genres": []
-   },
-   {
-    "rank": 7,
     "name": "Whatnot: Shop, Sell, Connect",
     "id": "1488269261",
     "genres": []
    },
    {
+    "rank": 7,
+    "name": "Netflix Game Controller",
+    "id": "6447582581",
+    "genres": []
+   },
+   {
     "rank": 8,
+    "name": "Uber - Request a ride",
+    "id": "368677368",
+    "genres": []
+   },
+   {
+    "rank": 9,
     "name": "Google - More ways to search",
     "id": "284815942",
     "genres": []
    },
    {
-    "rank": 9,
-    "name": "Google Gemini",
-    "id": "6477489729",
+    "rank": 10,
+    "name": "RingGo: Mobile Car Parking App",
+    "id": "342898717",
     "genres": []
    },
    {
-    "rank": 10,
+    "rank": 11,
     "name": "Monzo Bank - Mobile Banking",
     "id": "1052238659",
     "genres": []
    },
    {
-    "rank": 11,
+    "rank": 12,
     "name": "Ticketmaster－Buy, Sell Tickets",
     "id": "500003565",
-    "genres": []
-   },
-   {
-    "rank": 12,
-    "name": "Uber - Request a ride",
-    "id": "368677368",
     "genres": []
    },
    {
@@ -989,194 +989,194 @@
    },
    {
     "rank": 14,
+    "name": "Google Gemini",
+    "id": "6477489729",
+    "genres": []
+   },
+   {
+    "rank": 15,
     "name": "Claude by Anthropic",
     "id": "6473753684",
     "genres": []
    },
    {
-    "rank": 15,
+    "rank": 16,
     "name": "Google Maps",
     "id": "585027354",
     "genres": []
    },
    {
-    "rank": 16,
-    "name": "Shop: All your favorite brands",
-    "id": "1223471316",
-    "genres": []
-   },
-   {
     "rank": 17,
-    "name": "RingGo: Mobile Car Parking App",
-    "id": "342898717",
-    "genres": []
-   },
-   {
-    "rank": 18,
     "name": "Dola: Smart AI Assistant",
     "id": "6451431247",
     "genres": []
    },
    {
-    "rank": 19,
+    "rank": 18,
     "name": "Tesco Grocery & Clubcard",
     "id": "389581236",
     "genres": []
    },
    {
-    "rank": 20,
-    "name": "Waze Navigation & Live Traffic",
-    "id": "323229106",
-    "genres": []
-   },
-   {
-    "rank": 21,
-    "name": "Lidl Plus",
-    "id": "1238611143",
-    "genres": []
-   },
-   {
-    "rank": 22,
-    "name": "Revolut — Mobile Finance",
-    "id": "932493382",
-    "genres": []
-   },
-   {
-    "rank": 23,
-    "name": "Vinted: Shop & sell pre-loved",
-    "id": "632064380",
-    "genres": []
-   },
-   {
-    "rank": 24,
-    "name": "Royal Mail",
-    "id": "1435168829",
-    "genres": []
-   },
-   {
-    "rank": 25,
-    "name": "HMRC",
-    "id": "514561561",
-    "genres": []
-   },
-   {
-    "rank": 26,
-    "name": "beloud.now",
-    "id": "6761342025",
-    "genres": []
-   },
-   {
-    "rank": 27,
-    "name": "NHS App",
-    "id": "1388411277",
-    "genres": []
-   },
-   {
-    "rank": 28,
-    "name": "Bolt: Request a Ride",
-    "id": "675033630",
-    "genres": []
-   },
-   {
-    "rank": 29,
-    "name": "Temu: Shop Like a Billionaire",
-    "id": "1641486558",
-    "genres": []
-   },
-   {
-    "rank": 30,
-    "name": "Gmail - Email by Google",
-    "id": "422689480",
-    "genres": []
-   },
-   {
-    "rank": 31,
-    "name": "Ryanair",
-    "id": "504270602",
-    "genres": []
-   },
-   {
-    "rank": 32,
-    "name": "TikTok - Videos, Music & LIVE",
-    "id": "835599320",
-    "genres": []
-   },
-   {
-    "rank": 33,
-    "name": "Leaked · Mobile Detective",
-    "id": "6785890577",
-    "genres": []
-   },
-   {
-    "rank": 34,
-    "name": "Netflix Game Controller",
-    "id": "6447582581",
-    "genres": []
-   },
-   {
-    "rank": 35,
-    "name": "Threads",
-    "id": "6446901002",
-    "genres": []
-   },
-   {
-    "rank": 36,
-    "name": "Telegram Messenger",
-    "id": "686449807",
-    "genres": []
-   },
-   {
-    "rank": 37,
-    "name": "DramaWave - Dramas & Reels",
-    "id": "6670430706",
-    "genres": []
-   },
-   {
-    "rank": 38,
-    "name": "JustPark Parking",
-    "id": "519652671",
-    "genres": []
-   },
-   {
-    "rank": 39,
-    "name": "Life360: Family Safety & GPS",
-    "id": "384830320",
-    "genres": []
-   },
-   {
-    "rank": 40,
+    "rank": 19,
     "name": "PayByPhone Parking",
     "id": "448474183",
     "genres": []
    },
    {
-    "rank": 41,
-    "name": "Booking.com Travel Deals",
-    "id": "367003839",
+    "rank": 20,
+    "name": "Vinted: Shop & sell pre-loved",
+    "id": "632064380",
     "genres": []
    },
    {
-    "rank": 42,
-    "name": "Freecash - Earn Money",
-    "id": "1673567402",
+    "rank": 21,
+    "name": "JustPark Parking",
+    "id": "519652671",
     "genres": []
    },
    {
-    "rank": 43,
+    "rank": 22,
+    "name": "Lidl Plus",
+    "id": "1238611143",
+    "genres": []
+   },
+   {
+    "rank": 23,
+    "name": "Temu: Shop Like a Billionaire",
+    "id": "1641486558",
+    "genres": []
+   },
+   {
+    "rank": 24,
+    "name": "beloud.now",
+    "id": "6761342025",
+    "genres": []
+   },
+   {
+    "rank": 25,
+    "name": "Waze Navigation & Live Traffic",
+    "id": "323229106",
+    "genres": []
+   },
+   {
+    "rank": 26,
+    "name": "Bolt: Request a Ride",
+    "id": "675033630",
+    "genres": []
+   },
+   {
+    "rank": 27,
+    "name": "Microsoft Authenticator",
+    "id": "983156458",
+    "genres": []
+   },
+   {
+    "rank": 28,
+    "name": "Shop: All your favorite brands",
+    "id": "1223471316",
+    "genres": []
+   },
+   {
+    "rank": 29,
+    "name": "Revolut — Mobile Finance",
+    "id": "932493382",
+    "genres": []
+   },
+   {
+    "rank": 30,
+    "name": "TikTok - Videos, Music & LIVE",
+    "id": "835599320",
+    "genres": []
+   },
+   {
+    "rank": 31,
+    "name": "VibeShort: AI Short Dramas",
+    "id": "6758667154",
+    "genres": []
+   },
+   {
+    "rank": 32,
+    "name": "Telegram Messenger",
+    "id": "686449807",
+    "genres": []
+   },
+   {
+    "rank": 33,
+    "name": "Greene King Pubs & Restaurants",
+    "id": "1297987541",
+    "genres": []
+   },
+   {
+    "rank": 34,
+    "name": "Nectar: Shop & Collect Points",
+    "id": "385266473",
+    "genres": []
+   },
+   {
+    "rank": 35,
+    "name": "Ryanair",
+    "id": "504270602",
+    "genres": []
+   },
+   {
+    "rank": 36,
+    "name": "Life360: Family Safety & GPS",
+    "id": "384830320",
+    "genres": []
+   },
+   {
+    "rank": 37,
+    "name": "Threads",
+    "id": "6446901002",
+    "genres": []
+   },
+   {
+    "rank": 38,
+    "name": "Gmail - Email by Google",
+    "id": "422689480",
+    "genres": []
+   },
+   {
+    "rank": 39,
     "name": "Instagram",
     "id": "389801252",
     "genres": []
    },
    {
-    "rank": 44,
+    "rank": 40,
     "name": "Trainline: Train & Bus Tickets",
     "id": "334235181",
     "genres": []
    },
    {
-    "rank": 45,
+    "rank": 41,
+    "name": "Royal Mail",
+    "id": "1435168829",
+    "genres": []
+   },
+   {
+    "rank": 42,
+    "name": "PLAYFUL REWARDS: Earn Rewards",
+    "id": "1631584032",
+    "genres": []
+   },
+   {
+    "rank": 43,
+    "name": "DramaWave - Dramas & Reels",
+    "id": "6670430706",
+    "genres": []
+   },
+   {
+    "rank": 44,
     "name": "Airbnb",
     "id": "401626263",
+    "genres": []
+   },
+   {
+    "rank": 45,
+    "name": "Booking.com Travel Deals",
+    "id": "367003839",
     "genres": []
    },
    {
@@ -1187,8 +1187,8 @@
    },
    {
     "rank": 47,
-    "name": "WhatsApp Messenger",
-    "id": "310633997",
+    "name": "Facebook",
+    "id": "284882215",
     "genres": []
    },
    {
@@ -1199,14 +1199,14 @@
    },
    {
     "rank": 49,
-    "name": "Indeed Job Search",
-    "id": "309735670",
+    "name": "Spotify: Music and Podcasts",
+    "id": "324684580",
     "genres": []
    },
    {
     "rank": 50,
-    "name": "Nectar: Shop & Collect Points",
-    "id": "385266473",
+    "name": "WhatsApp Messenger",
+    "id": "310633997",
     "genres": []
    }
   ],
@@ -1225,31 +1225,31 @@
    },
    {
     "rank": 3,
-    "name": "豆包 - 隨時提供協助的 AI 助理",
-    "id": "6459478672",
-    "genres": []
-   },
-   {
-    "rank": 4,
-    "name": "積金易 (eMPF)",
-    "id": "6480176219",
-    "genres": []
-   },
-   {
-    "rank": 5,
     "name": "红果短剧 - 海量热门短剧随心看",
     "id": "6451407032",
     "genres": []
    },
    {
-    "rank": 6,
+    "rank": 4,
+    "name": "豆包 - 隨時提供協助的 AI 助理",
+    "id": "6459478672",
+    "genres": []
+   },
+   {
+    "rank": 5,
     "name": "抖音 Douyin",
     "id": "1142110895",
     "genres": []
    },
    {
+    "rank": 6,
+    "name": "積金易 (eMPF)",
+    "id": "6480176219",
+    "genres": []
+   },
+   {
     "rank": 7,
-    "name": "快喵VPN加速器 - 高速 安全 無限流量VPN",
+    "name": "快喵VPN加速器",
     "id": "1134784923",
     "genres": []
    },
@@ -1267,56 +1267,56 @@
    },
    {
     "rank": 10,
+    "name": "美团-美好生活小帮手",
+    "id": "423084029",
+    "genres": []
+   },
+   {
+    "rank": 11,
+    "name": "Scan QRCode: QR & Barcode",
+    "id": "6764276890",
+    "genres": []
+   },
+   {
+    "rank": 12,
     "name": "WhatsApp Messenger",
     "id": "310633997",
     "genres": []
    },
    {
-    "rank": 11,
-    "name": "玩在盒中 - PLAY IN THE BOX",
-    "id": "6764219785",
-    "genres": []
-   },
-   {
-    "rank": 12,
-    "name": "Instagram",
-    "id": "389801252",
-    "genres": []
-   },
-   {
     "rank": 13,
-    "name": "Telegram Messenger",
-    "id": "686449807",
-    "genres": []
-   },
-   {
-    "rank": 14,
-    "name": "X（前身為Twitter）",
-    "id": "333903271",
-    "genres": []
-   },
-   {
-    "rank": 15,
-    "name": "智方便 iAM Smart",
-    "id": "1515065344",
-    "genres": []
-   },
-   {
-    "rank": 16,
     "name": "759 Online",
     "id": "1062447544",
     "genres": []
    },
    {
+    "rank": 14,
+    "name": "高德地圖-導航巴士地鐵出行",
+    "id": "461703208",
+    "genres": []
+   },
+   {
+    "rank": 15,
+    "name": "X（前身為Twitter）",
+    "id": "333903271",
+    "genres": []
+   },
+   {
+    "rank": 16,
+    "name": "Telegram Messenger",
+    "id": "686449807",
+    "genres": []
+   },
+   {
     "rank": 17,
-    "name": "Google",
-    "id": "284815942",
+    "name": "Instagram",
+    "id": "389801252",
     "genres": []
    },
    {
     "rank": 18,
-    "name": "順豐速運",
-    "id": "1383101059",
+    "name": "大衆點評 - 吃喝玩樂指南",
+    "id": "351091731",
     "genres": []
    },
    {
@@ -1327,38 +1327,38 @@
    },
    {
     "rank": 20,
-    "name": "YouTube",
-    "id": "544007664",
-    "genres": []
-   },
-   {
-    "rank": 21,
-    "name": "美团-美好生活小帮手",
-    "id": "423084029",
-    "genres": []
-   },
-   {
-    "rank": 22,
-    "name": "ChatGTP: 中文版 AI 專業多功能智能聊天助手",
-    "id": "6755112160",
-    "genres": []
-   },
-   {
-    "rank": 23,
-    "name": "高德地圖-導航巴士地鐵出行，高德打車",
-    "id": "461703208",
-    "genres": []
-   },
-   {
-    "rank": 24,
     "name": "滴滴-DiDi香港優惠Call車的士Taxi",
     "id": "554499054",
     "genres": []
    },
    {
+    "rank": 21,
+    "name": "非觸式e-道",
+    "id": "1590998870",
+    "genres": []
+   },
+   {
+    "rank": 22,
+    "name": "Google",
+    "id": "284815942",
+    "genres": []
+   },
+   {
+    "rank": 23,
+    "name": "瑞幸咖啡",
+    "id": "1296749505",
+    "genres": []
+   },
+   {
+    "rank": 24,
+    "name": "ChatGTP: 中文版 AI 專業多功能智能聊天助手",
+    "id": "6755112160",
+    "genres": []
+   },
+   {
     "rank": 25,
-    "name": "AlipayHK (支付寶香港)",
-    "id": "1210638245",
+    "name": "Tabelog－日本餐廳探索、訂位與評價全方位平台",
+    "id": "6752922875",
     "genres": []
    },
    {
@@ -1369,146 +1369,146 @@
    },
    {
     "rank": 27,
-    "name": "Tabelog－日本餐廳探索、訂位與評價全方位平台",
-    "id": "6752922875",
+    "name": "YouTube",
+    "id": "544007664",
     "genres": []
    },
    {
     "rank": 28,
-    "name": "7-Eleven HK",
-    "id": "6680157469",
-    "genres": []
-   },
-   {
-    "rank": 29,
-    "name": "大衆點評 - 吃喝玩樂指南",
-    "id": "351091731",
-    "genres": []
-   },
-   {
-    "rank": 30,
-    "name": "Microsoft Authenticator",
-    "id": "983156458",
-    "genres": []
-   },
-   {
-    "rank": 31,
-    "name": "Gmail - Google 推出的電子郵件服務",
-    "id": "422689480",
-    "genres": []
-   },
-   {
-    "rank": 32,
     "name": "萬寧香港",
     "id": "6499517901",
     "genres": []
    },
    {
-    "rank": 33,
-    "name": "瑞幸咖啡",
-    "id": "1296749505",
-    "genres": []
-   },
-   {
-    "rank": 34,
-    "name": "小紅書 – 你的生活興趣社區",
-    "id": "741292507",
-    "genres": []
-   },
-   {
-    "rank": 35,
-    "name": "MyLink  智我·空間",
-    "id": "483513425",
-    "genres": []
-   },
-   {
-    "rank": 36,
-    "name": "Keeta - 外賣送遞及自取",
-    "id": "1662451643",
-    "genres": []
-   },
-   {
-    "rank": 37,
+    "rank": 29,
     "name": "嗶哩嗶哩-彈幕動畫戲劇線上看",
     "id": "736536022",
     "genres": []
    },
    {
-    "rank": 38,
+    "rank": 30,
+    "name": "MyLink 智我·空間",
+    "id": "483513425",
+    "genres": []
+   },
+   {
+    "rank": 31,
+    "name": "AlipayHK (支付寶香港)",
+    "id": "1210638245",
+    "genres": []
+   },
+   {
+    "rank": 32,
+    "name": "智方便 iAM Smart",
+    "id": "1515065344",
+    "genres": []
+   },
+   {
+    "rank": 33,
+    "name": "玩在盒中 - PLAY IN THE BOX",
+    "id": "6764219785",
+    "genres": []
+   },
+   {
+    "rank": 34,
+    "name": "DramaWave- 熱門短劇/日劇/韓劇",
+    "id": "6670430706",
+    "genres": []
+   },
+   {
+    "rank": 35,
     "name": "Grok - AI 助理",
     "id": "6670324846",
     "genres": []
    },
    {
+    "rank": 36,
+    "name": "小紅書 – 你的生活興趣社區",
+    "id": "741292507",
+    "genres": []
+   },
+   {
+    "rank": 37,
+    "name": "順豐速運",
+    "id": "1383101059",
+    "genres": []
+   },
+   {
+    "rank": 38,
+    "name": "Keeta - 外賣送遞及自取",
+    "id": "1662451643",
+    "genres": []
+   },
+   {
     "rank": 39,
-    "name": "非觸式e-道",
-    "id": "1590998870",
-    "genres": []
-   },
-   {
-    "rank": 40,
-    "name": "Google 地圖",
-    "id": "585027354",
-    "genres": []
-   },
-   {
-    "rank": 41,
     "name": "Eatizen 美心薈",
     "id": "1516406361",
     "genres": []
    },
    {
+    "rank": 40,
+    "name": "宏利香港及澳門",
+    "id": "645797935",
+    "genres": []
+   },
+   {
+    "rank": 41,
+    "name": "Gmail - Google 推出的電子郵件服務",
+    "id": "422689480",
+    "genres": []
+   },
+   {
     "rank": 42,
-    "name": "Trip.com - 酒店機票高鐵預訂平台",
-    "id": "681752345",
+    "name": "番茄小说 - 热门短剧全本小说电子书",
+    "id": "1468454200",
     "genres": []
    },
    {
     "rank": 43,
-    "name": "Octopus 八達通",
-    "id": "1114430602",
+    "name": "支付宝 - 生活好，支付宝",
+    "id": "333206289",
     "genres": []
    },
    {
     "rank": 44,
-    "name": "WeChat",
-    "id": "414478124",
+    "name": "BEYBLADE X",
+    "id": "1670801696",
     "genres": []
    },
    {
     "rank": 45,
-    "name": "優步 - 隨時預約搭乘計程車",
-    "id": "368677368",
+    "name": "Google 地圖",
+    "id": "585027354",
     "genres": []
    },
    {
     "rank": 46,
-    "name": "HA Go",
-    "id": "1469340861",
-    "genres": []
-   },
-   {
-    "rank": 47,
-    "name": "Microsoft Outlook",
-    "id": "951937596",
-    "genres": []
-   },
-   {
-    "rank": 48,
-    "name": "DramaWave- 熱門短劇/日劇/韓劇，復仇逆襲精彩絕倫",
-    "id": "6670430706",
-    "genres": []
-   },
-   {
-    "rank": 49,
     "name": "铁路12306",
     "id": "564818797",
     "genres": []
    },
    {
+    "rank": 47,
+    "name": "Trip.com - 酒店機票高鐵預訂平台",
+    "id": "681752345",
+    "genres": []
+   },
+   {
+    "rank": 48,
+    "name": "WeChat",
+    "id": "414478124",
+    "genres": []
+   },
+   {
+    "rank": 49,
+    "name": "優步 - 隨時預約搭乘計程車",
+    "id": "368677368",
+    "genres": []
+   },
+   {
     "rank": 50,
-    "name": "Google Chrome",
-    "id": "535886823",
+    "name": "Octopus 八達通",
+    "id": "1114430602",
     "genres": []
    }
   ]
