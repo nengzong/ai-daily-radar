@@ -1,6 +1,6 @@
 # AI Daily Radar 每日 AI 情报雷达
 
-每天早上自动扫描 19 个国内外信息源,由 AI 筛选出**值得做的机会、赚钱案例、产品灵感**,英文信号自动翻译成中文,汇总成一份日报,推送到钉钉群和邮箱。
+每天早上自动扫描 40+ 个国内外信息源(国内媒体社区、海外社区、顶级 AI 实验室官方、一线科技媒体、楼宇/设施管理/能源垂直行业),由 AI 从公司业务视角筛选出**行业动向、技术与案例、产品灵感**,英文信号自动翻译成中文,汇总成一份日报,推送到钉钉群和邮箱。
 
 **运行在 GitHub Actions 上,不依赖本机开机。**
 
@@ -41,7 +41,7 @@
 .github/workflows/daily-radar.yml
   ├─ 1. checkout 仓库
   ├─ 2. claude-code-action 执行 prompts/daily-radar.md
-  │     抓 19 个源 → AI 筛选 → 写日报全文 + 钉钉版 → 更新榜单快照
+  │     抓 40+ 个源 → AI 筛选 → 写日报全文 + 钉钉版 → 更新榜单快照
   ├─ 3. 校验两个报告文件存在且非空(不满足则中止,绝不推空消息)
   ├─ 4. 推送钉钉(scripts/send_dingtalk.py)
   ├─ 5. 发送邮件(scripts/send_email.sh,钉钉失败也照发)
@@ -98,7 +98,7 @@ bash scripts/send_email.sh "标题" reports/2026-08-10.md
 ai-daily-radar/
 ├── .github/workflows/daily-radar.yml  # 定时任务定义
 ├── prompts/daily-radar.md             # 日报生成提示词(受版本管理)
-├── sources.md                         # 19 个信息源清单 + 筛选标准
+├── sources.md                         # 43 个信息源清单 + 筛选标准
 ├── scripts/
 │   ├── send_dingtalk.py               # 钉钉加签推送
 │   ├── send_email.sh                  # Gmail SMTP 直发

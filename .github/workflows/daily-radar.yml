@@ -31,7 +31,7 @@ concurrency:
 jobs:
   radar:
     runs-on: ubuntu-latest
-    # 最坏情况:cron 完全不延迟,05:50 开跑,生成 ~15min 后一直等到 08:30 才投递,
+    # 最坏情况:cron 完全不延迟,05:50 开跑,生成 ~25min 后一直等到 08:30 才投递,
     # 全程约 165 分钟。留些余量。
     timeout-minutes: 200
     env:
