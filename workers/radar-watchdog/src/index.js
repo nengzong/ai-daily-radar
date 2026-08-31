@@ -1,7 +1,9 @@
 /**
  * 日报流水线的外部看门狗。
  *
- * 北京 06:00 起跑今天的日报,北京 08:40 查岗——没送达就告警并补跑。
+ * 北京 07:50 起跑今天的日报,北京 08:40 查岗——没送达就告警并补跑。
+ *
+ * 起跑时间就是送达时间减去生成耗时:workflow 生成完立刻投递,不再挂机等点。
  *
  * 为什么要有它:GitHub Actions 的 schedule 触发时刻完全不受控。本仓库实测
  * 2026-08-17~26 延迟稳定在 10 分钟上下,但 08-27 三道 cron 全部漂到 4~5 小时之后
@@ -14,7 +16,7 @@
  */
 
 // 必须和 wrangler.toml 的 [triggers] crons 逐字一致
-const CRON_TRIGGER = "0 22 * * *"; // 北京 06:00
+const CRON_TRIGGER = "50 23 * * *"; // 北京 07:50
 const CRON_SENTINEL = "40 0 * * *"; // 北京 08:40
 
 const GH = "https://api.github.com";
@@ -49,7 +51,7 @@ async function detail(res) {
  * 「不存在」和「查不到」必须分开。任何一种失败都当成「今天还没出日报」的话,
  * 网络抖一下就会 dispatch,而 workflow_dispatch 会绕过工作流里那个
  * 「今天已生成就跳过」的守卫(守卫只拦 schedule),结果是往公司群重复推一遍日报。
- * 宁可这次不动作:GitHub 那三道 cron 还在兜底,08:40 的哨兵也会再查一次。
+ * 宁可这次不动作:GitHub 那道兜底 cron 还在,08:40 的哨兵也会再查一次。
  */
 async function reportSize(env, day) {
   const res = await fetch(
@@ -64,8 +66,8 @@ async function reportSize(env, day) {
 
 /**
  * 正在跑或排队的 run 数量。这是防重复推送的第二道闸:
- * 正常日子里 GitHub 的 21:50 UTC(北京 05:50)那道 cron 只延迟十来分钟,
- * 06:00 我们来看的时候它往往已经在跑了,这时候再 dispatch 就是两道 run 各推一次。
+ * GitHub 那道兜底 cron(01:00 UTC / 北京 09:00)万一提前不了、却因别的原因已经在跑,
+ * 或者你自己刚手动 Run 过一次,这时候再 dispatch 就是两道 run 各推一次。
  */
 async function activeRuns(env) {
   const res = await fetch(
@@ -127,7 +129,7 @@ async function runTrigger(env) {
   if (running > 0) return `已有 ${running} 道 run 在跑/排队(多半是 GitHub 的 cron 已触发),不重复起跑`;
 
   await dispatch(env);
-  return `远端无 ${day} 的日报且无 run 在跑,已 dispatch 起跑,预计 08:30 准点投递`;
+  return `远端无 ${day} 的日报且无 run 在跑,已 dispatch 起跑,预计 08:15 前后投递`;
 }
 
 async function runSentinel(env) {
@@ -136,7 +138,7 @@ async function runSentinel(env) {
   if (size > 0) return `reports/${day}.md 已在远端(${size} 字节),日报已送达`;
 
   const running = await activeRuns(env);
-  // 已过 08:30,工作流的等待步骤不会再挂机,生成完会立刻投递,不用补跑。
+  // 生成完会立刻投递,还在跑就说明只是慢了,让它自己跑完,别再 dispatch 一道重复推送。
   if (running > 0) return `${day} 尚未送达,但有 ${running} 道 run 正在跑,等它自己投递`;
 
   await dingtalk(
@@ -147,7 +149,8 @@ async function runSentinel(env) {
       "",
       `- 日期:${day}`,
       `- 现象:08:40 仍无 reports/${day}.md,且 GitHub 上没有任何 run 在跑`,
-      "- 判断:GitHub 的 cron 又没触发,看门狗已自动 dispatch 补跑",
+      "- 判断:07:50 那道起跑没成事(或 run 已失败退出),看门狗已自动 dispatch 补跑",
+      "- 若补跑也起不来、报 `job was not started`,那是 GitHub Actions 月度分钟额度耗尽",
       `- [查看运行](https://github.com/${env.REPO}/actions)`,
     ].join("\n"),
   );

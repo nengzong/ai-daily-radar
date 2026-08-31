@@ -17,23 +17,52 @@
 
 日报要在**北京 08:30 前**送达。
 
-**GitHub 的定时任务不准时。** 官方说明高负载期会延迟甚至直接丢弃,本仓库实测(2026-08-12/13)延迟分别是 1h05m、1h07m、2h23m,而且三次触发机会里丢了一次。
+起跑由仓库外面的 **Cloudflare Worker** 负责,北京 **07:50** 用 `workflow_dispatch` 打进来;
+workflow 生成完(实测 15~25 分钟)**立刻投递**,日报约 08:05~08:15 到。
 
-早期版本把起跑时间卡在 07:55(期望送达前 15 分钟),结果每次定时触发都迟到一到两小时;等它真正跑起来时,人已经等不及手动跑过一遍了,幂等开关便判定「今天已出过日报」直接跳过——于是**定时任务从来没有真正产出过一份日报**,看起来就像压根没自动运行。
-
-现在的策略是**大幅提前起跑,用时间余量吃掉延迟**,再排三道 cron,任意一道活下来就够。早到无害,迟到才是问题:
-
-| 时间 | 正常送达 | 延迟 2.5 小时仍可送达 |
+| 通道 | 时间(北京) | 角色 |
 |---|---|---|
-| `50 21 * * *` = 北京 **05:50** 起跑 | 06:10 | 08:40 |
-| `50 22 * * *` = 北京 **06:50** 起跑 | 07:10 | 09:40 |
-| `50 23 * * *` = 北京 **07:50** 起跑 | 08:10 | 10:40 |
+| Cloudflare cron `50 23 * * *` | **07:50** | 主触发:远端还没有今天的日报、且没有 run 在跑 → dispatch |
+| Cloudflare cron `40 0 * * *` | **08:40** | 哨兵:还没送达 → 钉钉告警 + dispatch 补跑 |
+| GitHub cron `0 1 * * *` | **09:00** | 末端兜底:Cloudflare 整条通道挂掉时才真正干活 |
 
-当天只会真正执行一次。「判断今天是否已生成」这一步会去查**远端 main 的最新状态**(而不是 checkout 出来的工作区——几道 cron 被延迟后可能挤在一起触发,后触发的那次 checkout 的是旧 SHA,看不到刚推上去的日报),已经有今天的日报就秒退。**手动触发不受此限制**,方便随时补跑。
+**GitHub 的定时任务不准时**,所以准点性不能靠它:官方说明高负载期会延迟甚至直接丢弃,
+本仓库实测延迟 1h05m、1h07m、2h23m,08-27 三道 cron 全部漂到 4~5 小时之后,08-28 一道都没触发。
+`workflow_dispatch` 是即时的、从没漂过,所以起跑的决定权放在 GitHub 外面(见下)。
+GitHub 那道 09:00 的 cron 留着只为「Cloudflare 也挂了」,正常日子里它会在
+「判断今天是否已生成」处秒退,不会重复推送。
 
-想改时间的话,记得 cron 用的是 UTC(北京时间减 8 小时),除了算上约 15 分钟运行时长,更要**留足至少 2 小时的延迟余量**。
+当天只会真正执行一次。「判断今天是否已生成」这一步会去查**远端 main 的最新状态**
+(而不是 checkout 出来的工作区——触发被延迟后 checkout 的是旧 SHA,看不到刚推上去的日报),
+已经有今天的日报就秒退。**手动触发不受此限制**,方便随时补跑。
 
 也可以在 GitHub 仓库的 Actions 页面手动点 **Run workflow** 立即触发一次。
+
+### ⚠️ 不要在 runner 上挂机等时间
+
+早先的版本为了「08:30 准点送达」,在 workflow 里加了一步 `sleep` 到 08:30 才投递,
+起跑则大幅提前到 05:50 用来吃掉 cron 延迟。结果单次 run 挂机 2.5 小时:
+
+```
+2026-08-29T22:00:08Z  success  150 分钟   ← 生成只用了约 20 分钟,其余全在 sleep
+2026-08-28T22:00:06Z  success  150 分钟
+...8 月这样的 run 有 13 道,全月 3062 分钟
+```
+
+**GitHub Actions 按 runner 分钟计费,私有仓库免费额度 2000 分钟/月。**
+2026-08-30 额度耗尽,此后所有 run 秒退,报
+`The job was not started because recent account payments have failed or your spending limit needs to be increased`——
+连着两天日报没送达,而且这种失败**连钉钉告警都发不出来**(job 根本没启动,告警步骤在 job 里)。
+
+现在准点性由 Worker 的 cron 负责,workflow 里没有任何等待步骤,单次 run 约 25 分钟,
+月耗约 750 分钟,稳在免费额度内。`timeout-minutes: 60` 是单次跑飞时的计费封顶。
+
+**所以:不要再加 cron,不要把起跑时间往早挪,不要在 workflow 里 sleep。**
+要改送达时间,改 `workers/radar-watchdog/wrangler.toml` 里的起跑 cron
+(改完 `index.js` 顶部的 `CRON_TRIGGER` 常量必须逐字跟着改,再 `npx wrangler deploy`)。
+
+额度用完了怎么办:等下个月 1 号自动重置,或去 Settings → Billing 设 spending limit,
+或把仓库改成 public(公开仓库 Actions 免费无限,但 `reports/` 是公司业务内容,慎重)。
 
 ### 外部看门狗(主触发通道)
 
@@ -43,14 +72,14 @@
 
 | Cloudflare cron (UTC) | 北京时间 | 行为 |
 |---|---|---|
-| `0 22 * * *` | **06:00** | 远端还没有今天的日报、且没有 run 在跑 → dispatch 起跑 |
+| `50 23 * * *` | **07:50** | 远端还没有今天的日报、且没有 run 在跑 → dispatch 起跑 |
 | `40 0 * * *` | **08:40** | 还没送达 → 钉钉告警 + dispatch 补跑 |
 
 代码在 `workers/radar-watchdog/`。告警走钉钉直发,而不是「再 dispatch 一个告警 workflow」——**被监控的东西不能是告警的前提**,否则 Actions 真出问题时告警会跟着一起哑掉。
 
-GitHub 那三道 cron **原样保留**做兜底:Cloudflare 也挂了的话它们仍可能跑起来,而后触发的 schedule run 会在「判断今天是否已生成」处秒退,不会重复推送。
+GitHub 自己那道 09:00 的 cron **保留**做末端兜底:Cloudflare 也挂了的话它仍可能跑起来,而 schedule run 会在「判断今天是否已生成」处秒退,不会重复推送。
 
-看门狗自己也不会造成重复推送——dispatch 前会检查有没有 run 正在跑/排队(正常日子里 05:50 那道 cron 到 06:00 时往往已经在跑了)。查不到状态时(网络不通、token 过期)一律**不动作**:多推一次日报到公司群比晚到一次更难收场,何况还有 cron 兜底和 08:40 的哨兵复查。
+看门狗自己也不会造成重复推送——dispatch 前会检查有没有 run 正在跑/排队(比如你刚手动 Run 过一次)。查不到状态时(网络不通、token 过期)一律**不动作**:多推一次日报到公司群比晚到一次更难收场,何况还有 cron 兜底和 08:40 的哨兵复查。
 
 #### 部署与运维
 
@@ -136,7 +165,7 @@ RADAR_DATE=2026-08-27 ./scripts/radar_watchdog.sh sentinel   # 换个日期查/�
 
 - **改信息源**:编辑 [sources.md](sources.md),每次运行都会重新读取
 - **改筛选标准 / 日报结构 / 钉钉版格式**:编辑 [prompts/daily-radar.md](prompts/daily-radar.md)
-- **改时间**:编辑 [.github/workflows/daily-radar.yml](.github/workflows/daily-radar.yml) 里的 cron(注意是 UTC,北京时间减 8 小时)
+- **改时间**:改 [workers/radar-watchdog/wrangler.toml](workers/radar-watchdog/wrangler.toml) 里的起跑 cron(UTC,北京时间减 8 小时),`src/index.js` 顶部的 `CRON_TRIGGER` 常量必须逐字跟着改,然后 `npx wrangler deploy`。**别改成在 workflow 里等**,见「不要在 runner 上挂机等时间」
 - **暂停**:在 GitHub 仓库 Actions 页面点 workflow → 右上角 `···` → Disable workflow
 
 ## 排查投递问题
@@ -146,6 +175,12 @@ RADAR_DATE=2026-08-27 ./scripts/radar_watchdog.sh sentinel   # 换个日期查/�
 这条告警覆盖不了「cron 全被 GitHub 丢弃」的情况——那种情况下 workflow 压根没启动,自然也没法告警。这个盲区由 Worker 的 **08:40 哨兵**补上(见「外部看门狗」):它查的是远端有没有今天的日报,不关心 workflow 有没有启动,所以「没跑」和「跑失败」都能兜住。
 
 哨兵也没响、日报也没来,说明 Worker 这条通道也断了。`npx wrangler tail` 看看它有没有在跑,再去 Actions 页面手动 Run workflow 补跑。
+
+**手动 Run 也失败、而且几秒就红**:去 Actions 页面看那道 run 的 annotation。若是
+`The job was not started because recent account payments have failed or your spending limit needs to be increased`,
+那不是代码问题,是 GitHub Actions 的月度分钟额度用完了,见「不要在 runner 上挂机等时间」。
+这种失败没有任何告警——job 没启动,workflow 里的告警步骤跑不到,Worker 哨兵也只会说「已 dispatch 补跑」。
+可以用 `gh run list --limit 5` 和 `gh run view <id>` 在本机快速确认。
 
 仓库里还有一个 **投递链路自检** workflow(`.github/workflows/test-delivery.yml`),在 Actions 页面手动触发即可,约 30 秒跑完。它用假数据在真实 runner 上把钉钉和邮件两条链路各走一遍,不调用 Claude、不消耗订阅额度。
 
