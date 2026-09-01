@@ -1,1266 +1,1266 @@
 {
- "date": "2026-08-30",
- "note": "top-free 50, source: rss.marketingtools.apple.com",
- "regions": {
-  "cn": [
-   {
-    "rank": 1,
-    "name": "抖音商城-下单返积分、退货包运费",
-    "id": "1485191072"
-   },
-   {
-    "rank": 2,
-    "name": "抖省省 - 抖音官方团购平台",
-    "id": "6756863766"
-   },
-   {
-    "rank": 3,
-    "name": "红果短剧 - 海量热门短剧随心看",
-    "id": "6451407032"
-   },
-   {
-    "rank": 4,
-    "name": "红果漫剧 - 热门精彩漫剧",
-    "id": "6745890963"
-   },
-   {
-    "rank": 5,
-    "name": "豆包 - 随时帮忙的 AI 助手",
-    "id": "6459478672"
-   },
-   {
-    "rank": 6,
-    "name": "汽水音乐 - 随时听好歌",
-    "id": "1605585211"
-   },
-   {
-    "rank": 7,
-    "name": "中国移动（手机营业厅）",
-    "id": "583700738"
-   },
-   {
-    "rank": 8,
-    "name": "国家网络身份认证",
-    "id": "1588080869"
-   },
-   {
-    "rank": 9,
-    "name": "千问 - 阿里AI助手",
-    "id": "6466733523"
-   },
-   {
-    "rank": 10,
-    "name": "钉钉",
-    "id": "930368978"
-   },
-   {
-    "rank": 11,
-    "name": "铁路12306",
-    "id": "564818797"
-   },
-   {
-    "rank": 12,
-    "name": "中国农业银行",
-    "id": "515651240"
-   },
-   {
-    "rank": 13,
-    "name": "闲鱼 - 上闲鱼，赚一笔 !",
-    "id": "510909506"
-   },
-   {
-    "rank": 14,
-    "name": "云闪付-银行业统一移动支付App",
-    "id": "600273928"
-   },
-   {
-    "rank": 15,
-    "name": "企业微信",
-    "id": "1087897068"
-   },
-   {
-    "rank": 16,
-    "name": "京东-又好又便宜",
-    "id": "414245413"
-   },
-   {
-    "rank": 17,
-    "name": "番茄小说 - 热门短剧全本小说电子书阅读器",
-    "id": "1468454200"
-   },
-   {
-    "rank": 18,
-    "name": "高德地图-高德打车,导航公交地铁出行",
-    "id": "461703208"
-   },
-   {
-    "rank": 19,
-    "name": "多闪",
-    "id": "1435602536"
-   },
-   {
-    "rank": 20,
-    "name": "美团-问美团，都安排",
-    "id": "423084029"
-   },
-   {
-    "rank": 21,
-    "name": "夸克-AI旗舰应用",
-    "id": "1160172628"
-   },
-   {
-    "rank": 22,
-    "name": "优酷视频-《早春晴朗》全网独播",
-    "id": "336141475"
-   },
-   {
-    "rank": 23,
-    "name": "剪映 - 抖音官方AI创作神器",
-    "id": "1458072671"
-   },
-   {
-    "rank": 24,
-    "name": "支付宝-你的AI生活伙伴",
-    "id": "333206289"
-   },
-   {
-    "rank": 25,
-    "name": "腾讯会议-多人实时视频会议软件",
-    "id": "1484048379"
-   },
-   {
-    "rank": 26,
-    "name": "迅雷-随心搜，放心存，畅快看",
-    "id": "1503466530"
-   },
-   {
-    "rank": 27,
-    "name": "QQ",
-    "id": "444934666"
-   },
-   {
-    "rank": 28,
-    "name": "淘宝-万能的淘宝！",
-    "id": "387682726"
-   },
-   {
-    "rank": 29,
-    "name": "得物 - 得到美好事物",
-    "id": "1012871328"
-   },
-   {
-    "rank": 30,
-    "name": "大众点评 - 吃喝玩乐指南",
-    "id": "351091731"
-   },
-   {
-    "rank": 31,
-    "name": "拼多多 - 多多买菜，百亿补贴",
-    "id": "1044283059"
-   },
-   {
-    "rank": 32,
-    "name": "醒图 - 全能修图神器",
-    "id": "1500526240"
-   },
-   {
-    "rank": 33,
-    "name": "UC浏览器-随心搜·畅快看",
-    "id": "586871187"
-   },
-   {
-    "rank": 34,
-    "name": "小红书 - 你的生活兴趣社区",
-    "id": "741292507"
-   },
-   {
-    "rank": 35,
-    "name": "抖音",
-    "id": "1142110895"
-   },
-   {
-    "rank": 36,
-    "name": "百度网盘",
-    "id": "547166701"
-   },
-   {
-    "rank": 37,
-    "name": "转转-二手官方验",
-    "id": "1002355194"
-   },
-   {
-    "rank": 38,
-    "name": "中国电信-全国统一官方服务平台",
-    "id": "513836029"
-   },
-   {
-    "rank": 39,
-    "name": "快手",
-    "id": "440948110"
-   },
-   {
-    "rank": 40,
-    "name": "中国建设银行",
-    "id": "391965015"
-   },
-   {
-    "rank": 41,
-    "name": "中国工商银行",
-    "id": "423514795"
-   },
-   {
-    "rank": 42,
-    "name": "微信",
-    "id": "414478124"
-   },
-   {
-    "rank": 43,
-    "name": "微博",
-    "id": "350962117"
-   },
-   {
-    "rank": 44,
-    "name": "中国联通",
-    "id": "416457422"
-   },
-   {
-    "rank": 45,
-    "name": "交管12123",
-    "id": "1039727169"
-   },
-   {
-    "rank": 46,
-    "name": "多邻国Duolingo英语日语法语",
-    "id": "570060128"
-   },
-   {
-    "rank": 47,
-    "name": "哔哩哔哩-弹幕番剧直播高清视频",
-    "id": "736536022"
-   },
-   {
-    "rank": 48,
-    "name": "QQ邮箱",
-    "id": "473225145"
-   },
-   {
-    "rank": 49,
-    "name": "BOSS直聘-招聘求职找工作招人",
-    "id": "887314963"
-   },
-   {
-    "rank": 50,
-    "name": "滴滴-打车骑车顺风车火车票租车代驾送货",
-    "id": "554499054"
-   }
-  ],
-  "us": [
-   {
-    "rank": 1,
-    "name": "ChatGPT",
-    "id": "6448311069"
-   },
-   {
-    "rank": 2,
-    "name": "Vinted: Pre-loved marketplace",
-    "id": "632064380"
-   },
-   {
-    "rank": 3,
-    "name": "TikTok Pro - Events",
-    "id": "6741796873"
-   },
-   {
-    "rank": 4,
-    "name": "7 Brew Coffee",
-    "id": "6762023973"
-   },
-   {
-    "rank": 5,
-    "name": "ReelShort - Stream Drama & TV",
-    "id": "1636235979"
-   },
-   {
-    "rank": 6,
-    "name": "Threads",
-    "id": "6446901002"
-   },
-   {
-    "rank": 7,
-    "name": "Google",
-    "id": "284815942"
-   },
-   {
-    "rank": 8,
-    "name": "WhatsApp Messenger",
-    "id": "310633997"
-   },
-   {
-    "rank": 9,
-    "name": "NBA 2K HQ",
-    "id": "6745190566"
-   },
-   {
-    "rank": 10,
-    "name": "Netflix Game Controller",
-    "id": "6447582581"
-   },
-   {
-    "rank": 11,
-    "name": "PineDrama - Short Dramas",
-    "id": "6754134922"
-   },
-   {
-    "rank": 12,
-    "name": "Claude by Anthropic",
-    "id": "6473753684"
-   },
-   {
-    "rank": 13,
-    "name": "ESPN Fantasy Sports & More",
-    "id": "555376968"
-   },
-   {
-    "rank": 14,
-    "name": "Google Maps",
-    "id": "585027354"
-   },
-   {
-    "rank": 15,
-    "name": "TikTok - Videos, Shop & LIVE",
-    "id": "835599320"
-   },
-   {
-    "rank": 16,
-    "name": "Google Gemini",
-    "id": "6477489729"
-   },
-   {
-    "rank": 17,
-    "name": "CapCut: Photo & Video Editor",
-    "id": "1500855883"
-   },
-   {
-    "rank": 18,
-    "name": "Gmail - Email by Google",
-    "id": "422689480"
-   },
-   {
-    "rank": 19,
-    "name": "Instagram",
-    "id": "389801252"
-   },
-   {
-    "rank": 20,
-    "name": "StoryReel: Exclusive Drama",
-    "id": "6761538521"
-   },
-   {
-    "rank": 21,
-    "name": "Depop - Buy & Sell Clothes",
-    "id": "518684914"
-   },
-   {
-    "rank": 22,
-    "name": "Uber - Request a ride",
-    "id": "368677368"
-   },
-   {
-    "rank": 23,
-    "name": "X",
-    "id": "333903271"
-   },
-   {
-    "rank": 24,
-    "name": "Facebook",
-    "id": "284882215"
-   },
-   {
-    "rank": 25,
-    "name": "YouTube",
-    "id": "544007664"
-   },
-   {
-    "rank": 26,
-    "name": "Temu: Shop Like a Billionaire",
-    "id": "1641486558"
-   },
-   {
-    "rank": 27,
-    "name": "Spotify: Music and Podcasts",
-    "id": "324684580"
-   },
-   {
-    "rank": 28,
-    "name": "DoorDash: Food, Grocery, More",
-    "id": "719972451"
-   },
-   {
-    "rank": 29,
-    "name": "Capital One Mobile",
-    "id": "407558537"
-   },
-   {
-    "rank": 30,
-    "name": "Capital One Shopping: Save Now",
-    "id": "1089294040"
-   },
-   {
-    "rank": 31,
-    "name": "DealSeek: Coupons & Discounts",
-    "id": "6745274862"
-   },
-   {
-    "rank": 32,
-    "name": "Cash App",
-    "id": "711923939"
-   },
-   {
-    "rank": 33,
-    "name": "Whatnot: Shop, Sell, Connect",
-    "id": "1488269261"
-   },
-   {
-    "rank": 34,
-    "name": "Walmart: Shopping & Savings",
-    "id": "338137227"
-   },
-   {
-    "rank": 35,
-    "name": "Life360: Family Safety & GPS",
-    "id": "384830320"
-   },
-   {
-    "rank": 36,
-    "name": "Google Chrome",
-    "id": "535886823"
-   },
-   {
-    "rank": 37,
-    "name": "DramaWave - Dramas & Reels",
-    "id": "6670430706"
-   },
-   {
-    "rank": 38,
-    "name": "Netflix",
-    "id": "363590051"
-   },
-   {
-    "rank": 39,
-    "name": "Telegram Messenger",
-    "id": "686449807"
-   },
-   {
-    "rank": 40,
-    "name": "Sleeper - Fantasy Sports",
-    "id": "987367543"
-   },
-   {
-    "rank": 41,
-    "name": "Shop: Track, Pay, Discover",
-    "id": "1223471316"
-   },
-   {
-    "rank": 42,
-    "name": "DramaBox - Stream Drama Shorts",
-    "id": "6445905219"
-   },
-   {
-    "rank": 43,
-    "name": "Snapchat",
-    "id": "447188370"
-   },
-   {
-    "rank": 44,
-    "name": "Meta AI",
-    "id": "1558240027"
-   },
-   {
-    "rank": 45,
-    "name": "Venmo",
-    "id": "351727428"
-   },
-   {
-    "rank": 46,
-    "name": "Ticketmaster－Buy, Sell Tickets",
-    "id": "500003565"
-   },
-   {
-    "rank": 47,
-    "name": "Pinterest",
-    "id": "429047995"
-   },
-   {
-    "rank": 48,
-    "name": "Amazon Shopping",
-    "id": "297606951"
-   },
-   {
-    "rank": 49,
-    "name": "McDonald's",
-    "id": "922103212"
-   },
-   {
-    "rank": 50,
-    "name": "SHEIN - Shopping Online",
-    "id": "878577184"
-   }
-  ],
-  "jp": [
-   {
-    "rank": 1,
-    "name": "setlog",
-    "id": "6587576438"
-   },
-   {
-    "rank": 2,
-    "name": "ChatGPT",
-    "id": "6448311069"
-   },
-   {
-    "rank": 3,
-    "name": "マイナアプリ（旧マイナポータルアプリ）",
-    "id": "1476359069"
-   },
-   {
-    "rank": 4,
-    "name": "Google Gemini",
-    "id": "6477489729"
-   },
-   {
-    "rank": 5,
-    "name": "Qoo10(キューテン)",
-    "id": "490078053"
-   },
-   {
-    "rank": 6,
-    "name": "Rocket Now : 出前/フードデリバリー",
-    "id": "6739188587"
-   },
-   {
-    "rank": 7,
-    "name": "ReelShort - オリジナル短尺ドラマ見放題",
-    "id": "1636235979"
-   },
-   {
-    "rank": 8,
-    "name": "31Club サーティワン公式アプリ",
-    "id": "910133705"
-   },
-   {
-    "rank": 9,
-    "name": "U-NEXT - 映画やドラマ、アニメなどの動画が見放題",
-    "id": "882477693"
-   },
-   {
-    "rank": 10,
-    "name": "ジハンピ",
-    "id": "6667104573"
-   },
-   {
-    "rank": 11,
-    "name": "GO タクシーが呼べるアプリ - AI予約・配車・迎車・決済",
-    "id": "1254341709"
-   },
-   {
-    "rank": 12,
-    "name": "Threads",
-    "id": "6446901002"
-   },
-   {
-    "rank": 13,
-    "name": "ホットペッパーグルメ",
-    "id": "290033990"
-   },
-   {
-    "rank": 14,
-    "name": "コメダ珈琲店",
-    "id": "1667214457"
-   },
-   {
-    "rank": 15,
-    "name": "しまむらパーク",
-    "id": "732775964"
-   },
-   {
-    "rank": 16,
-    "name": "ホットペッパービューティー/美容院・ネイルなどのサロン予約",
-    "id": "385724144"
-   },
-   {
-    "rank": 17,
-    "name": "X",
-    "id": "333903271"
-   },
-   {
-    "rank": 18,
-    "name": "マツキヨココカラ公式アプリ",
-    "id": "6451037644"
-   },
-   {
-    "rank": 19,
-    "name": "Rakuten Link",
-    "id": "1498877539"
-   },
-   {
-    "rank": 20,
-    "name": "バーガーキング Burger King",
-    "id": "1456118550"
-   },
-   {
-    "rank": 21,
-    "name": "PayPay",
-    "id": "1435783608"
-   },
-   {
-    "rank": 22,
-    "name": "Claude by Anthropic",
-    "id": "6473753684"
-   },
-   {
-    "rank": 23,
-    "name": "Bump（旧Zenly）",
-    "id": "6471519217"
-   },
-   {
-    "rank": 24,
-    "name": "DramaWave - 日本 / 韓国 / 人気短編ドラマ",
-    "id": "6670430706"
-   },
-   {
-    "rank": 25,
-    "name": "TVer(ティーバー) 民放公式テレビ配信サービス",
-    "id": "830340223"
-   },
-   {
-    "rank": 26,
-    "name": "エディオンアプリ",
-    "id": "434823849"
-   },
-   {
-    "rank": 27,
-    "name": "NetShort - 人気短編ドラマ",
-    "id": "6504849169"
-   },
-   {
-    "rank": 28,
-    "name": "Yahoo!ショッピング-PayPayポイントが貯まる通販",
-    "id": "446016180"
-   },
-   {
-    "rank": 29,
-    "name": "Netflix",
-    "id": "363590051"
-   },
-   {
-    "rank": 30,
-    "name": "zeta - AIキャラ・あなたの推しとロールプレイチャット",
-    "id": "1619030760"
-   },
-   {
-    "rank": 31,
-    "name": "My SoftBank",
-    "id": "1416481094"
-   },
-   {
-    "rank": 32,
-    "name": "Uber Eats（ウーバーイーツ) 出前/フードデリバリー",
-    "id": "1058959277"
-   },
-   {
-    "rank": 33,
-    "name": "Gmail - Google のメール",
-    "id": "422689480"
-   },
-   {
-    "rank": 34,
-    "name": "Canva(キャンバ): 画像・動画編集 & AIデザイン",
-    "id": "897446215"
-   },
-   {
-    "rank": 35,
-    "name": "Spotify: 音楽とポッドキャスト",
-    "id": "324684580"
-   },
-   {
-    "rank": 36,
-    "name": "ケンタッキーフライドチキン公式　モバイルアプリ",
-    "id": "519131315"
-   },
-   {
-    "rank": 37,
-    "name": "Google アプリ",
-    "id": "284815942"
-   },
-   {
-    "rank": 38,
-    "name": "楽天ペイ-楽天ポイントカードも利用できるスマホ決済アプリ",
-    "id": "1139755229"
-   },
-   {
-    "rank": 39,
-    "name": "d払い－スマホ決済アプリ、キャッシュレスでお支払い",
-    "id": "1328132872"
-   },
-   {
-    "rank": 40,
-    "name": "焼肉きんぐ公式アプリ",
-    "id": "1345275897"
-   },
-   {
-    "rank": 41,
-    "name": "majica～電子マネー公式アプリ～",
-    "id": "1001883210"
-   },
-   {
-    "rank": 42,
-    "name": "DAISOアプリ",
-    "id": "6466987025"
-   },
-   {
-    "rank": 43,
-    "name": "くら寿司 公式アプリ Produced by EPARK",
-    "id": "942355925"
-   },
-   {
-    "rank": 44,
-    "name": "CHARGESPOT チャージスポット スマホ充電レンタル",
-    "id": "1272481966"
-   },
-   {
-    "rank": 45,
-    "name": "Trip.com-航空券･ホテルの予約はトリップドットコムで",
-    "id": "681752345"
-   },
-   {
-    "rank": 46,
-    "name": "TikTok ティックトック",
-    "id": "1235601864"
-   },
-   {
-    "rank": 47,
-    "name": "Google マップ",
-    "id": "585027354"
-   },
-   {
-    "rank": 48,
-    "name": "TikTok Lite",
-    "id": "6447160980"
-   },
-   {
-    "rank": 49,
-    "name": "マクドナルド",
-    "id": "413618155"
-   },
-   {
-    "rank": 50,
-    "name": "カラオケまねきねこ",
-    "id": "1434510930"
-   }
-  ],
-  "gb": [
-   {
-    "rank": 1,
-    "name": "Lloyds Mobile Banking",
-    "id": "469964520"
-   },
-   {
-    "rank": 2,
-    "name": "GOV.UK One Login",
-    "id": "6737119425"
-   },
-   {
-    "rank": 3,
-    "name": "ChatGPT",
-    "id": "6448311069"
-   },
-   {
-    "rank": 4,
-    "name": "InPost UK",
-    "id": "1591214233"
-   },
-   {
-    "rank": 5,
-    "name": "Microsoft Authenticator",
-    "id": "983156458"
-   },
-   {
-    "rank": 6,
-    "name": "Whatnot: Shop, Sell, Connect",
-    "id": "1488269261"
-   },
-   {
-    "rank": 7,
-    "name": "Vinted: Shop & sell pre-loved",
-    "id": "632064380"
-   },
-   {
-    "rank": 8,
-    "name": "Uber - Request a ride",
-    "id": "368677368"
-   },
-   {
-    "rank": 9,
-    "name": "HBO Max: Watch Movies & TV",
-    "id": "1666653815"
-   },
-   {
-    "rank": 10,
-    "name": "Netflix Game Controller",
-    "id": "6447582581"
-   },
-   {
-    "rank": 11,
-    "name": "Ticketmaster－Buy, Sell Tickets",
-    "id": "500003565"
-   },
-   {
-    "rank": 12,
-    "name": "Monzo Bank - Mobile Banking",
-    "id": "1052238659"
-   },
-   {
-    "rank": 13,
-    "name": "Tesco Grocery & Clubcard",
-    "id": "389581236"
-   },
-   {
-    "rank": 14,
-    "name": "RingGo: Mobile Car Parking App",
-    "id": "342898717"
-   },
-   {
-    "rank": 15,
-    "name": "ScotRail: New Official App",
-    "id": "6788413784"
-   },
-   {
-    "rank": 16,
-    "name": "Claude by Anthropic",
-    "id": "6473753684"
-   },
-   {
-    "rank": 17,
-    "name": "Google Maps",
-    "id": "585027354"
-   },
-   {
-    "rank": 18,
-    "name": "Dola: Smart AI Assistant",
-    "id": "6451431247"
-   },
-   {
-    "rank": 19,
-    "name": "CapCut: Photo & Video Editor",
-    "id": "1500855883"
-   },
-   {
-    "rank": 20,
-    "name": "Google - More ways to search",
-    "id": "284815942"
-   },
-   {
-    "rank": 21,
-    "name": "JD STATUS",
-    "id": "6449736895"
-   },
-   {
-    "rank": 22,
-    "name": "Life360: Family Safety & GPS",
-    "id": "384830320"
-   },
-   {
-    "rank": 23,
-    "name": "Revolut — Mobile Finance",
-    "id": "932493382"
-   },
-   {
-    "rank": 24,
-    "name": "Google Gemini",
-    "id": "6477489729"
-   },
-   {
-    "rank": 25,
-    "name": "Shop: All your favorite brands",
-    "id": "1223471316"
-   },
-   {
-    "rank": 26,
-    "name": "PayByPhone Parking",
-    "id": "448474183"
-   },
-   {
-    "rank": 27,
-    "name": "Bolt: Request a Ride",
-    "id": "675033630"
-   },
-   {
-    "rank": 28,
-    "name": "All Points East",
-    "id": "1374912858"
-   },
-   {
-    "rank": 29,
-    "name": "ReelShort - Stream Drama & TV",
-    "id": "1636235979"
-   },
-   {
-    "rank": 30,
-    "name": "Royal Mail",
-    "id": "1435168829"
-   },
-   {
-    "rank": 31,
-    "name": "Waze Navigation & Live Traffic",
-    "id": "323229106"
-   },
-   {
-    "rank": 32,
-    "name": "Lidl Plus",
-    "id": "1238611143"
-   },
-   {
-    "rank": 33,
-    "name": "AXS Tickets",
-    "id": "679805463"
-   },
-   {
-    "rank": 34,
-    "name": "Gmail - Email by Google",
-    "id": "422689480"
-   },
-   {
-    "rank": 35,
-    "name": "Nectar: Shop & Collect Points",
-    "id": "385266473"
-   },
-   {
-    "rank": 36,
-    "name": "Ryanair",
-    "id": "504270602"
-   },
-   {
-    "rank": 37,
-    "name": "TikTok - Videos, Music & LIVE",
-    "id": "835599320"
-   },
-   {
-    "rank": 38,
-    "name": "Just Eat: Food and Shops",
-    "id": "566347057"
-   },
-   {
-    "rank": 39,
-    "name": "Telegram Messenger",
-    "id": "686449807"
-   },
-   {
-    "rank": 40,
-    "name": "Uber Eats: Food & Groceries",
-    "id": "1058959277"
-   },
-   {
-    "rank": 41,
-    "name": "Primark",
-    "id": "6745568862"
-   },
-   {
-    "rank": 42,
-    "name": "Temu: Shop Like a Billionaire",
-    "id": "1641486558"
-   },
-   {
-    "rank": 43,
-    "name": "M&S - Fashion, Food & Homeware",
-    "id": "538410698"
-   },
-   {
-    "rank": 44,
-    "name": "Trainline: Train & Bus Tickets",
-    "id": "334235181"
-   },
-   {
-    "rank": 45,
-    "name": "JustPark Parking",
-    "id": "519652671"
-   },
-   {
-    "rank": 46,
-    "name": "Deliveroo: Food & Shopping",
-    "id": "1001501844"
-   },
-   {
-    "rank": 47,
-    "name": "HMRC",
-    "id": "514561561"
-   },
-   {
-    "rank": 48,
-    "name": "McDonald’s U.K.",
-    "id": "1082476620"
-   },
-   {
-    "rank": 49,
-    "name": "VibeShort: AI Short Dramas",
-    "id": "6758667154"
-   },
-   {
-    "rank": 50,
-    "name": "Instagram",
-    "id": "389801252"
-   }
-  ],
-  "hk": [
-   {
-    "rank": 1,
-    "name": "Google Gemini",
-    "id": "6477489729"
-   },
-   {
-    "rank": 2,
-    "name": "非觸式e-道",
-    "id": "1590998870"
-   },
-   {
-    "rank": 3,
-    "name": "Snapchat：與好友聊天",
-    "id": "447188370"
-   },
-   {
-    "rank": 4,
-    "name": "红果短剧 - 海量热门短剧随心看",
-    "id": "6451407032"
-   },
-   {
-    "rank": 5,
-    "name": "eClass Parent App",
-    "id": "880950939"
-   },
-   {
-    "rank": 6,
-    "name": "豆包 - 隨時提供協助的 AI 助理",
-    "id": "6459478672"
-   },
-   {
-    "rank": 7,
-    "name": "抖音 Douyin",
-    "id": "1142110895"
-   },
-   {
-    "rank": 8,
-    "name": "WhatsApp Messenger",
-    "id": "310633997"
-   },
-   {
-    "rank": 9,
-    "name": "X（前身為Twitter）",
-    "id": "333903271"
-   },
-   {
-    "rank": 10,
-    "name": "香港大人說明書",
-    "id": "6783972102"
-   },
-   {
-    "rank": 11,
-    "name": "快喵VPN加速器 - 高速 安全 無限流量VPN",
-    "id": "1134784923"
-   },
-   {
-    "rank": 12,
-    "name": "Threads",
-    "id": "6446901002"
-   },
-   {
-    "rank": 13,
-    "name": "bilibili-追番追劇彈幕",
-    "id": "1517062289"
-   },
-   {
-    "rank": 14,
-    "name": "積金易 (eMPF)",
-    "id": "6480176219"
-   },
-   {
-    "rank": 15,
-    "name": "瑞幸咖啡",
-    "id": "1296749505"
-   },
-   {
-    "rank": 16,
-    "name": "拼多多 - 多多买菜，百亿补贴",
-    "id": "1044283059"
-   },
-   {
-    "rank": 17,
-    "name": "Instagram",
-    "id": "389801252"
-   },
-   {
-    "rank": 18,
-    "name": "MyLink  智我·空間",
-    "id": "483513425"
-   },
-   {
-    "rank": 19,
-    "name": "Telegram Messenger",
-    "id": "686449807"
-   },
-   {
-    "rank": 20,
-    "name": "ChatGTP: 中文版 AI 專業多功能智能聊天助手",
-    "id": "6755112160"
-   },
-   {
-    "rank": 21,
-    "name": "智方便 iAM Smart",
-    "id": "1515065344"
-   },
-   {
-    "rank": 22,
-    "name": "醫健通eHealth",
-    "id": "1514742468"
-   },
-   {
-    "rank": 23,
-    "name": "PDF Craft: Local Desk",
-    "id": "6785801320"
-   },
-   {
-    "rank": 24,
-    "name": "Octopus 八達通",
-    "id": "1114430602"
-   },
-   {
-    "rank": 25,
-    "name": "YouTube",
-    "id": "544007664"
-   },
-   {
-    "rank": 26,
-    "name": "美团-美好生活小帮手",
-    "id": "423084029"
-   },
-   {
-    "rank": 27,
-    "name": "AlipayHK (支付寶香港)",
-    "id": "1210638245"
-   },
-   {
-    "rank": 28,
-    "name": "ReelShort - 全網熱門短劇盡情觀賞",
-    "id": "1636235979"
-   },
-   {
-    "rank": 29,
-    "name": "Google",
-    "id": "284815942"
-   },
-   {
-    "rank": 30,
-    "name": "Grok - AI 助理",
-    "id": "6670324846"
-   },
-   {
-    "rank": 31,
-    "name": "高德地圖-導航巴士地鐵出行，高德打車",
-    "id": "461703208"
-   },
-   {
-    "rank": 32,
-    "name": "麥當勞APP",
-    "id": "1217507712"
-   },
-   {
-    "rank": 33,
-    "name": "Keeta - 外賣送遞及自取",
-    "id": "1662451643"
-   },
-   {
-    "rank": 34,
-    "name": "NAVER Maps, Navigation",
-    "id": "311867728"
-   },
-   {
-    "rank": 35,
-    "name": "順豐速運",
-    "id": "1383101059"
-   },
-   {
-    "rank": 36,
-    "name": "Gmail - Google 推出的電子郵件服務",
-    "id": "422689480"
-   },
-   {
-    "rank": 37,
-    "name": "CapCut：照片與影片編輯器",
-    "id": "1500855883"
-   },
-   {
-    "rank": 38,
-    "name": "大衆點評 - 吃喝玩樂指南",
-    "id": "351091731"
-   },
-   {
-    "rank": 39,
-    "name": "小紅書 – 你的生活興趣社區",
-    "id": "741292507"
-   },
-   {
-    "rank": 40,
-    "name": "DramaWave- 熱門短劇/日劇/韓劇，復仇逆襲精彩絕倫",
-    "id": "6670430706"
-   },
-   {
-    "rank": 41,
-    "name": "滴滴-DiDi香港優惠Call車的士Taxi",
-    "id": "554499054"
-   },
-   {
-    "rank": 42,
-    "name": "Google 地圖",
-    "id": "585027354"
-   },
-   {
-    "rank": 43,
-    "name": "Tabelog－日本餐廳探索、訂位與評價全方位平台",
-    "id": "6752922875"
-   },
-   {
-    "rank": 44,
-    "name": "優步 - 隨時預約搭乘計程車",
-    "id": "368677368"
-   },
-   {
-    "rank": 45,
-    "name": "Eatizen 美心薈",
-    "id": "1516406361"
-   },
-   {
-    "rank": 46,
-    "name": "大快活",
-    "id": "1636420626"
-   },
-   {
-    "rank": 47,
-    "name": "支付宝 - 生活好，支付宝",
-    "id": "333206289"
-   },
-   {
-    "rank": 48,
-    "name": "Google Chrome",
-    "id": "535886823"
-   },
-   {
-    "rank": 49,
-    "name": "WeChat",
-    "id": "414478124"
-   },
-   {
-    "rank": 50,
-    "name": "Facebook",
-    "id": "284882215"
-   }
-  ]
- }
+  "date": "2026-09-01",
+  "note": "top-free 50, source: rss.marketingtools.apple.com",
+  "regions": {
+    "cn": [
+      {
+        "rank": 1,
+        "name": "抖音商城-下单返积分、退货包运费",
+        "id": "1485191072"
+      },
+      {
+        "rank": 2,
+        "name": "抖省省 - 抖音官方团购平台",
+        "id": "6756863766"
+      },
+      {
+        "rank": 3,
+        "name": "红果短剧 - 海量热门短剧随心看",
+        "id": "6451407032"
+      },
+      {
+        "rank": 4,
+        "name": "豆包 - 随时帮忙的 AI 助手",
+        "id": "6459478672"
+      },
+      {
+        "rank": 5,
+        "name": "红果漫剧 - 热门精彩漫剧",
+        "id": "6745890963"
+      },
+      {
+        "rank": 6,
+        "name": "国家网络身份认证",
+        "id": "1588080869"
+      },
+      {
+        "rank": 7,
+        "name": "中国农业银行",
+        "id": "515651240"
+      },
+      {
+        "rank": 8,
+        "name": "钉钉",
+        "id": "930368978"
+      },
+      {
+        "rank": 9,
+        "name": "汽水音乐 - 随时听好歌",
+        "id": "1605585211"
+      },
+      {
+        "rank": 10,
+        "name": "中国移动（手机营业厅）",
+        "id": "583700738"
+      },
+      {
+        "rank": 11,
+        "name": "千问 - 阿里AI助手",
+        "id": "6466733523"
+      },
+      {
+        "rank": 12,
+        "name": "企业微信",
+        "id": "1087897068"
+      },
+      {
+        "rank": 13,
+        "name": "闲鱼 - 上闲鱼，赚一笔 !",
+        "id": "510909506"
+      },
+      {
+        "rank": 14,
+        "name": "云闪付-银行业统一移动支付App",
+        "id": "600273928"
+      },
+      {
+        "rank": 15,
+        "name": "中国工商银行",
+        "id": "423514795"
+      },
+      {
+        "rank": 16,
+        "name": "中国建设银行",
+        "id": "391965015"
+      },
+      {
+        "rank": 17,
+        "name": "铁路12306",
+        "id": "564818797"
+      },
+      {
+        "rank": 18,
+        "name": "高德地图-高德打车,导航公交地铁出行",
+        "id": "461703208"
+      },
+      {
+        "rank": 19,
+        "name": "京东-又好又便宜",
+        "id": "414245413"
+      },
+      {
+        "rank": 20,
+        "name": "番茄小说 - 热门短剧全本小说电子书阅读器",
+        "id": "1468454200"
+      },
+      {
+        "rank": 21,
+        "name": "班级小管家",
+        "id": "1524125516"
+      },
+      {
+        "rank": 22,
+        "name": "学习通",
+        "id": "977946724"
+      },
+      {
+        "rank": 23,
+        "name": "夸克-AI旗舰应用",
+        "id": "1160172628"
+      },
+      {
+        "rank": 24,
+        "name": "优酷视频-《早春晴朗》全网独播",
+        "id": "336141475"
+      },
+      {
+        "rank": 25,
+        "name": "支付宝-你的AI生活伙伴",
+        "id": "333206289"
+      },
+      {
+        "rank": 26,
+        "name": "中国银行",
+        "id": "399608199"
+      },
+      {
+        "rank": 27,
+        "name": "迅雷-高速传输,网盘,4K原画",
+        "id": "1503466530"
+      },
+      {
+        "rank": 28,
+        "name": "腾讯会议-多人实时视频会议软件",
+        "id": "1484048379"
+      },
+      {
+        "rank": 29,
+        "name": "美团-问美团，都安排",
+        "id": "423084029"
+      },
+      {
+        "rank": 30,
+        "name": "QQ",
+        "id": "444934666"
+      },
+      {
+        "rank": 31,
+        "name": "剪映 - 抖音官方AI创作神器",
+        "id": "1458072671"
+      },
+      {
+        "rank": 32,
+        "name": "中国电信-全国统一官方服务平台",
+        "id": "513836029"
+      },
+      {
+        "rank": 33,
+        "name": "像素蛋糕 - 专业级AI修图软件",
+        "id": "6743614900"
+      },
+      {
+        "rank": 34,
+        "name": "蚂蚁阿福-蚂蚁旗下AI健康助手",
+        "id": "6743828427"
+      },
+      {
+        "rank": 35,
+        "name": "淘宝-万能的淘宝！",
+        "id": "387682726"
+      },
+      {
+        "rank": 36,
+        "name": "BOSS直聘-招聘求职找工作招人",
+        "id": "887314963"
+      },
+      {
+        "rank": 37,
+        "name": "UC浏览器-随心搜·畅快看",
+        "id": "586871187"
+      },
+      {
+        "rank": 38,
+        "name": "中国联通",
+        "id": "416457422"
+      },
+      {
+        "rank": 39,
+        "name": "交管12123",
+        "id": "1039727169"
+      },
+      {
+        "rank": 40,
+        "name": "百度网盘",
+        "id": "547166701"
+      },
+      {
+        "rank": 41,
+        "name": "拼多多 - 多多买菜，百亿补贴",
+        "id": "1044283059"
+      },
+      {
+        "rank": 42,
+        "name": "电子税务局",
+        "id": "6468941332"
+      },
+      {
+        "rank": 43,
+        "name": "小红书 - 你的生活兴趣社区",
+        "id": "741292507"
+      },
+      {
+        "rank": 44,
+        "name": "抖音",
+        "id": "1142110895"
+      },
+      {
+        "rank": 45,
+        "name": "得物 - 得到美好事物",
+        "id": "1012871328"
+      },
+      {
+        "rank": 46,
+        "name": "多闪",
+        "id": "1435602536"
+      },
+      {
+        "rank": 47,
+        "name": "转转-二手官方验",
+        "id": "1002355194"
+      },
+      {
+        "rank": 48,
+        "name": "醒图 - 全能修图神器",
+        "id": "1500526240"
+      },
+      {
+        "rank": 49,
+        "name": "QQ邮箱",
+        "id": "473225145"
+      },
+      {
+        "rank": 50,
+        "name": "微信",
+        "id": "414478124"
+      }
+    ],
+    "us": [
+      {
+        "rank": 1,
+        "name": "ChatGPT",
+        "id": "6448311069"
+      },
+      {
+        "rank": 2,
+        "name": "Vinted: Pre-loved marketplace",
+        "id": "632064380"
+      },
+      {
+        "rank": 3,
+        "name": "MapQuest GPS Navigation & Maps",
+        "id": "316126557"
+      },
+      {
+        "rank": 4,
+        "name": "ESPN Fantasy Sports & More",
+        "id": "555376968"
+      },
+      {
+        "rank": 5,
+        "name": "TikTok Pro - Events",
+        "id": "6741796873"
+      },
+      {
+        "rank": 6,
+        "name": "Microsoft Authenticator",
+        "id": "983156458"
+      },
+      {
+        "rank": 7,
+        "name": "ReelShort - Stream Drama & TV",
+        "id": "1636235979"
+      },
+      {
+        "rank": 8,
+        "name": "WhatsApp Messenger",
+        "id": "310633997"
+      },
+      {
+        "rank": 9,
+        "name": "Google",
+        "id": "284815942"
+      },
+      {
+        "rank": 10,
+        "name": "7 Brew Coffee",
+        "id": "6762023973"
+      },
+      {
+        "rank": 11,
+        "name": "Google Gemini",
+        "id": "6477489729"
+      },
+      {
+        "rank": 12,
+        "name": "Claude by Anthropic",
+        "id": "6473753684"
+      },
+      {
+        "rank": 13,
+        "name": "PineDrama - Short Dramas",
+        "id": "6754134922"
+      },
+      {
+        "rank": 14,
+        "name": "Threads",
+        "id": "6446901002"
+      },
+      {
+        "rank": 15,
+        "name": "Netflix Game Controller",
+        "id": "6447582581"
+      },
+      {
+        "rank": 16,
+        "name": "Depop - Buy & Sell Clothes",
+        "id": "518684914"
+      },
+      {
+        "rank": 17,
+        "name": "CapCut: Photo & Video Editor",
+        "id": "1500855883"
+      },
+      {
+        "rank": 18,
+        "name": "PopDrama",
+        "id": "6749139358"
+      },
+      {
+        "rank": 19,
+        "name": "Gmail - Email by Google",
+        "id": "422689480"
+      },
+      {
+        "rank": 20,
+        "name": "Google Maps",
+        "id": "585027354"
+      },
+      {
+        "rank": 21,
+        "name": "TikTok - Videos, Shop & LIVE",
+        "id": "835599320"
+      },
+      {
+        "rank": 22,
+        "name": "Sleeper - Fantasy Sports",
+        "id": "987367543"
+      },
+      {
+        "rank": 23,
+        "name": "Temu: Shop Like a Billionaire",
+        "id": "1641486558"
+      },
+      {
+        "rank": 24,
+        "name": "StoryReel: Exclusive Drama",
+        "id": "6761538521"
+      },
+      {
+        "rank": 25,
+        "name": "Instagram",
+        "id": "389801252"
+      },
+      {
+        "rank": 26,
+        "name": "Facebook",
+        "id": "284882215"
+      },
+      {
+        "rank": 27,
+        "name": "Microsoft Teams",
+        "id": "1113153706"
+      },
+      {
+        "rank": 28,
+        "name": "Walmart: Shopping & Savings",
+        "id": "338137227"
+      },
+      {
+        "rank": 29,
+        "name": "Capital One Mobile",
+        "id": "407558537"
+      },
+      {
+        "rank": 30,
+        "name": "Shop: Track, Pay, Discover",
+        "id": "1223471316"
+      },
+      {
+        "rank": 31,
+        "name": "Google Chrome",
+        "id": "535886823"
+      },
+      {
+        "rank": 32,
+        "name": "X",
+        "id": "333903271"
+      },
+      {
+        "rank": 33,
+        "name": "Microsoft Outlook",
+        "id": "951937596"
+      },
+      {
+        "rank": 34,
+        "name": "YouTube",
+        "id": "544007664"
+      },
+      {
+        "rank": 35,
+        "name": "Uber - Request a ride",
+        "id": "368677368"
+      },
+      {
+        "rank": 36,
+        "name": "Spotify: Music and Podcasts",
+        "id": "324684580"
+      },
+      {
+        "rank": 37,
+        "name": "Life360: Family Safety & GPS",
+        "id": "384830320"
+      },
+      {
+        "rank": 38,
+        "name": "DoorDash: Food, Grocery, More",
+        "id": "719972451"
+      },
+      {
+        "rank": 39,
+        "name": "Telegram Messenger",
+        "id": "686449807"
+      },
+      {
+        "rank": 40,
+        "name": "NBA 2K HQ",
+        "id": "6745190566"
+      },
+      {
+        "rank": 41,
+        "name": "Canvas by Instructure",
+        "id": "480883488"
+      },
+      {
+        "rank": 42,
+        "name": "Whatnot: Shop, Sell, Connect",
+        "id": "1488269261"
+      },
+      {
+        "rank": 43,
+        "name": "Capital One Shopping: Save Now",
+        "id": "1089294040"
+      },
+      {
+        "rank": 44,
+        "name": "Indeed Job Search",
+        "id": "309735670"
+      },
+      {
+        "rank": 45,
+        "name": "ParentSquare",
+        "id": "908126679"
+      },
+      {
+        "rank": 46,
+        "name": "DramaBox - Stream Drama Shorts",
+        "id": "6445905219"
+      },
+      {
+        "rank": 47,
+        "name": "Cash App",
+        "id": "711923939"
+      },
+      {
+        "rank": 48,
+        "name": "UKG Pro",
+        "id": "6445849909"
+      },
+      {
+        "rank": 49,
+        "name": "Snapchat",
+        "id": "447188370"
+      },
+      {
+        "rank": 50,
+        "name": "Amazon Shopping",
+        "id": "297606951"
+      }
+    ],
+    "jp": [
+      {
+        "rank": 1,
+        "name": "setlog",
+        "id": "6587576438"
+      },
+      {
+        "rank": 2,
+        "name": "ChatGPT",
+        "id": "6448311069"
+      },
+      {
+        "rank": 3,
+        "name": "ホットペッパービューティー/美容院・ネイルなどのサロン予約",
+        "id": "385724144"
+      },
+      {
+        "rank": 4,
+        "name": "マイナアプリ（旧マイナポータルアプリ）",
+        "id": "1476359069"
+      },
+      {
+        "rank": 5,
+        "name": "Google Gemini",
+        "id": "6477489729"
+      },
+      {
+        "rank": 6,
+        "name": "Qoo10(キューテン)",
+        "id": "490078053"
+      },
+      {
+        "rank": 7,
+        "name": "Rocket Now : 出前/フードデリバリー",
+        "id": "6739188587"
+      },
+      {
+        "rank": 8,
+        "name": "TVer(ティーバー) 民放公式テレビ配信サービス",
+        "id": "830340223"
+      },
+      {
+        "rank": 9,
+        "name": "セブン-イレブン マルチコピー",
+        "id": "1562641276"
+      },
+      {
+        "rank": 10,
+        "name": "U-NEXT - 映画やドラマ、アニメなどの動画が見放題",
+        "id": "882477693"
+      },
+      {
+        "rank": 11,
+        "name": "かんたんnetprint－セブン‐イレブンでかんたん印刷",
+        "id": "1552990335"
+      },
+      {
+        "rank": 12,
+        "name": "ジハンピ",
+        "id": "6667104573"
+      },
+      {
+        "rank": 13,
+        "name": "Threads",
+        "id": "6446901002"
+      },
+      {
+        "rank": 14,
+        "name": "My SoftBank",
+        "id": "1416481094"
+      },
+      {
+        "rank": 15,
+        "name": "Rakuten Link",
+        "id": "1498877539"
+      },
+      {
+        "rank": 16,
+        "name": "PrintSmash",
+        "id": "551942662"
+      },
+      {
+        "rank": 17,
+        "name": "郵便局公式アプリ - 荷物の配送状況の確認や再配達が簡単に",
+        "id": "6450435935"
+      },
+      {
+        "rank": 18,
+        "name": "マツキヨココカラ公式アプリ",
+        "id": "6451037644"
+      },
+      {
+        "rank": 19,
+        "name": "PayPay",
+        "id": "1435783608"
+      },
+      {
+        "rank": 20,
+        "name": "DramaWave - 日本 / 韓国 / 人気短編ドラマ",
+        "id": "6670430706"
+      },
+      {
+        "rank": 21,
+        "name": "Google Chrome - ウェブブラウザ",
+        "id": "535886823"
+      },
+      {
+        "rank": 22,
+        "name": "X",
+        "id": "333903271"
+      },
+      {
+        "rank": 23,
+        "name": "Gmail - Google のメール",
+        "id": "422689480"
+      },
+      {
+        "rank": 24,
+        "name": "ゆうちょ通帳アプリ-銀行 アプリ",
+        "id": "1496925861"
+      },
+      {
+        "rank": 25,
+        "name": "Claude by Anthropic",
+        "id": "6473753684"
+      },
+      {
+        "rank": 26,
+        "name": "zeta - AIキャラ・あなたの推しとロールプレイチャット",
+        "id": "1619030760"
+      },
+      {
+        "rank": 27,
+        "name": "Canva(キャンバ): 画像・動画編集 & AIデザイン",
+        "id": "897446215"
+      },
+      {
+        "rank": 28,
+        "name": "Google アプリ",
+        "id": "284815942"
+      },
+      {
+        "rank": 29,
+        "name": "コメダ珈琲店",
+        "id": "1667214457"
+      },
+      {
+        "rank": 30,
+        "name": "楽天ペイ-楽天ポイントカードも利用できるスマホ決済アプリ",
+        "id": "1139755229"
+      },
+      {
+        "rank": 31,
+        "name": "ホットペッパーグルメ",
+        "id": "290033990"
+      },
+      {
+        "rank": 32,
+        "name": "Trip.com-航空券･ホテルの予約はトリップドットコムで",
+        "id": "681752345"
+      },
+      {
+        "rank": 33,
+        "name": "Priority Pass+",
+        "id": "6739207531"
+      },
+      {
+        "rank": 34,
+        "name": "Bump（旧Zenly）",
+        "id": "6471519217"
+      },
+      {
+        "rank": 35,
+        "name": "ReelShort - オリジナル短尺ドラマ見放題",
+        "id": "1636235979"
+      },
+      {
+        "rank": 36,
+        "name": "ゲオ　クーポンが貰える！ゲーム予約もできる！",
+        "id": "590190880"
+      },
+      {
+        "rank": 37,
+        "name": "GO タクシーが呼べるアプリ - AI予約・配車・迎車・決済",
+        "id": "1254341709"
+      },
+      {
+        "rank": 38,
+        "name": "DAISOアプリ",
+        "id": "6466987025"
+      },
+      {
+        "rank": 39,
+        "name": "バーガーキング Burger King",
+        "id": "1456118550"
+      },
+      {
+        "rank": 40,
+        "name": "TikTok ティックトック",
+        "id": "1235601864"
+      },
+      {
+        "rank": 41,
+        "name": "ahamo（アハモ）",
+        "id": "1542920778"
+      },
+      {
+        "rank": 42,
+        "name": "31Club サーティワン公式アプリ",
+        "id": "910133705"
+      },
+      {
+        "rank": 43,
+        "name": "うさポ by クラシル",
+        "id": "6756568932"
+      },
+      {
+        "rank": 44,
+        "name": "Netflix",
+        "id": "363590051"
+      },
+      {
+        "rank": 45,
+        "name": "d払い－スマホ決済アプリ、キャッシュレスでお支払い",
+        "id": "1328132872"
+      },
+      {
+        "rank": 46,
+        "name": "EXアプリ | JR東海公式",
+        "id": "1153448703"
+      },
+      {
+        "rank": 47,
+        "name": "Spotify: 音楽とポッドキャスト",
+        "id": "324684580"
+      },
+      {
+        "rank": 48,
+        "name": "TikTok Lite",
+        "id": "6447160980"
+      },
+      {
+        "rank": 49,
+        "name": "Yahoo!ショッピング-PayPayポイントが貯まる通販",
+        "id": "446016180"
+      },
+      {
+        "rank": 50,
+        "name": "Google ドライブ - 安全なオンライン ストレージ",
+        "id": "507874739"
+      }
+    ],
+    "gb": [
+      {
+        "rank": 1,
+        "name": "Lloyds Mobile Banking",
+        "id": "469964520"
+      },
+      {
+        "rank": 2,
+        "name": "GOV.UK One Login",
+        "id": "6737119425"
+      },
+      {
+        "rank": 3,
+        "name": "ChatGPT",
+        "id": "6448311069"
+      },
+      {
+        "rank": 4,
+        "name": "Netflix Game Controller",
+        "id": "6447582581"
+      },
+      {
+        "rank": 5,
+        "name": "Vinted: Shop & sell pre-loved",
+        "id": "632064380"
+      },
+      {
+        "rank": 6,
+        "name": "Whatnot: Shop, Sell, Connect",
+        "id": "1488269261"
+      },
+      {
+        "rank": 7,
+        "name": "Microsoft Authenticator",
+        "id": "983156458"
+      },
+      {
+        "rank": 8,
+        "name": "InPost UK",
+        "id": "1591214233"
+      },
+      {
+        "rank": 9,
+        "name": "Omaze",
+        "id": "6736520796"
+      },
+      {
+        "rank": 10,
+        "name": "Monzo Bank - Mobile Banking",
+        "id": "1052238659"
+      },
+      {
+        "rank": 11,
+        "name": "Life360: Family Safety & GPS",
+        "id": "384830320"
+      },
+      {
+        "rank": 12,
+        "name": "Uber - Request a ride",
+        "id": "368677368"
+      },
+      {
+        "rank": 13,
+        "name": "Dola: Smart AI Assistant",
+        "id": "6451431247"
+      },
+      {
+        "rank": 14,
+        "name": "Claude by Anthropic",
+        "id": "6473753684"
+      },
+      {
+        "rank": 15,
+        "name": "CapCut: Photo & Video Editor",
+        "id": "1500855883"
+      },
+      {
+        "rank": 16,
+        "name": "Tesco Grocery & Clubcard",
+        "id": "389581236"
+      },
+      {
+        "rank": 17,
+        "name": "Google Gemini",
+        "id": "6477489729"
+      },
+      {
+        "rank": 18,
+        "name": "Shop: All your favorite brands",
+        "id": "1223471316"
+      },
+      {
+        "rank": 19,
+        "name": "Google - More ways to search",
+        "id": "284815942"
+      },
+      {
+        "rank": 20,
+        "name": "ReelShort - Stream Drama & TV",
+        "id": "1636235979"
+      },
+      {
+        "rank": 21,
+        "name": "Revolut — Mobile Finance",
+        "id": "932493382"
+      },
+      {
+        "rank": 22,
+        "name": "Google Maps",
+        "id": "585027354"
+      },
+      {
+        "rank": 23,
+        "name": "Ryanair",
+        "id": "504270602"
+      },
+      {
+        "rank": 24,
+        "name": "Temu: Shop Like a Billionaire",
+        "id": "1641486558"
+      },
+      {
+        "rank": 25,
+        "name": "Lidl Plus",
+        "id": "1238611143"
+      },
+      {
+        "rank": 26,
+        "name": "Gmail - Email by Google",
+        "id": "422689480"
+      },
+      {
+        "rank": 27,
+        "name": "Waze Navigation & Live Traffic",
+        "id": "323229106"
+      },
+      {
+        "rank": 28,
+        "name": "Bolt: Request a Ride",
+        "id": "675033630"
+      },
+      {
+        "rank": 29,
+        "name": "TikTok - Videos, Music & LIVE",
+        "id": "835599320"
+      },
+      {
+        "rank": 30,
+        "name": "RingGo: Mobile Car Parking App",
+        "id": "342898717"
+      },
+      {
+        "rank": 31,
+        "name": "Dunelm: The Home of Homes",
+        "id": "6751280607"
+      },
+      {
+        "rank": 32,
+        "name": "Telegram Messenger",
+        "id": "686449807"
+      },
+      {
+        "rank": 33,
+        "name": "Nectar: Shop & Collect Points",
+        "id": "385266473"
+      },
+      {
+        "rank": 34,
+        "name": "Too Good To Go: Save Good Food",
+        "id": "1060683933"
+      },
+      {
+        "rank": 35,
+        "name": "Primark",
+        "id": "6745568862"
+      },
+      {
+        "rank": 36,
+        "name": "Airbnb",
+        "id": "401626263"
+      },
+      {
+        "rank": 37,
+        "name": "Ticketmaster－Buy, Sell Tickets",
+        "id": "500003565"
+      },
+      {
+        "rank": 38,
+        "name": "JD STATUS",
+        "id": "6449736895"
+      },
+      {
+        "rank": 39,
+        "name": "Uber Eats: Food & Groceries",
+        "id": "1058959277"
+      },
+      {
+        "rank": 40,
+        "name": "Jet2 - Holidays and Flights",
+        "id": "784548884"
+      },
+      {
+        "rank": 41,
+        "name": "Trainline: Train & Bus Tickets",
+        "id": "334235181"
+      },
+      {
+        "rank": 42,
+        "name": "M&S - Fashion, Food & Homeware",
+        "id": "538410698"
+      },
+      {
+        "rank": 43,
+        "name": "Just Eat: Food and Shops",
+        "id": "566347057"
+      },
+      {
+        "rank": 44,
+        "name": "Instagram",
+        "id": "389801252"
+      },
+      {
+        "rank": 45,
+        "name": "Threads",
+        "id": "6446901002"
+      },
+      {
+        "rank": 46,
+        "name": "Trading 212",
+        "id": "566325832"
+      },
+      {
+        "rank": 47,
+        "name": "Amazon Shopping",
+        "id": "335187483"
+      },
+      {
+        "rank": 48,
+        "name": "Booking.com Travel Deals",
+        "id": "367003839"
+      },
+      {
+        "rank": 49,
+        "name": "Facebook",
+        "id": "284882215"
+      },
+      {
+        "rank": 50,
+        "name": "JustPark Parking",
+        "id": "519652671"
+      }
+    ],
+    "hk": [
+      {
+        "rank": 1,
+        "name": "ZETA - 遊戲模擬器 3ds gba ds psp",
+        "id": "6762959682"
+      },
+      {
+        "rank": 2,
+        "name": "Google Gemini",
+        "id": "6477489729"
+      },
+      {
+        "rank": 3,
+        "name": "麥當勞APP",
+        "id": "1217507712"
+      },
+      {
+        "rank": 4,
+        "name": "Snapchat：與好友聊天",
+        "id": "447188370"
+      },
+      {
+        "rank": 5,
+        "name": "红果短剧 - 海量热门短剧随心看",
+        "id": "6451407032"
+      },
+      {
+        "rank": 6,
+        "name": "豆包 - 隨時提供協助的 AI 助理",
+        "id": "6459478672"
+      },
+      {
+        "rank": 7,
+        "name": "WhatsApp Messenger",
+        "id": "310633997"
+      },
+      {
+        "rank": 8,
+        "name": "積金易 (eMPF)",
+        "id": "6480176219"
+      },
+      {
+        "rank": 9,
+        "name": "bilibili-追番追劇彈幕",
+        "id": "1517062289"
+      },
+      {
+        "rank": 10,
+        "name": "香港大人說明書",
+        "id": "6783972102"
+      },
+      {
+        "rank": 11,
+        "name": "抖音 Douyin",
+        "id": "1142110895"
+      },
+      {
+        "rank": 12,
+        "name": "醫健通eHealth",
+        "id": "1514742468"
+      },
+      {
+        "rank": 13,
+        "name": "OLIVE YOUNG Global",
+        "id": "1466755724"
+      },
+      {
+        "rank": 14,
+        "name": "Threads",
+        "id": "6446901002"
+      },
+      {
+        "rank": 15,
+        "name": "eClass Parent App",
+        "id": "880950939"
+      },
+      {
+        "rank": 16,
+        "name": "拼多多 - 多多买菜，百亿补贴",
+        "id": "1044283059"
+      },
+      {
+        "rank": 17,
+        "name": "MyLink  智我·空間",
+        "id": "483513425"
+      },
+      {
+        "rank": 18,
+        "name": "快喵VPN加速器 - 高速 安全 無限流量VPN",
+        "id": "1134784923"
+      },
+      {
+        "rank": 19,
+        "name": "Canvas by Instructure",
+        "id": "480883488"
+      },
+      {
+        "rank": 20,
+        "name": "X（前身為Twitter）",
+        "id": "333903271"
+      },
+      {
+        "rank": 21,
+        "name": "智方便 iAM Smart",
+        "id": "1515065344"
+      },
+      {
+        "rank": 22,
+        "name": "Instagram",
+        "id": "389801252"
+      },
+      {
+        "rank": 23,
+        "name": "Telegram Messenger",
+        "id": "686449807"
+      },
+      {
+        "rank": 24,
+        "name": "Octopus 八達通",
+        "id": "1114430602"
+      },
+      {
+        "rank": 25,
+        "name": "ChatGTP: 中文版 AI 專業多功能智能聊天助手",
+        "id": "6755112160"
+      },
+      {
+        "rank": 26,
+        "name": "hkbus.app - 巴士到站預報",
+        "id": "1612184906"
+      },
+      {
+        "rank": 27,
+        "name": "Google",
+        "id": "284815942"
+      },
+      {
+        "rank": 28,
+        "name": "非觸式e-道",
+        "id": "1590998870"
+      },
+      {
+        "rank": 29,
+        "name": "AlipayHK (支付寶香港)",
+        "id": "1210638245"
+      },
+      {
+        "rank": 30,
+        "name": "瑞幸咖啡",
+        "id": "1296749505"
+      },
+      {
+        "rank": 31,
+        "name": "Grok - AI 助理",
+        "id": "6670324846"
+      },
+      {
+        "rank": 32,
+        "name": "順豐速運",
+        "id": "1383101059"
+      },
+      {
+        "rank": 33,
+        "name": "Gmail - Google 推出的電子郵件服務",
+        "id": "422689480"
+      },
+      {
+        "rank": 34,
+        "name": "Keeta - 外賣送遞及自取",
+        "id": "1662451643"
+      },
+      {
+        "rank": 35,
+        "name": "Microsoft Authenticator",
+        "id": "983156458"
+      },
+      {
+        "rank": 36,
+        "name": "YouTube",
+        "id": "544007664"
+      },
+      {
+        "rank": 37,
+        "name": "Tabelog－日本餐廳探索、訂位與評價全方位平台",
+        "id": "6752922875"
+      },
+      {
+        "rank": 38,
+        "name": "CapCut：照片與影片編輯器",
+        "id": "1500855883"
+      },
+      {
+        "rank": 39,
+        "name": "Microsoft Outlook",
+        "id": "951937596"
+      },
+      {
+        "rank": 40,
+        "name": "Google 地圖",
+        "id": "585027354"
+      },
+      {
+        "rank": 41,
+        "name": "eClass Parent IPX",
+        "id": "6450973289"
+      },
+      {
+        "rank": 42,
+        "name": "eClass Student App",
+        "id": "1088739934"
+      },
+      {
+        "rank": 43,
+        "name": "小紅書 – 你的生活興趣社區",
+        "id": "741292507"
+      },
+      {
+        "rank": 44,
+        "name": "OfferToday - 搵工，直接同老闆傾",
+        "id": "6477343752"
+      },
+      {
+        "rank": 45,
+        "name": "Google Chrome",
+        "id": "535886823"
+      },
+      {
+        "rank": 46,
+        "name": "萬寧香港",
+        "id": "6499517901"
+      },
+      {
+        "rank": 47,
+        "name": "NAVER Maps, Navigation",
+        "id": "311867728"
+      },
+      {
+        "rank": 48,
+        "name": "高德地圖-導航巴士地鐵出行，高德打車",
+        "id": "461703208"
+      },
+      {
+        "rank": 49,
+        "name": "HSBC HK Mobile Banking",
+        "id": "1164066737"
+      },
+      {
+        "rank": 50,
+        "name": "MTR Mobile",
+        "id": "369295276"
+      }
+    ]
+  }
 }
