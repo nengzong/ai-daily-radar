@@ -252,7 +252,7 @@ ai-daily-radar/
 │   └── daily-deliver.yml              # 投递:08:30 推钉钉 + 发邮件 + 写回执
 ├── workers/radar-watchdog/            # Cloudflare Worker:四道 cron(起跑/投递/两道哨兵)
 ├── prompts/daily-radar.md             # 日报生成提示词(受版本管理)
-├── sources.md                         # 44 个信息源清单 + 筛选标准
+├── sources.md                         # 45 个信息源清单 + 筛选标准
 ├── scripts/
 │   ├── send_dingtalk.py               # 钉钉加签推送
 │   ├── send_email.sh                  # Gmail SMTP 直发
