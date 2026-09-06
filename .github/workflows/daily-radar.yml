@@ -1,20 +1,32 @@
-name: AI Daily Radar
+name: AI Daily Radar 生成
+
+# 生成【只做生成】:抓源、写 reports/YYYY-MM-DD.md 和 .dingtalk.md、提交存档。
+# 一条消息都不往外发——推钉钉和发邮件在 .github/workflows/daily-deliver.yml 里,
+# 由 Worker 在北京 08:30 单独触发。
+#
+# 为什么拆开:准点送达只能靠「按点触发投递」。合在一起的话送达时刻 = 起跑时刻 + 生成耗时,
+# 生成快慢直接把送达时间带跑(2026-09-01~06 实测生成 8~13 分钟,日报 08:02~08:03 就发出去了,
+# 比约定的 08:30 早半小时);而想钉死 08:30 就只能在 runner 上 sleep 等点,那正是
+# 2026-08-30 烧穿 Actions 月度额度的原因。拆开之后两边都不用将就:
+# 生成想跑多久跑多久,投递永远 08:30 整点。
 
 on:
   schedule:
     # 起跑的决定权在仓库外面的 Cloudflare Worker 手上(workers/radar-watchdog/),
-    # 它北京 07:50 用 workflow_dispatch 起跑,08:40 查岗补跑。dispatch 是即时的,
-    # 而 GitHub 的 schedule 触发时刻不受控(实测漂过 4~5 小时,也整天不触发过)。
+    # 它北京 07:50 起跑生成、08:30 触发投递、08:40 和 09:10 两道哨兵查岗补救。
+    # dispatch 是即时的,而 GitHub 的 schedule 触发时刻不受控
+    # (实测漂过 4~5 小时,也整天不触发过)。
     #
     # 这里只留一道 cron 做末端兜底:Cloudflare 那条通道整个挂掉时,GitHub 自己还能跑。
-    # 正常日子里日报 08:15 前后已经送达,这道 cron 会在「判断今天是否已生成」处秒退。
+    # 正常日子里 08:03 前后日报已经生成完,这道 cron 会在「判断今天是否已生成」处秒退。
     #
     #   0 1 * * * = 北京 09:00
     #
     # 【不要再加 cron,也不要把它往早挪】曾经排三道 cron + 在 runner 上 sleep 等到 08:30
     # 才投递,单次 run 挂机 2.5 小时。GitHub Actions 按 runner 分钟计费(私有仓库免费额度
     # 2000 分钟/月),这么跑一个月要 4500 分钟,2026-08-30 额度耗尽,连续几天日报全部
-    # 「job was not started」。准点性现在由 Worker 负责,不要再用 runner 的挂机时间去买。
+    # 「job was not started」。准点性现在由投递流水线 + Worker 的 08:30 cron 负责,
+    # 不要再用 runner 的挂机时间去买。
     - cron: "0 1 * * *"
   workflow_dispatch:
 
@@ -28,7 +40,7 @@ concurrency:
 jobs:
   radar:
     runs-on: ubuntu-latest
-    # 生成日报实测 15~25 分钟,投递和提交是秒级的。留一倍余量即可。
+    # 生成日报实测 8~13 分钟(2026-09-01~06),提交是秒级的。留足余量即可。
     # 这个上限就是单次跑飞时的计费封顶,别再往大调——200 分钟那版把月额度烧穿过。
     timeout-minutes: 60
     env:
@@ -86,44 +98,23 @@ jobs:
             --max-turns 120
             --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch
 
+      # 两个文件都在且非空,才允许提交存档。空文件被提交上去的后果是:
+      # 08:30 的投递流水线看到「日报已生成」,把一份空日报推进公司群。
       - name: 校验日报已生成
         id: verify
         if: steps.guard.outputs.skip != 'true'
         run: |
           set -euo pipefail
-          full="reports/${{ steps.date.outputs.today }}.md"
-          brief="reports/${{ steps.date.outputs.today }}.dingtalk.md"
-          for f in "$full" "$brief"; do
+          today="${{ steps.date.outputs.today }}"
+          for f in "reports/$today.md" "reports/$today.dingtalk.md"; do
             if [ ! -s "$f" ]; then
-              echo "::error::$f 不存在或为空,日报生成失败,中止投递"
+              echo "::error::$f 不存在或为空,日报生成失败"
               exit 1
             fi
           done
-          echo "full=$full" >> "$GITHUB_OUTPUT"
-          echo "brief=$brief" >> "$GITHUB_OUTPUT"
-          # grep -c 无匹配时会打印 0 并以 1 退出,用 || true 吞掉退出码
-          # (写成 || echo 0 会输出两行,污染 GITHUB_OUTPUT)
-          echo "count=$(grep -c '^### ' "$full" || true)" >> "$GITHUB_OUTPUT"
 
-      - name: 推送钉钉
-        if: steps.guard.outputs.skip != 'true'
-        env:
-          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
-          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
-        run: |
-          python3 scripts/send_dingtalk.py \
-            "AI 日报 ${{ steps.date.outputs.today }}" \
-            "${{ steps.verify.outputs.brief }}"
-
-      - name: 发送邮件
-        if: always() && steps.verify.outcome == 'success'
-        env:
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-        run: |
-          bash scripts/send_email.sh \
-            "AI 日报 ${{ steps.date.outputs.today }}｜${{ steps.verify.outputs.count }} 条精选" \
-            "${{ steps.verify.outputs.full }}"
-
+      # 这一步的 push 就是「今天的日报已就绪」的信号:08:30 的投递流水线和 Worker
+      # 哨兵都靠远端 main 上有没有 reports/<今天>.md 来判断,所以它必须真的推上去。
       - name: 提交日报存档
         if: always() && steps.verify.outcome == 'success'
         run: |
@@ -141,8 +132,9 @@ jobs:
             git push origin HEAD:main
           fi
 
-      # 定时运行失败时主动告警。以前失败是静默的,只能靠「今天没收到日报」
-      # 事后察觉,而那时候你多半已经手动跑过一遍了。
+      # 生成失败时主动告警。以前失败是静默的,只能靠「今天没收到日报」事后察觉,
+      # 而那时候你多半已经手动跑过一遍了。
+      # 注意这条只说明【没生成出来】;生成好了却没进群是投递流水线的告警。
       - name: 失败告警
         if: failure()
         env:
@@ -159,7 +151,9 @@ jobs:
           - 触发方式:$EVENT
           - [查看运行日志]($RUN_URL)
 
-          今天的日报没有送达。去 Actions 页面手动 Run workflow 可以补跑。
+          今天的日报没生成出来,08:30 也就无从投递。
+          去 Actions → AI Daily Radar 生成 → Run workflow 补跑;
+          生成好之后 Worker 的 08:40 / 09:10 哨兵会自动补投,不用手工再点投递。
           EOF
           python3 scripts/send_dingtalk.py "⚠️ AI 日报失败 $TODAY" "$RUNNER_TEMP/alert.md"
 

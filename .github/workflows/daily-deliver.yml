@@ -1,0 +1,208 @@
+name: AI Daily Radar 投递
+
+# 投递【只做投递】:读仓库里今天已生成好的日报,推钉钉 + 发邮件,然后写一条投递回执。
+#
+# 为什么和生成拆开:准点性只能靠「按点触发」,不能靠「提前起跑 + 在 runner 上 sleep 等点」
+# ——那是 2026-08-30 烧穿 Actions 月度额度的原因(见 README「不要在 runner 上挂机等时间」)。
+# 拆开之后:生成 07:50 起跑、跑多久都行;投递由 Worker 在北京 08:30 整点打进来,
+# 本 workflow 只跑几十秒。送达时刻不再受生成耗时影响。
+#
+# 历史:2026-08-31 删掉 sleep 那步之后,送达时间退化成「07:50 + 生成耗时」,
+# 实测每天 08:02~08:03 就发出去了,比约定的 08:30 早半小时。本 workflow 把 08:30 拿回来。
+
+on:
+  # 主通道:Cloudflare Worker(workers/radar-watchdog/)北京 08:30 dispatch。
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "今天已投递过也强行再推一遍(会往公司群重复推送,仅用于人工补救)"
+        type: boolean
+        default: false
+
+  schedule:
+    # 末端兜底:Cloudflare 整条通道挂掉时,GitHub 自己还能把已生成的日报投出去。
+    # 排在生成兜底(0 1 = 北京 09:00)之后。
+    #
+    #   30 1 * * * = 北京 09:30
+    #
+    # GitHub 的 schedule 实测会漂 4~5 小时,所以下面有一道「太晚就不推」的闸:
+    # 中午十二点往公司群推一份「今日早报」比不推更难看。
+    - cron: "30 1 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-deliver
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    # 只有推送和提交,秒级完成。这个上限纯粹是跑飞时的计费封顶。
+    timeout-minutes: 10
+    env:
+      TZ: Asia/Shanghai
+
+    steps:
+      # 必须取 main 的最新状态:今天的日报是生成流水线在 08:03 前后推上去的,
+      # 而本次触发是 08:30,默认 checkout 的就是当下的 main,能看到。
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 确定日期
+        id: date
+        run: |
+          echo "today=$(date +%F)" >> "$GITHUB_OUTPUT"
+          echo "hhmm=$(date +%H%M)" >> "$GITHUB_OUTPUT"
+
+      - name: 判断是否该投递
+        id: guard
+        env:
+          EVENT: ${{ github.event_name }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          set -euo pipefail
+          today="${{ steps.date.outputs.today }}"
+          hhmm="${{ steps.date.outputs.hhmm }}"
+
+          # 查的是【远端 main 的最新状态】而不是工作区,理由同生成流水线:
+          # 触发被延迟时 checkout 的是旧 SHA,看不到刚推上去的回执,会漏判成
+          # 「今天还没投」,结果往公司群重复推一遍日报。
+          git fetch --quiet --depth=1 origin main
+          receipt=$(git cat-file -s "FETCH_HEAD:state/delivered/$today.txt" 2>/dev/null || echo 0)
+
+          if [ "$receipt" -gt 0 ] && [ "$FORCE" != "true" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "reason=already" >> "$GITHUB_OUTPUT"
+            echo "state/delivered/$today.txt 已存在,今天已经投递过,本次跳过"
+            exit 0
+          fi
+
+          # 兜底 cron 漂太多的话就别推了。手动 / Worker dispatch 不受此限制:
+          # 那是人或看门狗明确要求投递,时间点由触发方负责。
+          if [ "$EVENT" = "schedule" ] && [ "$hhmm" -gt 1000 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "reason=toolate" >> "$GITHUB_OUTPUT"
+            echo "兜底 cron 现在才触发($hhmm),已过 10:00,不再往公司群推早报"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "reason=go" >> "$GITHUB_OUTPUT"
+
+      - name: 校验日报文件
+        id: verify
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          full="reports/${{ steps.date.outputs.today }}.md"
+          brief="reports/${{ steps.date.outputs.today }}.dingtalk.md"
+          for f in "$full" "$brief"; do
+            if [ ! -s "$f" ]; then
+              echo "::error::$f 不存在或为空——生成流水线没跑成,没有东西可投递"
+              exit 1
+            fi
+          done
+          echo "full=$full" >> "$GITHUB_OUTPUT"
+          echo "brief=$brief" >> "$GITHUB_OUTPUT"
+          # grep -c 无匹配时会打印 0 并以 1 退出,用 || true 吞掉退出码
+          # (写成 || echo 0 会输出两行,污染 GITHUB_OUTPUT)
+          echo "count=$(grep -c '^### ' "$full" || true)" >> "$GITHUB_OUTPUT"
+
+      - name: 推送钉钉
+        id: dingtalk
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+        run: |
+          python3 scripts/send_dingtalk.py \
+            "AI 日报 ${{ steps.date.outputs.today }}" \
+            "${{ steps.verify.outputs.brief }}"
+
+      # 回执必须在钉钉【成功之后立刻】写,排在发邮件前面:
+      # 群里已经收到、而回执还没落盘的这段窗口里,哨兵会判定「未送达」并补投一次,
+      # 那就是往公司群重推。把窗口压到最短。
+      #
+      # 反过来,邮件失败不该阻止回执落盘——邮件是发给自己的,补投时重发一封无所谓,
+      # 但为此让哨兵再往群里推一遍就不划算了。
+      - name: 写投递回执
+        if: always() && steps.dingtalk.outcome == 'success'
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          today="${{ steps.date.outputs.today }}"
+          mkdir -p state/delivered
+          cat > "state/delivered/$today.txt" <<EOF
+          delivered_at=$(date '+%F %T %Z')
+          event=${{ github.event_name }}
+          run=$RUN_URL
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/delivered
+          if git diff --staged --quiet; then
+            echo "回执无变更(force 重投),跳过提交"
+          else
+            git commit -m "投递回执 $today"
+            # 生成流水线也在往 main 推,远端可能已经前进,直接 push 会因非快进被拒。
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
+          fi
+
+      - name: 发送邮件
+        if: always() && steps.verify.outcome == 'success'
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          bash scripts/send_email.sh \
+            "AI 日报 ${{ steps.date.outputs.today }}｜${{ steps.verify.outputs.count }} 条精选" \
+            "${{ steps.verify.outputs.full }}"
+
+      # 兜底 cron 漂到 10:00 之后而被拦下时,得让人知道今天的日报没进群,
+      # 否则这是一次完全静默的漏投。
+      - name: 兜底触发太晚告警
+        if: steps.guard.outputs.reason == 'toolate'
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+          TODAY: ${{ steps.date.outputs.today }}
+          HHMM: ${{ steps.date.outputs.hhmm }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          cat > "$RUNNER_TEMP/alert.md" <<EOF
+          ## ⚠️ AI 日报今天没有投递
+
+          - 日期:$TODAY
+          - 现象:Cloudflare 的 08:30 投递没打进来,GitHub 兜底 cron 直到 $HHMM 才触发
+          - 处理:已过 10:00,没有往群里推早报
+          - [查看运行]($RUN_URL)
+
+          想补推:Actions → AI Daily Radar 投递 → Run workflow(force 勾不勾都行)。
+          同时查一下 Worker:\`npx wrangler tail\`。
+          EOF
+          python3 scripts/send_dingtalk.py "⚠️ AI 日报未投递 $TODAY" "$RUNNER_TEMP/alert.md"
+
+      - name: 失败告警
+        if: failure()
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+          TODAY: ${{ steps.date.outputs.today }}
+          EVENT: ${{ github.event_name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          cat > "$RUNNER_TEMP/alert.md" <<EOF
+          ## ⚠️ AI 日报投递失败
+
+          - 日期:$TODAY
+          - 触发方式:$EVENT
+          - [查看运行日志]($RUN_URL)
+
+          日报可能已经生成好了(见 \`reports/$TODAY.md\`),是投递这一步出的问题。
+          Actions → AI Daily Radar 投递 → Run workflow 可以重投。
+          EOF
+          python3 scripts/send_dingtalk.py "⚠️ AI 日报投递失败 $TODAY" "$RUNNER_TEMP/alert.md"
