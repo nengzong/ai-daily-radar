@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""AI Daily Radar 静态网页生成器 (Zero-dependency SSG)
+"""AI Daily Radar 静态网页生成器 (Zero-dependency SSG - 移动端深度优化版)
 
 扫描 reports/*.md (排除 .dingtalk.md), 生成高颜值的现代静态网站至 dist/ 目录。
-适配 Cloudflare Pages 静态托管, 无需任何第三方 npm/pip 依赖。
+适配 Cloudflare Pages 静态托管，完美兼容 iPhone/Android 手机移动端与宽屏桌面端。
 
 用法:
     python3 scripts/build_site.py
@@ -25,7 +25,6 @@ ASSETS_DIR = DIST_DIR / "assets"
 
 def parse_inline_markdown(text: str) -> str:
     """将内联 markdown 转为语义化 HTML"""
-    # 避免重复转义，先做特殊字符转义
     text = html.escape(text, quote=False)
     # **粗体**
     text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
@@ -43,7 +42,7 @@ def parse_inline_markdown(text: str) -> str:
         r'<a href="\2" target="_blank" rel="noopener noreferrer" class="link">\1</a>',
         text,
     )
-    # 裸链接 (带协议)
+    # 裸链接
     text = re.sub(
         r'(?<!["\>])(https?://[^\s<>"·]+)',
         r'<a href="\1" target="_blank" rel="noopener noreferrer" class="link-bare">\1</a>',
@@ -66,7 +65,6 @@ def parse_report_content(md_text: str) -> dict:
         "html_body": "",
     }
 
-    # 提取标题与副标题
     body_lines = []
     current_section = None
     section_index = 0
@@ -121,11 +119,9 @@ def parse_report_content(md_text: str) -> dict:
         sec_content_lines = sec["lines"]
         sec_text = "\n".join(sec_content_lines)
 
-        # 提取 TL;DR 纯文本作为摘要
         if "TL;DR" in sec_title or "今日导读" in sec_title:
             data["tldr"] = sec_text.replace("\n", " ").strip()
 
-        # 渲染 Section 内部元素
         sec_html = render_section_content(sec_title, sec_content_lines)
         is_tldr = "TL;DR" in sec_title
         section_card_class = "content-card tldr-card" if is_tldr else "content-card"
@@ -146,10 +142,9 @@ def parse_report_content(md_text: str) -> dict:
 
 
 def render_section_content(title: str, lines: list) -> str:
-    """渲染分类章节的内部内容（条目、列表、表格、普通段落）"""
+    """渲染分类章节内部条目"""
     output = []
     items_buf = []
-    in_list = False
     current_item = None
 
     for line in lines:
@@ -160,7 +155,6 @@ def render_section_content(title: str, lines: list) -> str:
                 current_item = None
             continue
 
-        # 识别条目开头: **1. Caterpillar 与 FieldAI 合作...** 或 ### 标题
         item_match = re.match(r'^(?:\*\*\d+\.|\d+\.|\#{3})\s*(.+)$', stripped)
         if item_match and ("行业动向" in title or "技术与案例" in title or "产品灵感" in title):
             if current_item:
@@ -181,31 +175,26 @@ def render_section_content(title: str, lines: list) -> str:
             elif stripped.startswith("为什么值得关注：") or stripped.startswith("为什么值得关注:"):
                 current_item["why"] = re.sub(r'^为什么值得关注[：:]\s*', '', stripped)
             elif stripped.startswith("链接：") or stripped.startswith("链接:"):
-                raw_url = re.sub(r'^链接[：:]\s*', '', stripped)
-                current_item["link"] = raw_url
+                current_item["link"] = re.sub(r'^链接[：:]\s*', '', stripped)
             else:
                 current_item["others"].append(stripped)
             continue
 
-        # 列表项: - 🇺🇸 美国区：...
         if stripped.startswith("- ") or stripped.startswith("* "):
             content = stripped[2:].strip()
             output.append(f'<li class="list-item">{parse_inline_markdown(content)}</li>')
             continue
 
-        # 引用块
         if stripped.startswith("> "):
             content = stripped[2:].strip()
             output.append(f'<blockquote class="quote-box">{parse_inline_markdown(content)}</blockquote>')
             continue
 
-        # 普通段落
         output.append(f'<p class="text-paragraph">{parse_inline_markdown(stripped)}</p>')
 
     if current_item:
         items_buf.append(current_item)
 
-    # 如果有结构化条目，渲染为条目卡片
     if items_buf:
         item_cards = []
         for idx, itm in enumerate(items_buf, 1):
@@ -216,9 +205,8 @@ def render_section_content(title: str, lines: list) -> str:
             link_html = ""
             if itm["link"]:
                 url = itm["link"].strip()
-                # 尝试提取域名简写
                 domain = re.sub(r'^https?://(?:www\.)?([^/]+).*$', r'\1', url)
-                link_html = f'<div class="item-footer"><a href="{html.escape(url)}" target="_blank" rel="noopener noreferrer" class="source-button"><svg class="icon" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v-2z"/></svg> 来源: {html.escape(domain)}</a></div>'
+                link_html = f'<div class="item-footer"><a href="{html.escape(url)}" target="_blank" rel="noopener noreferrer" class="source-button"><svg class="icon" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v-2z"/></svg> 查看原文 · {html.escape(domain)}</a></div>'
 
             others_html = "".join(f'<p class="item-other">{parse_inline_markdown(o)}</p>' for o in itm["others"])
 
@@ -240,7 +228,7 @@ def render_section_content(title: str, lines: list) -> str:
 
 
 def get_all_reports() -> list:
-    """按日期倒序收集所有 reports/*.md"""
+    """收集 reports/*.md"""
     reports = []
     if not REPORTS_DIR.exists():
         return reports
@@ -263,12 +251,15 @@ def get_all_reports() -> list:
 
 
 def render_html_page(title: str, content: str, active_nav: str = "home", extra_head: str = "") -> str:
-    """生成统一骨架的 HTML 页面"""
+    """生成统一骨架的 HTML 页面（移动端 Safe-Area + 原生手感）"""
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#090d16">
     <title>{title}</title>
     <meta name="description" content="AI Daily Radar - 每日 AI 情报雷达，聚焦行业动向、前沿技术与产品灵感。">
     <!-- Google Fonts -->
@@ -279,20 +270,17 @@ def render_html_page(title: str, content: str, active_nav: str = "home", extra_h
     {extra_head}
 </head>
 <body class="theme-dark">
-    <!-- 顶部导航栏 -->
+    <!-- 顶部极简导航栏 (手机端紧凑) -->
     <header class="site-header">
         <div class="header-container">
             <a href="/" class="brand-logo">
                 <span class="logo-icon">📡</span>
-                <span class="logo-text">AI Daily Radar</span>
-                <span class="logo-badge">每日情报</span>
+                <span class="logo-text">AI Radar</span>
+                <span class="logo-badge">每日早报</span>
             </a>
             <nav class="main-nav">
                 <a href="/" class="nav-link {'active' if active_nav == 'home' else ''}">首页</a>
-                <a href="/#archive" class="nav-link {'active' if active_nav == 'archive' else ''}">往期归档</a>
-                <a href="https://github.com/nengzong/ai-daily-radar" target="_blank" rel="noopener noreferrer" class="nav-link icon-link" title="GitHub 仓库">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
-                </a>
+                <a href="/#archive" class="nav-link {'active' if active_nav == 'archive' else ''}">往期</a>
                 <button id="theme-toggle" class="theme-toggle-btn" aria-label="切换明暗主题">
                     <span class="theme-icon">🌙</span>
                 </button>
@@ -305,16 +293,19 @@ def render_html_page(title: str, content: str, active_nav: str = "home", extra_h
         {content}
     </main>
 
+    <!-- 手机端轻量吐司通知 -->
+    <div id="toast" class="toast-notify" role="alert">已复制报告链接</div>
+
     <!-- 页脚 -->
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-left">
                 <p class="footer-brand">📡 AI Daily Radar</p>
-                <p class="footer-desc">每天自动扫描 40+ 个全球信息源 · 业务视角提炼 AI 商业与技术落地</p>
+                <p class="footer-desc">每天自动扫描 40+ 个前沿信息源 · 业务视角提炼</p>
             </div>
             <div class="footer-right">
-                <p>托管于 Cloudflare Pages · 全球低延迟访问</p>
-                <p class="copyright">&copy; 2026 AI Daily Radar. All rights reserved.</p>
+                <p>托管于 Cloudflare Pages · 全球加速</p>
+                <p class="copyright">&copy; 2026 AI Daily Radar</p>
             </div>
         </div>
     </footer>
@@ -333,18 +324,15 @@ def build_index_page(reports: list) -> str:
 
     latest = reports[0]
     latest_url = f"/reports/{latest['date']}/"
-    
-    # 统计数据
     total_reports = len(reports)
     total_items = sum(r.get("item_count", 0) for r in reports)
 
-    # 归档卡片列表
     archive_cards = []
     for r in reports:
         date_str = r["date"]
         subtitle = r.get("subtitle", "")
         item_count = r.get("item_count", 0)
-        tldr_snippet = r.get("tldr", "")[:130] + ("..." if len(r.get("tldr", "")) > 130 else "")
+        tldr_snippet = r.get("tldr", "")[:120] + ("..." if len(r.get("tldr", "")) > 120 else "")
         archive_cards.append(f"""
         <a href="/reports/{date_str}/" class="archive-card" data-date="{date_str}" data-search="{html.escape(date_str + ' ' + subtitle + ' ' + tldr_snippet)}">
             <div class="archive-card-header">
@@ -367,17 +355,16 @@ def build_index_page(reports: list) -> str:
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="pulse-dot"></span>
-                <span>最新发布 · {latest['date']}</span>
+                <span>今日送达 · {latest['date']}</span>
             </div>
             <h1 class="hero-title">AI Daily Radar</h1>
-            <p class="hero-subtitle">每天自动扫描 40+ 个全球信息源，深度提炼行业动向、前沿技术与产品灵感</p>
+            <p class="hero-subtitle">每日雷达精选全球 AI 行业动向、前沿技术与产品灵感</p>
             
             <div class="hero-actions">
                 <a href="{latest_url}" class="primary-btn">
                     <span>阅读今日最新早报</span>
                     <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
-                <a href="#archive" class="secondary-btn">浏览历史归档 ({total_reports} 期)</a>
             </div>
 
             <!-- 数据概览 -->
@@ -392,17 +379,17 @@ def build_index_page(reports: list) -> str:
                 </div>
                 <div class="stat-card">
                     <span class="stat-num">45</span>
-                    <span class="stat-label">个监控信源</span>
+                    <span class="stat-label">监控信源</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-num">08:30</span>
-                    <span class="stat-label">每日准点送达</span>
+                    <span class="stat-label">准点推送</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 最新一期速递 -->
+    <!-- 今日速览 -->
     <section class="latest-featured-section">
         <div class="section-top">
             <h2 class="section-title">今日早报速览</h2>
@@ -411,30 +398,29 @@ def build_index_page(reports: list) -> str:
         <div class="featured-card">
             <div class="featured-header">
                 <div>
-                    <span class="badge badge-featured">TOP STORY</span>
+                    <span class="badge badge-featured">TODAY'S HIGHLIGHT</span>
                     <h3 class="featured-title">{latest['title']}</h3>
                     <p class="featured-meta">{html.escape(latest.get('subtitle', ''))}</p>
                 </div>
-                <a href="{latest_url}" class="featured-btn">阅读全文</a>
+                <a href="{latest_url}" class="featured-btn">完整版 &rarr;</a>
             </div>
             <div class="featured-tldr">
-                <div class="tldr-label">📌 核心概要</div>
+                <div class="tldr-label">📌 核心概要 (TL;DR)</div>
                 <p>{parse_inline_markdown(latest.get('tldr', ''))}</p>
             </div>
         </div>
     </section>
 
-    <!-- 往期归档与搜索 -->
+    <!-- 往期归档与快速检索 -->
     <section id="archive" class="archive-section">
         <div class="section-top">
             <div>
                 <h2 class="section-title">往期情报归档</h2>
-                <p class="section-desc">查阅历史日报，洞察 AI 商业落地演进轨迹</p>
+                <p class="section-desc">共计 {total_reports} 期日报可供随时查阅</p>
             </div>
-            <!-- 客户端实时搜索框 -->
             <div class="search-box">
                 <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <input type="text" id="archive-search" placeholder="输入日期或关键词快速检索..." aria-label="搜索往期日报">
+                <input type="text" id="archive-search" placeholder="输入日期或关键词搜索..." aria-label="搜索往期日报">
             </div>
         </div>
 
@@ -442,7 +428,7 @@ def build_index_page(reports: list) -> str:
             {archive_html}
         </div>
         <div id="no-search-results" class="no-results hidden">
-            <p>未找到符合条件的日报记录</p>
+            <p>未找到符合搜索条件的日报</p>
         </div>
     </section>
     """
@@ -450,18 +436,25 @@ def build_index_page(reports: list) -> str:
 
 
 def build_report_page(report: dict, prev_report: dict = None, next_report: dict = None) -> str:
-    """生成具体某天日报的详情页 reports/YYYY-MM-DD/index.html"""
+    """生成日报详情页 reports/YYYY-MM-DD/index.html"""
     date_str = report["date"]
     title = report["title"]
     subtitle = report.get("subtitle", "")
 
-    # 目录导航项
+    # 目录导航与手机水平药丸胶囊
     toc_items = []
+    mobile_pills = []
     for item in report.get("toc", []):
+        raw_t = item["title"]
+        clean_name = re.sub(r'^[^\w\u4e00-\u9fa5]+', '', raw_t)
+        clean_name = clean_name.split()[0] if clean_name else raw_t
         toc_items.append(f'<li><a href="#{item["id"]}" class="toc-link">{parse_inline_markdown(item["title"])}</a></li>')
-    toc_html = "\n".join(toc_items)
+        mobile_pills.append(f'<a href="#{item["id"]}" class="mobile-pill">{html.escape(clean_name)}</a>')
 
-    # 底部上下篇导航
+    toc_html = "\n".join(toc_items)
+    mobile_pills_html = "\n".join(mobile_pills)
+
+    # 翻页按钮
     nav_buttons = []
     if prev_report:
         nav_buttons.append(f"""
@@ -485,7 +478,7 @@ def build_report_page(report: dict, prev_report: dict = None, next_report: dict 
 
     content = f"""
     <div class="report-container">
-        <!-- 顶部面包屑与标题区 -->
+        <!-- 面包屑与标题 -->
         <div class="report-header">
             <div class="breadcrumb">
                 <a href="/">首页</a>
@@ -499,15 +492,22 @@ def build_report_page(report: dict, prev_report: dict = None, next_report: dict 
             <div class="report-meta-row">
                 <span class="report-date-badge">📅 {date_str}</span>
                 <span class="report-subtitle-badge">{html.escape(subtitle)}</span>
-                <button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('已复制链接到剪贴板！');">
-                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    复制链接
+                <button class="share-btn" onclick="handleShare('{html.escape(title)}', '{date_str}')">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                    分享 / 复制
                 </button>
+            </div>
+
+            <!-- 手机端横向快捷章节滑动条 -->
+            <div class="mobile-section-nav">
+                <div class="mobile-pills-scroll">
+                    {mobile_pills_html}
+                </div>
             </div>
         </div>
 
         <div class="report-layout">
-            <!-- 左侧目录导航 (桌面端吸顶) -->
+            <!-- 桌面端吸顶大纲 -->
             <aside class="report-toc-aside">
                 <div class="toc-sticky-box">
                     <div class="toc-header">
@@ -522,15 +522,44 @@ def build_report_page(report: dict, prev_report: dict = None, next_report: dict 
                 </div>
             </aside>
 
-            <!-- 右侧正文内容 -->
+            <!-- 正文内容 -->
             <article class="report-article-body">
                 {report["html_body"]}
 
-                <!-- 上一篇 / 下一篇导航 -->
+                <!-- 翻页 -->
                 <div class="report-nav-footer">
                     {"".join(nav_buttons)}
                 </div>
             </article>
+        </div>
+    </div>
+
+    <!-- 手机端专用悬浮操作栏 (底部安全区友好) -->
+    <div class="mobile-bottom-bar">
+        <button class="mobile-bar-btn" onclick="toggleMobileToc()">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+            <span>大纲目录</span>
+        </button>
+        <button class="mobile-bar-btn" onclick="handleShare('{html.escape(title)}', '{date_str}')">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+            <span>一键分享</span>
+        </button>
+        <button class="mobile-bar-btn" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+            <span>回到顶部</span>
+        </button>
+    </div>
+
+    <!-- 手机端目录抽屉 -->
+    <div id="mobile-toc-drawer" class="mobile-toc-drawer" onclick="if(event.target === this) toggleMobileToc()">
+        <div class="drawer-panel">
+            <div class="drawer-header">
+                <span class="drawer-title">📑 报告大纲</span>
+                <button class="drawer-close" onclick="toggleMobileToc()">&times;</button>
+            </div>
+            <ul class="drawer-list">
+                {toc_html}
+            </ul>
         </div>
     </div>
     """
@@ -551,22 +580,22 @@ def build_404_page() -> str:
 
 
 def write_assets():
-    """写入 CSS 与 JS 静态资源"""
+    """写入 CSS 与 JS 静态资源（移动端极致优化）"""
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
-    css_content = """/* AI Daily Radar - Modern Theme & Layout System */
+    css_content = """/* AI Daily Radar - Mobile & Desktop Responsive Design System */
 
 :root {
     --font-main: 'Plus Jakarta Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 深色模式默认 (Sleek Dark Mode) */
+/* 深色模式默认 (Sleek OLED-Friendly Dark) */
 body.theme-dark {
     --bg: #090d16;
     --surface: #111726;
-    --surface-hover: #162035;
-    --surface-glass: rgba(17, 23, 38, 0.75);
+    --surface-hover: #172035;
+    --surface-glass: rgba(17, 23, 38, 0.85);
     --border: #1f2a44;
     --border-light: rgba(255, 255, 255, 0.08);
     --text: #f1f5f9;
@@ -574,10 +603,11 @@ body.theme-dark {
     --primary: #38bdf8;
     --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
     --accent: #f59e0b;
-    --accent-bg: rgba(245, 158, 11, 0.12);
-    --badge-bg: rgba(56, 189, 248, 0.12);
+    --accent-bg: rgba(245, 158, 11, 0.14);
+    --badge-bg: rgba(56, 189, 248, 0.14);
     --badge-text: #38bdf8;
     --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --bottom-bar-bg: rgba(17, 23, 38, 0.92);
 }
 
 /* 浅色模式 */
@@ -585,7 +615,7 @@ body.theme-light {
     --bg: #f8fafc;
     --surface: #ffffff;
     --surface-hover: #f1f5f9;
-    --surface-glass: rgba(255, 255, 255, 0.85);
+    --surface-glass: rgba(255, 255, 255, 0.9);
     --border: #e2e8f0;
     --border-light: rgba(0, 0, 0, 0.06);
     --text: #0f172a;
@@ -596,28 +626,36 @@ body.theme-light {
     --accent-bg: #fef3c7;
     --badge-bg: #e0f2fe;
     --badge-text: #0369a1;
-    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    --card-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.05);
+    --bottom-bar-bg: rgba(255, 255, 255, 0.95);
 }
 
-/* 全局基底 */
+/* 基础重置与手机体验适配 */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    height: 100%;
 }
 
 body {
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-main);
-    line-height: 1.68;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.72;
+    transition: background-color 0.25s ease, color 0.25s ease;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: env(safe-area-inset-top);
 }
 
 /* 顶部导航 */
@@ -632,9 +670,9 @@ body {
 }
 
 .header-container {
-    max-width: 1240px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -643,19 +681,19 @@ body {
 .brand-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     text-decoration: none;
     color: var(--text);
 }
 
 .logo-icon {
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .logo-text {
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 800;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.4px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -666,66 +704,59 @@ body {
     font-weight: 600;
     background: var(--badge-bg);
     color: var(--badge-text);
-    padding: 2px 8px;
+    padding: 2px 7px;
     border-radius: 99px;
-    border: 1px solid var(--border-light);
 }
 
 .main-nav {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
 }
 
 .nav-link {
     text-decoration: none;
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
-    transition: var(--transition);
+    padding: 6px 4px;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link.active, .nav-link:hover {
     color: var(--primary);
-}
-
-.icon-link {
-    display: flex;
-    align-items: center;
 }
 
 .theme-toggle-btn {
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text);
-    padding: 6px 10px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     transition: var(--transition);
 }
 
-.theme-toggle-btn:hover {
-    border-color: var(--primary);
-    transform: scale(1.05);
-}
-
-/* 主内容区容器 */
+/* 主容器 */
 .site-main {
-    max-width: 1240px;
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
-    padding: 32px 24px 80px;
+    padding: 24px 20px 80px;
+    flex: 1;
 }
 
-/* Hero 区域 */
+/* Hero Section */
 .hero-section {
-    padding: 48px 0 36px;
+    padding: 32px 0 20px;
     text-align: center;
 }
 
 .hero-content {
-    max-width: 820px;
+    max-width: 780px;
     margin: 0 auto;
 }
 
@@ -737,10 +768,9 @@ body {
     font-weight: 600;
     background: var(--badge-bg);
     color: var(--badge-text);
-    padding: 6px 14px;
+    padding: 5px 14px;
     border-radius: 99px;
-    border: 1px solid var(--border-light);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .pulse-dot {
@@ -759,28 +789,28 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(32px, 5vw, 54px);
+    font-size: clamp(28px, 6vw, 48px);
     font-weight: 800;
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
     line-height: 1.15;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--text-muted);
-    max-width: 620px;
-    margin: 0 auto 32px;
+    max-width: 580px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
 }
 
 .hero-actions {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
 }
 
 .primary-btn {
@@ -791,43 +821,19 @@ body {
     color: #ffffff;
     font-weight: 600;
     font-size: 15px;
-    padding: 12px 24px;
+    padding: 13px 28px;
     border-radius: 12px;
     text-decoration: none;
-    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);
-    transition: var(--transition);
-}
-
-.primary-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
-}
-
-.secondary-btn {
-    display: inline-flex;
-    align-items: center;
-    background: var(--surface);
-    color: var(--text);
-    font-weight: 600;
-    font-size: 15px;
-    padding: 12px 24px;
-    border-radius: 12px;
-    text-decoration: none;
-    border: 1px solid var(--border);
-    transition: var(--transition);
-}
-
-.secondary-btn:hover {
-    background: var(--surface-hover);
-    border-color: var(--primary);
+    box-shadow: 0 4px 18px rgba(56, 189, 248, 0.35);
+    min-height: 48px;
 }
 
 /* 统计卡片条 */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    max-width: 760px;
+    gap: 12px;
+    max-width: 720px;
     margin: 0 auto;
 }
 
@@ -835,47 +841,48 @@ body {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 16px 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 14px 8px;
+    text-align: center;
 }
 
 .stat-num {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--primary);
-    line-height: 1.2;
+    line-height: 1.1;
+    display: block;
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     margin-top: 4px;
+    display: block;
 }
 
 /* 今日头条速览卡片 */
 .latest-featured-section {
-    margin: 48px 0;
+    margin: 36px 0;
 }
 
 .section-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    gap: 12px;
 }
 
 .section-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.4px;
 }
 
 .section-desc {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .view-all-link {
@@ -883,26 +890,23 @@ body {
     font-weight: 600;
     color: var(--primary);
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .featured-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 18px;
-    padding: 28px;
+    padding: 22px;
     box-shadow: var(--card-shadow);
-    transition: var(--transition);
-}
-
-.featured-card:hover {
-    border-color: var(--primary);
 }
 
 .featured-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    gap: 16px;
 }
 
 .badge-featured {
@@ -910,19 +914,20 @@ body {
     font-weight: 700;
     background: var(--accent-bg);
     color: var(--accent);
-    padding: 4px 10px;
-    border-radius: 99px;
+    padding: 3px 8px;
+    border-radius: 6px;
     display: inline-block;
     margin-bottom: 8px;
 }
 
 .featured-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
+    line-height: 1.35;
 }
 
 .featured-meta {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
     margin-top: 4px;
 }
@@ -936,20 +941,16 @@ body {
     font-weight: 600;
     text-decoration: none;
     border: 1px solid var(--border);
-    transition: var(--transition);
-}
-
-.featured-btn:hover {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
+    white-space: nowrap;
 }
 
 .featured-tldr {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.18);
     border-radius: 12px;
-    padding: 18px 20px;
+    padding: 16px 18px;
     border-left: 4px solid var(--primary);
+    font-size: 15px;
+    line-height: 1.7;
 }
 
 body.theme-light .featured-tldr {
@@ -958,14 +959,14 @@ body.theme-light .featured-tldr {
 
 .tldr-label {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13.5px;
     color: var(--primary);
     margin-bottom: 6px;
 }
 
-/* 往期归档卡片网格 */
+/* 往期归档卡片 */
 .archive-section {
-    margin: 60px 0;
+    margin: 48px 0;
 }
 
 .search-box {
@@ -986,7 +987,7 @@ body.theme-light .featured-tldr {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 9px 12px 9px 36px;
+    padding: 10px 12px 10px 36px;
     color: var(--text);
     font-size: 14px;
     outline: none;
@@ -1000,66 +1001,63 @@ body.theme-light .featured-tldr {
 
 .archive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 20px;
-    margin-top: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
 }
 
 .archive-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
+    border-radius: 14px;
+    padding: 18px;
     text-decoration: none;
     color: var(--text);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: var(--transition);
-    box-shadow: var(--card-shadow);
 }
 
-.archive-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--primary);
+.archive-card:active {
+    transform: scale(0.98);
 }
 
 .archive-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .archive-date {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
-    color: var(--text);
 }
 
 .archive-count {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     background: var(--badge-bg);
     color: var(--badge-text);
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: 6px;
 }
 
 .archive-subtitle {
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--text-muted);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .archive-snippet {
-    font-size: 14px;
+    font-size: 13.5px;
     color: var(--text-muted);
     line-height: 1.6;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -1079,7 +1077,7 @@ body.theme-light .featured-tldr {
 
 .no-results {
     text-align: center;
-    padding: 60px 0;
+    padding: 48px 0;
     color: var(--text-muted);
 }
 
@@ -1087,26 +1085,26 @@ body.theme-light .featured-tldr {
     display: none;
 }
 
-/* ================= 报告详情页样式 ================= */
+/* ================= 报告详情页 ================= */
 
 .report-container {
-    max-width: 1140px;
+    max-width: 1080px;
     margin: 0 auto;
 }
 
 .report-header {
-    margin-bottom: 36px;
-    padding-bottom: 24px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
     border-bottom: 1px solid var(--border);
 }
 
 .breadcrumb {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 13px;
+    gap: 6px;
+    font-size: 12.5px;
     color: var(--text-muted);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .breadcrumb a {
@@ -1114,30 +1112,26 @@ body.theme-light .featured-tldr {
     text-decoration: none;
 }
 
-.breadcrumb a:hover {
-    color: var(--primary);
-}
-
 .report-main-title {
-    font-size: clamp(26px, 4vw, 36px);
+    font-size: clamp(22px, 5vw, 32px);
     font-weight: 800;
-    letter-spacing: -0.8px;
-    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    margin-bottom: 12px;
 }
 
 .report-meta-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .report-date-badge, .report-subtitle-badge {
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12.5px;
     background: var(--surface);
     border: 1px solid var(--border);
-    padding: 4px 12px;
+    padding: 4px 10px;
     border-radius: 8px;
     color: var(--text-muted);
 }
@@ -1151,41 +1145,75 @@ body.theme-light .featured-tldr {
     color: var(--text);
     padding: 5px 12px;
     border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12.5px;
+    font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
+    min-height: 32px;
 }
 
-.share-btn:hover {
+/* 手机端横向滑动快速跳转药丸 */
+.mobile-section-nav {
+    display: none; /* 桌面端隐藏，手机端显示 */
+    margin-top: 14px;
+    width: 100%;
+}
+
+.mobile-pills-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.mobile-pills-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.mobile-pill {
+    white-space: nowrap;
+    font-size: 12.5px;
+    font-weight: 600;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 99px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.mobile-pill:active {
+    background: var(--primary);
+    color: #fff;
     border-color: var(--primary);
-    color: var(--primary);
 }
 
+/* 详情页布局 */
 .report-layout {
     display: grid;
     grid-template-columns: 240px 1fr;
-    gap: 40px;
+    gap: 36px;
     align-items: start;
 }
 
-/* 目录大纲侧边栏 */
 .report-toc-aside {
     position: sticky;
-    top: 90px;
+    top: 80px;
 }
 
 .toc-sticky-box {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 18px 16px;
+    padding: 16px;
 }
 
 .toc-header {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: var(--text);
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border-light);
@@ -1195,7 +1223,7 @@ body.theme-light .featured-tldr {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .toc-link {
@@ -1214,8 +1242,8 @@ body.theme-light .featured-tldr {
 }
 
 .toc-footer {
-    margin-top: 14px;
-    padding-top: 10px;
+    margin-top: 12px;
+    padding-top: 8px;
     border-top: 1px solid var(--border-light);
 }
 
@@ -1225,84 +1253,72 @@ body.theme-light .featured-tldr {
     text-decoration: none;
 }
 
-.back-to-top:hover {
-    color: var(--primary);
-}
-
 /* 报告正文区块 */
 .report-article-body {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-}
-
-.content-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 28px;
-    box-shadow: var(--card-shadow);
-}
-
-.tldr-card {
-    border-left: 5px solid var(--primary);
-    background: linear-gradient(180deg, var(--surface) 0%, rgba(56, 189, 248, 0.03) 100%);
-}
-
-.card-header {
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.section-heading {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-}
-
-/* 条目卡片网格 */
-.items-grid {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
+.content-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: var(--card-shadow);
+}
+
+.tldr-card {
+    border-left: 4px solid var(--primary);
+}
+
+.card-header {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.section-heading {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.items-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
 .article-item {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-light);
-    border-radius: 14px;
-    padding: 20px;
-    transition: var(--transition);
+    border-radius: 12px;
+    padding: 16px;
 }
 
 body.theme-light .article-item {
     background: #f8fafc;
 }
 
-.article-item:hover {
-    border-color: var(--border);
-}
-
 .item-header {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .item-number {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     color: var(--primary);
     background: var(--badge-bg);
-    padding: 2px 8px;
-    border-radius: 6px;
+    padding: 2px 7px;
+    border-radius: 5px;
     margin-top: 2px;
 }
 
 .item-title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
     line-height: 1.45;
 }
@@ -1310,7 +1326,8 @@ body.theme-light .article-item {
 .item-summary, .item-why {
     font-size: 14.5px;
     line-height: 1.7;
-    margin-top: 10px;
+    margin-top: 8px;
+    word-break: break-word;
 }
 
 .item-summary {
@@ -1326,7 +1343,7 @@ body.theme-light .article-item {
     font-weight: 700;
     padding: 2px 6px;
     border-radius: 4px;
-    margin-right: 6px;
+    margin-right: 5px;
     display: inline-block;
 }
 
@@ -1343,12 +1360,12 @@ body.theme-light .article-item {
 .item-other {
     font-size: 14px;
     color: var(--text-muted);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .item-footer {
-    margin-top: 16px;
-    padding-top: 12px;
+    margin-top: 14px;
+    padding-top: 10px;
     border-top: 1px solid var(--border-light);
     display: flex;
     justify-content: flex-end;
@@ -1362,28 +1379,28 @@ body.theme-light .article-item {
     font-weight: 600;
     color: var(--primary);
     text-decoration: none;
-    padding: 5px 12px;
-    border-radius: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
     background: var(--badge-bg);
-    transition: var(--transition);
+    min-height: 36px;
 }
 
-.source-button:hover {
+.source-button:active {
     background: var(--primary);
     color: #fff;
 }
 
-/* 列表与引用 */
 .list-item {
     font-size: 14.5px;
     line-height: 1.7;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     margin-left: 20px;
+    word-break: break-word;
 }
 
 .quote-box {
-    margin: 14px 0;
-    padding: 10px 16px;
+    margin: 12px 0;
+    padding: 10px 14px;
     background: var(--accent-bg);
     border-left: 3px solid var(--accent);
     color: var(--accent);
@@ -1403,122 +1420,271 @@ body.theme-light .code-inline {
     background: #e2e8f0;
 }
 
-.link {
+.link, .link-bare {
     color: var(--primary);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.link-bare {
-    color: var(--primary);
-    text-decoration: none;
     word-break: break-all;
 }
 
-/* 报告底部翻页按钮 */
+/* 翻页按钮 */
 .report-nav-footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 24px;
+    gap: 12px;
+    margin-top: 20px;
 }
 
 .prev-next-btn {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 14px 16px;
     text-decoration: none;
     color: var(--text);
     display: flex;
     flex-direction: column;
-    transition: var(--transition);
 }
 
 .prev-next-btn.next {
     align-items: flex-end;
 }
 
-.prev-next-btn:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-}
-
 .btn-label {
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--text-muted);
 }
 
 .btn-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--primary);
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
-/* 404 页面 */
+/* 手机底部常驻悬浮栏 */
+.mobile-bottom-bar {
+    display: none; /* 桌面端隐藏 */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bottom-bar-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+    z-index: 99;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-bar-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 56px;
+    justify-content: center;
+}
+
+.mobile-bar-btn:active {
+    color: var(--primary);
+}
+
+/* 手机端目录抽屉 */
+.mobile-toc-drawer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 200;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    align-items: flex-end;
+}
+
+.mobile-toc-drawer.open {
+    display: flex;
+}
+
+.drawer-panel {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-height: 75vh;
+    padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.drawer-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.drawer-close {
+    background: var(--surface-hover);
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drawer-list {
+    list-style: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.drawer-list .toc-link {
+    font-size: 15px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+/* 吐司通知 */
+.toast-notify {
+    position: fixed;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 99px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.toast-notify.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* 404 */
 .not-found-container {
     text-align: center;
-    padding: 100px 0;
+    padding: 80px 0;
 }
 
 .not-found-code {
-    font-size: 96px;
+    font-size: 80px;
     font-weight: 900;
     color: var(--primary);
     line-height: 1;
 }
 
 .not-found-title {
-    font-size: 28px;
-    margin: 16px 0 8px;
+    font-size: 24px;
+    margin: 14px 0 8px;
 }
 
 .not-found-desc {
     color: var(--text-muted);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 /* 页脚 */
 .site-footer {
     border-top: 1px solid var(--border);
     background: var(--surface);
-    padding: 40px 0;
-    margin-top: 60px;
+    padding: 28px 0;
+    margin-top: 48px;
 }
 
 .footer-container {
-    max-width: 1240px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--text-muted);
 }
 
 .footer-brand {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
-/* 响应式适配 (Mobile & Tablet) */
+/* ================= 移动端响应式核心断点 (< 860px) ================= */
 @media (max-width: 860px) {
+    .site-main {
+        padding: 16px 14px calc(76px + env(safe-area-inset-bottom));
+    }
     .report-layout {
         grid-template-columns: 1fr;
     }
     .report-toc-aside {
-        display: none; /* 移动端隐藏吸顶大纲，保持干净单栏 */
+        display: none; /* 桌面侧边栏隐藏 */
+    }
+    .mobile-section-nav {
+        display: block; /* 顶部快捷药丸显示 */
+    }
+    .mobile-bottom-bar {
+        display: flex; /* 底部常驻悬浮栏显示 */
     }
     .stats-row {
         grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .featured-card, .content-card {
+        padding: 18px 16px;
+        border-radius: 14px;
     }
     .featured-header {
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
+    }
+    .featured-btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
     }
     .archive-grid {
         grid-template-columns: 1fr;
@@ -1526,25 +1692,39 @@ body.theme-light .code-inline {
     .section-top {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
+        gap: 10px;
     }
     .search-box {
         width: 100%;
     }
+    #archive-search {
+        font-size: 16px; /* 防止 iOS Safari 自动缩放页面 */
+    }
     .footer-container {
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
         text-align: center;
+        padding-bottom: calc(56px + env(safe-area-inset-bottom));
+    }
+    .report-main-title {
+        font-size: 22px;
+    }
+    .item-title {
+        font-size: 15.5px;
+    }
+    .source-button {
+        width: 100%;
+        justify-content: center;
     }
 }
 """
     (ASSETS_DIR / "style.css").write_text(css_content, encoding="utf-8")
 
-    js_content = """// AI Daily Radar - Client-side Interactions
+    js_content = """// AI Daily Radar - Client-side & Mobile Interactions
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. 主题切换 (Light / Dark mode)
+    // 1. 主题切换 (Light / Dark)
     const themeBtn = document.getElementById('theme-toggle');
-    const savedTheme = localStorage.getItem('radar_theme') || 'dark';
+    const savedTheme = localStorage.getItem('radar_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     
     function applyTheme(theme) {
         document.body.className = theme === 'light' ? 'theme-light' : 'theme-dark';
@@ -1552,6 +1732,10 @@ document.addEventListener('DOMContentLoaded', () => {
             themeBtn.querySelector('.theme-icon').textContent = theme === 'light' ? '☀️' : '🌙';
         }
         localStorage.setItem('radar_theme', theme);
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) {
+            metaTheme.setAttribute('content', theme === 'light' ? '#f8fafc' : '#090d16');
+        }
     }
 
     applyTheme(savedTheme);
@@ -1563,7 +1747,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. 往期归档快速搜索过滤
+    // 2. 往期快速实时搜索过滤
     const searchInput = document.getElementById('archive-search');
     const archiveGrid = document.getElementById('archive-grid');
     const noResults = document.getElementById('no-search-results');
@@ -1590,35 +1774,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// 轻量 Toast 提示
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2000);
+}
+
+// 手机原生分享或剪贴板兜底
+function handleShare(title, date) {
+    if (navigator.share) {
+        navigator.share({
+            title: title + ' · AI Daily Radar',
+            text: 'AI Daily Radar · ' + date + ' 每日前沿情报速递',
+            url: window.location.href,
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            showToast('已复制报告链接到剪贴板！');
+        }).catch(() => {
+            showToast('链接复制失败，请手动复制浏览器地址栏');
+        });
+    }
+}
+
+// 手机端目录抽屉开关
+function toggleMobileToc() {
+    const drawer = document.getElementById('mobile-toc-drawer');
+    if (!drawer) return;
+    drawer.classList.toggle('open');
+}
+
+// 抽屉内点击任意目录项自动收起
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.drawer-list a')) {
+        const drawer = document.getElementById('mobile-toc-drawer');
+        if (drawer && drawer.classList.contains('open')) {
+            drawer.classList.remove('open');
+        }
+    }
+});
 """
     (ASSETS_DIR / "app.js").write_text(js_content, encoding="utf-8")
 
 
 def main():
-    print(f"🚀 开始构建 AI Daily Radar 静态网站...")
+    print(f"🚀 开始构建 AI Daily Radar 静态网站 (移动端优化版)...")
     start_time = datetime.now()
 
-    # 清理并重置 dist 目录
     if DIST_DIR.exists():
         shutil.rmtree(DIST_DIR)
     DIST_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 写入静态 CSS/JS
     write_assets()
 
-    # 读取并解析全部日报
     reports = get_all_reports()
     print(f"📦 成功读取 {len(reports)} 份历史日报")
 
-    # 生成首页
     index_html = build_index_page(reports)
     (DIST_DIR / "index.html").write_text(index_html, encoding="utf-8")
 
-    # 生成 404 页面
     not_found_html = build_404_page()
     (DIST_DIR / "404.html").write_text(not_found_html, encoding="utf-8")
 
-    # 生成各期详情页 /reports/YYYY-MM-DD/index.html
     for idx, report in enumerate(reports):
         date_str = report["date"]
         report_dir = DIST_DIR / "reports" / date_str
