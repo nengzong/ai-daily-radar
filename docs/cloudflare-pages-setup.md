@@ -37,12 +37,13 @@
 
 ## 二、绑定自定义免费域名（如 xxx.dpdns.org）
 
-Cloudflare Pages 支持绑定任何二级或顶级域名，无需购买付费域名。
+Cloudflare 支持绑定任何二级或顶级域名，无需购买付费域名。
 
-1. **在 Cloudflare Pages 添加自定义域**：
-   - 进入你刚刚创建的 Pages 项目（`ai-daily-radar`）。
-   - 点击顶部的 **Custom domains（自定义域）** 选项卡。
-   - 点击 **Set up a custom domain（设置自定义域）**。
+如果你是通过上述流程创建的（应用网址形如 `https://ai-daily-radar.xxx.workers.dev`）：
+1. **在 Cloudflare 添加自定义域**：
+   - 进入你的 `ai-daily-radar` 应用。
+   - 点击 **设置 (Settings)** → **域与路由 (Domains & Routes)**。
+   - 点击 **添加自定义域 (Add Custom Domain)**。
    - 输入你的域名，例如 `radar.dpdns.org` 或 `xxx.dpdns.org`，点击继续。
 
 2. **在你的域名 DNS 提供商处添加 CNAME 记录**：
@@ -50,13 +51,12 @@ Cloudflare Pages 支持绑定任何二级或顶级域名，无需购买付费域
    - 添加一条 DNS 解析记录：
      - **记录类型**：`CNAME`
      - **主机名 / 别名 (Name/Host)**：`xxx`（或对应的子域名）
-     - **目标地址 (Target/Value)**：`ai-daily-radar.pages.dev`（即你的 Pages 默认域名）
-     - **TTL**：默认或 `60` / `Auto`
+     - **目标地址 (Target/Value)**：`ai-daily-radar.radar-watchdog.workers.dev`（即你的应用默认域名）
+     - **TTL**：默认或 `Auto`
    - 保存解析。
 
-3. **等待 SSL 证书签发与生效**：
-   - Cloudflare Pages 会检测该 CNAME 解析，通常在 2~10 分钟内自动完成验证并签发全球通用的 SSL 证书。
-   - 状态变为 **Active** 后，浏览器直接访问 `https://xxx.dpdns.org` 即可打开高颜值日报网站！
+3. **等待 SSL 证书签发生效**：
+   - Cloudflare 会自动验证 CNAME 并自动签发全球通用的免费 SSL 证书，状态变为 **Active** 后即可通过 `https://xxx.dpdns.org` 访问。
 
 ---
 
