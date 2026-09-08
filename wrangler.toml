@@ -1,0 +1,7 @@
+# Cloudflare Worker / Static Assets 配置
+# 使得项目无论走 Workers 静态托管还是 Pages 都能无缝构建发布
+name = "ai-daily-radar"
+compatibility_date = "2026-08-01"
+
+# 托管构建生成的静态页面目录
+assets = { directory = "./dist" }
