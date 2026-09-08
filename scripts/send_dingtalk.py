@@ -62,6 +62,31 @@ def main() -> int:
         print(f"EMPTY_CONTENT: {path} 为空,拒绝推送", file=sys.stderr)
         return 1
 
+    # 如果配置了 RADAR_BASE_URL (环境变量或本地配置)，将 GitHub 仓库限制链接替换为网页版公开链接
+    base_url = os.environ.get("RADAR_BASE_URL", "").strip()
+    base_url_file = os.path.expanduser("~/.config/ai-daily-radar/radar_base_url")
+    if not base_url and os.path.isfile(base_url_file):
+        try:
+            with open(base_url_file, "r", encoding="utf-8") as f:
+                base_url = f.read().strip()
+        except Exception:
+            pass
+
+    if base_url:
+        import re
+        date_match = re.search(r'(\d{4}-\d{2}-\d{2})', path)
+        if date_match:
+            web_link = f"{base_url.rstrip('/')}/reports/{date_match.group(1)}/"
+        else:
+            web_link = base_url.rstrip('/')
+        
+        web_btn = f"\n\n---\n\n### 🌐 [👉 点击在线阅读网页版完整报告]({web_link})\n"
+        github_pattern = r'> 完整日报:https://github\.com/[^\s\n]+(?:\s*\(需仓库权限\))?'
+        if re.search(github_pattern, text):
+            text = re.sub(github_pattern, f"> 🌐 网页版直达: [{web_link}]({web_link})", text) + web_btn
+        else:
+            text = text + web_btn
+
     body = json.dumps(
         {"msgtype": "markdown", "markdown": {"title": title, "text": truncate(text)}},
         ensure_ascii=False,
