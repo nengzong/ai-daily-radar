@@ -317,9 +317,18 @@ export default {
   },
 
   // 部署后的验证/演练入口。密钥不对一律 404,不确认这个路径是否存在。
+  //
+  // 这里也是外部兜底通道的入口(见 docs/external-cron-backstop.md):
+  // Cloudflare 的 cron 调度器整个哑掉时(2026-09-09 就这么栽过一次,触发器还在、
+  // 脚本还在、调用数为 0),外部定时服务按点打这几个 /run/* 就能顶上。
+  // 四个 run 分支自己都做了幂等判断(查日报、查回执、查在跑的 run),
+  // 和 Cloudflare 的 cron 撞车也不会重复往公司群推。
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (!env.CONTROL_KEY || url.searchParams.get("key") !== env.CONTROL_KEY) {
+    // 优先读请求头:密钥填进第三方定时服务的 URL 输入框的话,会一路留在它的配置里
+    // 和 Cloudflare 的请求日志里。query 参数继续支持,手工 curl 时方便。
+    const presented = request.headers.get("X-Control-Key") ?? url.searchParams.get("key");
+    if (!env.CONTROL_KEY || presented !== env.CONTROL_KEY) {
       return new Response("not found\n", { status: 404 });
     }
     if (url.pathname === "/status") {
