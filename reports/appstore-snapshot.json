@@ -2,258 +2,6 @@
   "date": "2026-09-23",
   "note": "top-free 50, source: rss.marketingtools.apple.com",
   "regions": {
-    "us": [
-      {
-        "rank": 1,
-        "name": "Muse from Meta",
-        "id": "6760173601"
-      },
-      {
-        "rank": 2,
-        "name": "ChatGPT",
-        "id": "6448311069"
-      },
-      {
-        "rank": 3,
-        "name": "Vinted: Pre-loved marketplace",
-        "id": "632064380"
-      },
-      {
-        "rank": 4,
-        "name": "StoryReel: Drama Shorts & TV",
-        "id": "6761538521"
-      },
-      {
-        "rank": 5,
-        "name": "Google Gemini",
-        "id": "6477489729"
-      },
-      {
-        "rank": 6,
-        "name": "TikTok Pro - Events",
-        "id": "6741796873"
-      },
-      {
-        "rank": 7,
-        "name": "PineDrama - Short Dramas",
-        "id": "6754134922"
-      },
-      {
-        "rank": 8,
-        "name": "CapCut: Photo & Video Editor",
-        "id": "1500855883"
-      },
-      {
-        "rank": 9,
-        "name": "Depop - Buy & Sell Clothes",
-        "id": "518684914"
-      },
-      {
-        "rank": 10,
-        "name": "Polymarket: Trade Live Sports",
-        "id": "6648798962"
-      },
-      {
-        "rank": 11,
-        "name": "Google",
-        "id": "284815942"
-      },
-      {
-        "rank": 12,
-        "name": "WhatsApp Messenger",
-        "id": "310633997"
-      },
-      {
-        "rank": 13,
-        "name": "Claude by Anthropic",
-        "id": "6473753684"
-      },
-      {
-        "rank": 14,
-        "name": "Kalshi: Trade Football & more",
-        "id": "1632713844"
-      },
-      {
-        "rank": 15,
-        "name": "Microsoft Authenticator",
-        "id": "983156458"
-      },
-      {
-        "rank": 16,
-        "name": "Gmail - Email by Google",
-        "id": "422689480"
-      },
-      {
-        "rank": 17,
-        "name": "Threads",
-        "id": "6446901002"
-      },
-      {
-        "rank": 18,
-        "name": "TikTok - Videos, Shop & LIVE",
-        "id": "835599320"
-      },
-      {
-        "rank": 19,
-        "name": "Microsoft Teams",
-        "id": "1113153706"
-      },
-      {
-        "rank": 20,
-        "name": "Google Maps",
-        "id": "585027354"
-      },
-      {
-        "rank": 21,
-        "name": "The White House",
-        "id": "6759938088"
-      },
-      {
-        "rank": 22,
-        "name": "Instagram",
-        "id": "389801252"
-      },
-      {
-        "rank": 23,
-        "name": "Temu: Shop Like a Billionaire",
-        "id": "1641486558"
-      },
-      {
-        "rank": 24,
-        "name": "YouTube",
-        "id": "544007664"
-      },
-      {
-        "rank": 25,
-        "name": "Facebook",
-        "id": "284882215"
-      },
-      {
-        "rank": 26,
-        "name": "Google Chrome",
-        "id": "535886823"
-      },
-      {
-        "rank": 27,
-        "name": "Shop: Track, Pay, Discover",
-        "id": "1223471316"
-      },
-      {
-        "rank": 28,
-        "name": "Telegram Messenger",
-        "id": "686449807"
-      },
-      {
-        "rank": 29,
-        "name": "Capital One Mobile",
-        "id": "407558537"
-      },
-      {
-        "rank": 30,
-        "name": "T-Life",
-        "id": "1111876388"
-      },
-      {
-        "rank": 31,
-        "name": "Spotify: Music and Podcasts",
-        "id": "324684580"
-      },
-      {
-        "rank": 32,
-        "name": "Amazon Shopping",
-        "id": "297606951"
-      },
-      {
-        "rank": 33,
-        "name": "DramaWave - Dramas & Reels",
-        "id": "6670430706"
-      },
-      {
-        "rank": 34,
-        "name": "X",
-        "id": "333903271"
-      },
-      {
-        "rank": 35,
-        "name": "Indeed Job Search",
-        "id": "309735670"
-      },
-      {
-        "rank": 36,
-        "name": "Informed Delivery® Mobile",
-        "id": "6478885776"
-      },
-      {
-        "rank": 37,
-        "name": "Uber - Rides, Eats, Hotels",
-        "id": "368677368"
-      },
-      {
-        "rank": 38,
-        "name": "Whatnot: Shop, Sell, Connect",
-        "id": "1488269261"
-      },
-      {
-        "rank": 39,
-        "name": "Walmart: Shopping & Savings",
-        "id": "338137227"
-      },
-      {
-        "rank": 40,
-        "name": "Grok AI",
-        "id": "6670324846"
-      },
-      {
-        "rank": 41,
-        "name": "Venmo",
-        "id": "351727428"
-      },
-      {
-        "rank": 42,
-        "name": "MyChart",
-        "id": "382952264"
-      },
-      {
-        "rank": 43,
-        "name": "Cash App",
-        "id": "711923939"
-      },
-      {
-        "rank": 44,
-        "name": "Shots: Photo & Video Generator",
-        "id": "6745820631"
-      },
-      {
-        "rank": 45,
-        "name": "PayPal - Pay, Send, Save",
-        "id": "283646709"
-      },
-      {
-        "rank": 46,
-        "name": "Pinterest",
-        "id": "429047995"
-      },
-      {
-        "rank": 47,
-        "name": "Snapchat",
-        "id": "447188370"
-      },
-      {
-        "rank": 48,
-        "name": "DoorDash: Food, Grocery, More",
-        "id": "719972451"
-      },
-      {
-        "rank": 49,
-        "name": "Google Drive",
-        "id": "507874739"
-      },
-      {
-        "rank": 50,
-        "name": "Microsoft Outlook",
-        "id": "951937596"
-      }
-    ],
     "cn": [
       {
         "rank": 1,
@@ -504,6 +252,258 @@
         "rank": 50,
         "name": "钉钉",
         "id": "930368978"
+      }
+    ],
+    "us": [
+      {
+        "rank": 1,
+        "name": "Muse from Meta",
+        "id": "6760173601"
+      },
+      {
+        "rank": 2,
+        "name": "ChatGPT",
+        "id": "6448311069"
+      },
+      {
+        "rank": 3,
+        "name": "Vinted: Pre-loved marketplace",
+        "id": "632064380"
+      },
+      {
+        "rank": 4,
+        "name": "StoryReel: Drama Shorts & TV",
+        "id": "6761538521"
+      },
+      {
+        "rank": 5,
+        "name": "Google Gemini",
+        "id": "6477489729"
+      },
+      {
+        "rank": 6,
+        "name": "TikTok Pro - Events",
+        "id": "6741796873"
+      },
+      {
+        "rank": 7,
+        "name": "PineDrama - Short Dramas",
+        "id": "6754134922"
+      },
+      {
+        "rank": 8,
+        "name": "CapCut: Photo & Video Editor",
+        "id": "1500855883"
+      },
+      {
+        "rank": 9,
+        "name": "Depop - Buy & Sell Clothes",
+        "id": "518684914"
+      },
+      {
+        "rank": 10,
+        "name": "Polymarket: Trade Live Sports",
+        "id": "6648798962"
+      },
+      {
+        "rank": 11,
+        "name": "Google",
+        "id": "284815942"
+      },
+      {
+        "rank": 12,
+        "name": "WhatsApp Messenger",
+        "id": "310633997"
+      },
+      {
+        "rank": 13,
+        "name": "Claude by Anthropic",
+        "id": "6473753684"
+      },
+      {
+        "rank": 14,
+        "name": "Kalshi: Trade Football & more",
+        "id": "1632713844"
+      },
+      {
+        "rank": 15,
+        "name": "Microsoft Authenticator",
+        "id": "983156458"
+      },
+      {
+        "rank": 16,
+        "name": "Gmail - Email by Google",
+        "id": "422689480"
+      },
+      {
+        "rank": 17,
+        "name": "Threads",
+        "id": "6446901002"
+      },
+      {
+        "rank": 18,
+        "name": "TikTok - Videos, Shop & LIVE",
+        "id": "835599320"
+      },
+      {
+        "rank": 19,
+        "name": "Microsoft Teams",
+        "id": "1113153706"
+      },
+      {
+        "rank": 20,
+        "name": "Google Maps",
+        "id": "585027354"
+      },
+      {
+        "rank": 21,
+        "name": "The White House",
+        "id": "6759938088"
+      },
+      {
+        "rank": 22,
+        "name": "Instagram",
+        "id": "389801252"
+      },
+      {
+        "rank": 23,
+        "name": "Temu: Shop Like a Billionaire",
+        "id": "1641486558"
+      },
+      {
+        "rank": 24,
+        "name": "YouTube",
+        "id": "544007664"
+      },
+      {
+        "rank": 25,
+        "name": "Facebook",
+        "id": "284882215"
+      },
+      {
+        "rank": 26,
+        "name": "Google Chrome",
+        "id": "535886823"
+      },
+      {
+        "rank": 27,
+        "name": "Shop: Track, Pay, Discover",
+        "id": "1223471316"
+      },
+      {
+        "rank": 28,
+        "name": "Telegram Messenger",
+        "id": "686449807"
+      },
+      {
+        "rank": 29,
+        "name": "Capital One Mobile",
+        "id": "407558537"
+      },
+      {
+        "rank": 30,
+        "name": "T-Life",
+        "id": "1111876388"
+      },
+      {
+        "rank": 31,
+        "name": "Spotify: Music and Podcasts",
+        "id": "324684580"
+      },
+      {
+        "rank": 32,
+        "name": "Amazon Shopping",
+        "id": "297606951"
+      },
+      {
+        "rank": 33,
+        "name": "DramaWave - Dramas & Reels",
+        "id": "6670430706"
+      },
+      {
+        "rank": 34,
+        "name": "X",
+        "id": "333903271"
+      },
+      {
+        "rank": 35,
+        "name": "Indeed Job Search",
+        "id": "309735670"
+      },
+      {
+        "rank": 36,
+        "name": "Informed Delivery® Mobile",
+        "id": "6478885776"
+      },
+      {
+        "rank": 37,
+        "name": "Uber - Rides, Eats, Hotels",
+        "id": "368677368"
+      },
+      {
+        "rank": 38,
+        "name": "Whatnot: Shop, Sell, Connect",
+        "id": "1488269261"
+      },
+      {
+        "rank": 39,
+        "name": "Walmart: Shopping & Savings",
+        "id": "338137227"
+      },
+      {
+        "rank": 40,
+        "name": "Grok AI",
+        "id": "6670324846"
+      },
+      {
+        "rank": 41,
+        "name": "Venmo",
+        "id": "351727428"
+      },
+      {
+        "rank": 42,
+        "name": "MyChart",
+        "id": "382952264"
+      },
+      {
+        "rank": 43,
+        "name": "Cash App",
+        "id": "711923939"
+      },
+      {
+        "rank": 44,
+        "name": "Shots: Photo & Video Generator",
+        "id": "6745820631"
+      },
+      {
+        "rank": 45,
+        "name": "PayPal - Pay, Send, Save",
+        "id": "283646709"
+      },
+      {
+        "rank": 46,
+        "name": "Pinterest",
+        "id": "429047995"
+      },
+      {
+        "rank": 47,
+        "name": "Snapchat",
+        "id": "447188370"
+      },
+      {
+        "rank": 48,
+        "name": "DoorDash: Food, Grocery, More",
+        "id": "719972451"
+      },
+      {
+        "rank": 49,
+        "name": "Google Drive",
+        "id": "507874739"
+      },
+      {
+        "rank": 50,
+        "name": "Microsoft Outlook",
+        "id": "951937596"
       }
     ],
     "jp": [
