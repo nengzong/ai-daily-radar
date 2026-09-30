@@ -5,6 +5,10 @@
 # 不用 PAT。两条通道【只能开一条】——同时跑会各自看到「还没投递」而各 dispatch 一次,
 # 往公司群重推两遍日报。
 #
+# 【2026-09-30 起和 Worker 不再一致】Worker 改成了「只补不喊、09:10 兜底告警一次、认
+# state/delivery-failed 和 state/alerted」,本脚本没跟着改(当时这条通道没启用)。
+# 重新启用之前先对照 index.js 的 runDeliver / runSentinel / finalAlert 同步一遍。
+#
 # 为什么需要外部触发:GitHub Actions 的 cron 触发时刻完全不受我们控制。本仓库实测
 # 2026-08-17~26 延迟稳定在 10 分钟上下,但 08-27 三道 cron 全部漂到 4~5 小时之后,
 # 08-28 一道都没触发。workflow_dispatch 是即时的,从没漂过。

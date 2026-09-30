@@ -141,11 +141,13 @@ jobs:
       # 生成失败时主动告警。以前失败是静默的,只能靠「今天没收到日报」事后察觉,
       # 而那时候你多半已经手动跑过一遍了。
       # 注意这条只说明【没生成出来】;生成好了却没进群是投递流水线的告警。
+      # 走 scripts/send_alert.sh:钉钉失败改发邮件,每天最多一条(哨兵补跑再失败也不会再告警)。
       - name: 失败告警
         if: failure()
         env:
           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
           DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           TODAY: ${{ steps.date.outputs.today }}
           EVENT: ${{ github.event_name }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -158,10 +160,11 @@ jobs:
           - [查看运行日志]($RUN_URL)
 
           今天的日报没生成出来,08:30 也就无从投递。
-          去 Actions → AI Daily Radar 生成 → Run workflow 补跑;
-          生成好之后 Worker 的 08:40 / 09:10 哨兵会自动补投,不用手工再点投递。
+          Worker 的 08:40 / 09:10 哨兵会自动补跑生成,生成好之后自动补投。
+          今天不会再重复告警:如果 09:30 群里还没有日报,就是补跑也没成,
+          去 Actions → AI Daily Radar 生成 → Run workflow 手动补跑,生成好之后再 Run 一次投递。
           EOF
-          python3 scripts/send_dingtalk.py "⚠️ AI 日报失败 $TODAY" "$RUNNER_TEMP/alert.md"
+          bash scripts/send_alert.sh "$TODAY" "⚠️ AI 日报失败 $TODAY" "$RUNNER_TEMP/alert.md"
 
       # 只在出问题时留现场。日报没生成时,这里能直接看出是文件没写、
       # 写错了地方,还是 Claude 压根没干活。

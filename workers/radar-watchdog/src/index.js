@@ -4,8 +4,9 @@
  * 一天四道 cron(北京时间):
  *   07:50  起跑生成——只写文件、提交存档,一条消息都不发
  *   08:30  准点投递——把已生成好的日报推进钉钉群 + 发邮件  ← 这一道决定日报几点到
- *   08:40  哨兵一——没送达就补救(缺什么补什么)
- *   09:10  哨兵二——最后一次补救,给「08:40 才补跑生成」留出完成时间
+ *   08:40  哨兵一——没送达就补救(缺什么补什么),不告警
+ *   09:10  哨兵二——最后一次补救,给「08:40 才补跑生成」留出完成时间;
+ *          到这时还没进群、GitHub 那边也没告过警,就告警一次(见 finalAlert)
  *
  * 为什么生成和投递要拆成两条流水线:送达要准点,而准点只能靠「按点触发投递」。
  * 合在一起时送达时刻 = 起跑时刻 + 生成耗时,生成快慢直接把送达时间带跑
@@ -21,6 +22,11 @@
  *
  * 告警走钉钉而不是「再 dispatch 一个告警 workflow」:被监控的东西不能是告警的前提,
  * 否则 Actions 真出问题时告警会跟着一起哑掉。
+ *
+ * 告警每天最多一条,而且原则上由 GitHub 那边的流水线发(scripts/send_alert.sh):
+ * 它们知道具体哪一步出错,钉钉挂了能改发邮件,发完会留 state/alerted/<日期>.txt。
+ * 这里只在 09:10 兜一次底。2026-09-29/30 钉钉额度用完那两天,这里每道 cron 都各告一次警,
+ * 加上 GitHub 那边的,一天十来条——只是钉钉全拒了才没人收到。
  */
 
 // 必须和 wrangler.toml 的 [triggers] crons 逐字一致
@@ -83,6 +89,16 @@ const reportSize = (env, day) => fileSize(env, `reports/${day}.md`);
  * 早先两者是同一件事,那时哨兵查的就是日报文件本身。
  */
 const receiptSize = (env, day) => fileSize(env, `state/delivered/${day}.txt`);
+
+/**
+ * 今天钉钉推失败过没有。投递流水线推钉钉失败时提交这份记录,并且当场告警;
+ * 之后当天不再自动重投——钉钉那边多半是额度/配置问题,重投只会再失败一次、再发一封日报邮件。
+ * 投递流水线自己的守卫也认这份记录,这里先查一下,省得起一道空跑的 run。
+ */
+const deliveryFailedSize = (env, day) => fileSize(env, `state/delivery-failed/${day}.txt`);
+
+/** 今天 GitHub 那边告过警没有(scripts/send_alert.sh 发完告警提交这份记录)。 */
+const alertedSize = (env, day) => fileSize(env, `state/alerted/${day}.txt`);
 
 /**
  * 某条流水线正在跑或排队的 run 数量。这是防重复推送的第二道闸:
@@ -156,13 +172,14 @@ async function runGenerate(env) {
 /**
  * 北京 08:30:准点投递。这一道就是「日报几点进群」。
  *
- * 生成还没跑完的话不硬投——投递流水线拿不到文件只会红一次。这里直接告警说明原因,
- * 补救交给 08:40 / 09:10 两道哨兵。
+ * 生成还没跑完的话不硬投——投递流水线拿不到文件只会红一次。补救交给 08:40 / 09:10 两道哨兵。
+ * 这里也不告警:生成失败的话生成流水线自己已经告过警;只是慢了的话,08:40 前多半就好了。
  */
 async function runDeliver(env) {
   const day = todayInBeijing();
 
   if ((await receiptSize(env, day)) > 0) return `${day} 已有投递回执,今天已经投过,不重复投递`;
+  if ((await deliveryFailedSize(env, day)) > 0) return `${day} 钉钉推送已失败过并已告警,不再自动重投`;
 
   const delivering = await activeRuns(env, env.WORKFLOW_DELIVER);
   if (delivering > 0) return `已有 ${delivering} 道投递 run 在跑/排队,不重复投递`;
@@ -170,20 +187,8 @@ async function runDeliver(env) {
   const size = await reportSize(env, day);
   if (size === 0) {
     const generating = await activeRuns(env, env.WORKFLOW_GENERATE);
-    await dingtalk(
-      env,
-      `⚠️ AI 日报 08:30 无法投递 ${day}`,
-      [
-        "## ⚠️ 到点了但日报还没生成好",
-        "",
-        `- 日期:${day}`,
-        `- 现象:08:30 该投递了,远端却还没有 reports/${day}.md`,
-        `- 生成流水线:${generating > 0 ? `还有 ${generating} 道 run 在跑,可能只是慢了` : "没有任何 run 在跑,07:50 那道起跑没成事"}`,
-        "- 处理:08:40 和 09:10 两道哨兵会继续补救,生成一好就自动补投",
-        `- [查看运行](https://github.com/${env.REPO}/actions)`,
-      ].join("\n"),
-    );
-    return `${day} 尚未生成完,无法投递,已告警,等哨兵补救`;
+    const state = generating > 0 ? `还有 ${generating} 道生成 run 在跑` : "没有生成 run 在跑";
+    return `${day} 尚未生成完(${state}),无法投递,等哨兵补救`;
   }
 
   await dispatch(env, env.WORKFLOW_DELIVER);
@@ -193,64 +198,76 @@ async function runDeliver(env) {
 /**
  * 北京 08:40 / 09:10:查岗。缺什么补什么。
  *
- * last=true 是当天最后一次机会,补不动就把话说死,别让人以为还有后手。
+ * 只补不喊:补救起的 run 失败了,它自己会告警。last=true 是当天最后一次机会,
+ * 补完之后交给 finalAlert 判断要不要兜底告警一次,告警里把话说死,别让人以为还有后手。
  */
-async function runSentinel(env, { last }) {
+async function runSentinel(env, { last, canAlert }) {
   const day = todayInBeijing();
 
   if ((await receiptSize(env, day)) > 0) return `${day} 已有投递回执,日报已送达`;
+  if ((await deliveryFailedSize(env, day)) > 0) return `${day} 钉钉推送已失败过并已告警,不再自动重投`;
 
   // 投递 run 还在跑就等它,别再 dispatch 一道,那是往公司群重复推送。
   const delivering = await activeRuns(env, env.WORKFLOW_DELIVER);
   if (delivering > 0) return `${day} 尚无回执,但有 ${delivering} 道投递 run 正在跑,等它自己完成`;
 
   const size = await reportSize(env, day);
+  let msg, situation;
 
-  // 日报已就绪却没投出去:08:30 那道投递没成事(Worker 挂了 / dispatch 失败 / run 红了)。
   if (size > 0) {
+    // 日报已就绪却没投出去:08:30 那道投递没成事(没触发 / dispatch 没打进去 / run 没起来)。
+    await dispatch(env, env.WORKFLOW_DELIVER);
+    msg = `${day} 日报已就绪但无回执,已 dispatch 补投`;
+    situation = `日报早已生成(${size} 字节),却一直没有投递回执,GitHub 那边也没告过警(多半是投递 job 没起来)。哨兵刚又补投了一次,群里随后收到的话忽略本条即可`;
+  } else {
+    // 连日报都还没有。
+    const generating = await activeRuns(env, env.WORKFLOW_GENERATE);
+    if (generating > 0) {
+      msg = last
+        ? `${day} 仍在生成中(${generating} 道 run),已是最后一道哨兵,生成完需要手动投递`
+        : `${day} 尚未生成完,但有 ${generating} 道生成 run 正在跑,等下一道哨兵再看`;
+      situation = `日报还在生成(${generating} 道 run 在跑)。这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线`;
+    } else {
+      await dispatch(env, env.WORKFLOW_GENERATE);
+      msg = `${day} 仍未生成且无 run 在跑,已 dispatch 补跑生成`;
+      situation = "仍无日报,GitHub 上也没有任何 run 在跑,GitHub 那边也没告过警。已自动补跑生成,但这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线。若补跑也起不来、报 `job was not started`,那是 GitHub Actions 月度分钟额度耗尽";
+    }
+  }
+
+  if (!last) return msg;
+  return `${msg};${await finalAlert(env, day, situation, canAlert)}`;
+}
+
+/**
+ * 09:10 的兜底告警。除了 run() 里的异常告警(也只在 09:10 发),这是 Worker 唯一会告警的地方。
+ *
+ * 平时告警由 GitHub 那边的流水线发,轮不到这里。只有到了当天最后一道哨兵,日报还没进群、
+ * GitHub 那边也一声没吭(Actions 额度耗尽 job 根本起不来、告警步骤跑不到),或者日报到这会儿
+ * 还在生成,才由这里说一声。
+ *
+ * 只有 Cloudflare 自己的 cron 能发,外部兜底通道打进来的 /run/sentinel-last 不发:
+ * Worker 没地方记「我告过警了」,两边都发就是 09:10、09:12 各来一条。
+ * 代价是 Cloudflare 调度器哑掉、同时 GitHub 那边也出事的那天,收不到这条告警。
+ */
+async function finalAlert(env, day, situation, canAlert) {
+  if (!canAlert) return "外部通道不告警(兜底告警只由 Cloudflare 09:10 那道 cron 发)";
+  if ((await alertedSize(env, day)) > 0) return "GitHub 那边今天已经告过警,不再重复";
+  try {
     await dingtalk(
       env,
-      `⚠️ AI 日报未按时投递 ${day}`,
+      `⚠️ AI 日报未送达 ${day}`,
       [
-        "## ⚠️ 日报已生成,但没能按时进群",
+        "## ⚠️ AI 日报到 09:10 还没进群",
         "",
         `- 日期:${day}`,
-        `- 现象:日报早已就绪(${size} 字节),却查不到投递回执`,
-        "- 判断:08:30 那道投递没成事(dispatch 没打进去,或投递 run 失败了)",
-        "- 处理:哨兵已自动补投,稍后应能收到",
+        `- 现象:${situation}`,
         `- [查看运行](https://github.com/${env.REPO}/actions)`,
       ].join("\n"),
     );
-    await dispatch(env, env.WORKFLOW_DELIVER);
-    return `${day} 日报已就绪但无回执,已告警并 dispatch 补投`;
+    return "已兜底告警";
+  } catch (err) {
+    return `兜底告警没发出去:${err.message}`;
   }
-
-  // 连日报都还没有。
-  const generating = await activeRuns(env, env.WORKFLOW_GENERATE);
-  if (generating > 0) {
-    return last
-      ? `${day} 仍在生成中(${generating} 道 run),已是最后一道哨兵,生成完需要手动投递`
-      : `${day} 尚未生成完,但有 ${generating} 道生成 run 正在跑,等下一道哨兵再看`;
-  }
-
-  await dingtalk(
-    env,
-    `⚠️ AI 日报未送达 ${day}`,
-    [
-      "## ⚠️ AI 日报未送达",
-      "",
-      `- 日期:${day}`,
-      `- 现象:仍无 reports/${day}.md,且 GitHub 上没有任何 run 在跑`,
-      "- 判断:07:50 那道起跑没成事(或 run 已失败退出),看门狗已自动 dispatch 补跑生成",
-      last
-        ? "- ⚠️ 这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线"
-        : "- 生成好之后,09:10 那道哨兵会自动补投",
-      "- 若补跑也起不来、报 `job was not started`,那是 GitHub Actions 月度分钟额度耗尽",
-      `- [查看运行](https://github.com/${env.REPO}/actions)`,
-    ].join("\n"),
-  );
-  await dispatch(env, env.WORKFLOW_GENERATE);
-  return `${day} 仍未生成且无 run 在跑,已告警并 dispatch 补跑生成`;
 }
 
 function modeForCron(cron) {
@@ -258,26 +275,29 @@ function modeForCron(cron) {
   if (cron === CRON_DELIVER) return "deliver";
   if (cron === CRON_SENTINEL_1) return "sentinel";
   if (cron === CRON_SENTINEL_2) return "sentinel-last";
-  // wrangler.toml 改了 cron 但这里的常量没跟着改。按哨兵处理:它会告警,
-  // 能让这个配置错误浮出水面,而不是无声地变成一次多余的起跑或重复投递。
+  // wrangler.toml 改了 cron 但这里的常量没跟着改。按最后一道哨兵处理并打日志:
+  // 哨兵先查回执和在跑的 run,不会无声地变成一次多余的起跑或重复投递。
   console.error(`未知 cron「${cron}」,与 index.js 的常量对不上,按哨兵处理`);
   return "sentinel-last";
 }
 
-async function run(mode, env) {
+/** scheduled = 由 Cloudflare 自己的 cron 调起;外部兜底通道打 /run/* 进来时为 false。 */
+async function run(mode, env, { scheduled }) {
+  // 只有 Cloudflare 09:10 那道能告警,理由见 finalAlert
+  const canAlert = scheduled && mode === "sentinel-last";
   try {
     let msg;
     if (mode === "generate") msg = await runGenerate(env);
     else if (mode === "deliver") msg = await runDeliver(env);
-    else msg = await runSentinel(env, { last: mode === "sentinel-last" });
+    else msg = await runSentinel(env, { last: mode === "sentinel-last", canAlert });
     console.log(`[${mode}] ${msg}`);
     return msg;
   } catch (err) {
     const msg = `[${mode}] 失败:${err.message}`;
     console.error(msg);
-    // generate 出错不告警——后面三道 cron 都会再查一次,不值得为一次网络抖动吵醒人。
-    // deliver 和哨兵出错必须喊出来:那时候已经贴着送达时间了,没有多少补救余地。
-    if (mode !== "generate") {
+    // 查状态 / dispatch 出错(GitHub API 不通、token 过期)。前几道出错不告警,后面还有哨兵
+    // 会再查一次;到 09:10 最后一道还出错才喊出来——每天最多这一条,和 finalAlert 二选一。
+    if (canAlert) {
       await dingtalk(
         env,
         "⚠️ AI 日报看门狗异常",
@@ -313,7 +333,7 @@ async function probeDispatchPermission(env, workflow) {
 
 export default {
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(run(modeForCron(event.cron), env));
+    ctx.waitUntil(run(modeForCron(event.cron), env, { scheduled: true }));
   },
 
   // 部署后的验证/演练入口。密钥不对一律 404,不确认这个路径是否存在。
@@ -338,6 +358,8 @@ export default {
           day,
           reportSize: await reportSize(env, day),
           receiptSize: await receiptSize(env, day),
+          deliveryFailedSize: await deliveryFailedSize(env, day),
+          alertedSize: await alertedSize(env, day),
           activeGenerateRuns: await activeRuns(env, env.WORKFLOW_GENERATE),
           activeDeliverRuns: await activeRuns(env, env.WORKFLOW_DELIVER),
         });
@@ -355,10 +377,12 @@ export default {
         return Response.json({ ok: false, error: err.message }, { status: 502 });
       }
     }
-    if (url.pathname === "/run/generate") return new Response((await run("generate", env)) + "\n");
-    if (url.pathname === "/run/deliver") return new Response((await run("deliver", env)) + "\n");
-    if (url.pathname === "/run/sentinel") return new Response((await run("sentinel", env)) + "\n");
-    if (url.pathname === "/run/sentinel-last") return new Response((await run("sentinel-last", env)) + "\n");
+    // 外部通道只补救不告警(scheduled: false),理由见 finalAlert
+    const external = { scheduled: false };
+    if (url.pathname === "/run/generate") return new Response((await run("generate", env, external)) + "\n");
+    if (url.pathname === "/run/deliver") return new Response((await run("deliver", env, external)) + "\n");
+    if (url.pathname === "/run/sentinel") return new Response((await run("sentinel", env, external)) + "\n");
+    if (url.pathname === "/run/sentinel-last") return new Response((await run("sentinel-last", env, external)) + "\n");
     return new Response("not found\n", { status: 404 });
   },
 };
