@@ -1,0 +1,5 @@
+failed_at=2026-09-30 08:30:25 CST
+event=workflow_dispatch
+run=https://github.com/nengzong/ai-daily-radar/actions/runs/36650650936
+error=DINGTALK_ERROR: {'errcode': 90030, 'errmsg': '您的企业或者机器人本月webhook调用量已超过限制,请登录开发者后台-资源管理-查看用量明细。'}
+note=改动上线前的失败,上线后手动补记;当天日报由人工转发进群
