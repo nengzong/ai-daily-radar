@@ -1,0 +1,4 @@
+alerted_at=2026-10-08 07:51:34 CST
+channel=dingtalk
+title=⚠️ AI 日报失败 2026-10-08
+run=https://github.com/nengzong/ai-daily-radar/actions/runs/37704567846
