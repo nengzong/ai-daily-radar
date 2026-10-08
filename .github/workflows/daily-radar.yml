@@ -73,9 +73,21 @@ jobs:
           if [ "$EVENT" = "schedule" ] && [ "$size" -gt 0 ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
             echo "远端已有 reports/$today.md($size 字节),今天已出过日报,本次跳过"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          # 今天生成已经失败过一次(那一道已经告过警):不再自动重试。
+          # 重试多半也是同一个错误,只会再烧一次 runner 分钟、再触发一封 GitHub
+          # 的「Run failed」邮件。手动 workflow_dispatch 不受此限制,方便修完之后补跑。
+          # 这个机制和 daily-deliver.yml 的 state/delivery-failed 是一样的。
+          failed=$(git cat-file -s "FETCH_HEAD:state/generate-failed/$today.txt" 2>/dev/null || echo 0)
+          if [ "$EVENT" != "workflow_dispatch" ] && [ "$failed" -gt 0 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "state/generate-failed/$today.txt 已存在,今天生成已失败过并已告警,不再自动重试"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
 
       - name: 生成日报
         if: steps.guard.outputs.skip != 'true'
@@ -138,6 +150,32 @@ jobs:
             git push origin HEAD:main
           fi
 
+      # 生成失败了就立刻记一笔,排在告警前面:这份记录一落盘,后面的 Worker 哨兵补跑、
+      # GitHub 兜底 cron 都不会再自动重试(见上面「判断今天是否已生成」)。
+      # 不重试的理由:重试多半也是同一个错误,只会再烧一次 runner 分钟(实测 8~13 分钟)、
+      # 再触发一封 GitHub 的「Run failed」邮件。2026-10 之前没有这道闸,一天能收到
+      # 三四封「Run failed: AI Daily Radar 生成」,和钉钉重复告警一样烦。
+      # 手动 workflow_dispatch 不受限制,修完之后可以手动补跑。
+      - name: 记录生成失败
+        if: failure()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          today="${{ steps.date.outputs.today }}"
+          mkdir -p state/generate-failed
+          cat > "state/generate-failed/$today.txt" <<EOF
+          failed_at=$(date '+%F %T %Z')
+          event=${{ github.event_name }}
+          run=$RUN_URL
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/generate-failed
+          git commit -m "生成失败记录 $today"
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
+
       # 生成失败时主动告警。以前失败是静默的,只能靠「今天没收到日报」事后察觉,
       # 而那时候你多半已经手动跑过一遍了。
       # 注意这条只说明【没生成出来】;生成好了却没进群是投递流水线的告警。
@@ -160,8 +198,7 @@ jobs:
           - [查看运行日志]($RUN_URL)
 
           今天的日报没生成出来,08:30 也就无从投递。
-          Worker 的 08:40 / 09:10 哨兵会自动补跑生成,生成好之后自动补投。
-          今天不会再重复告警:如果 09:30 群里还没有日报,就是补跑也没成,
+          今天不会再自动重试,也不会再重复告警。
           去 Actions → AI Daily Radar 生成 → Run workflow 手动补跑,生成好之后再 Run 一次投递。
           EOF
           bash scripts/send_alert.sh "$TODAY" "⚠️ AI 日报失败 $TODAY" "$RUNNER_TEMP/alert.md"

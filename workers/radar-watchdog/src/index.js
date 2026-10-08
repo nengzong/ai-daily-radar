@@ -97,6 +97,13 @@ const receiptSize = (env, day) => fileSize(env, `state/delivered/${day}.txt`);
  */
 const deliveryFailedSize = (env, day) => fileSize(env, `state/delivery-failed/${day}.txt`);
 
+/**
+ * 今天生成失败过没有。生成流水线跑失败时提交这份记录,并且当场告警;
+ * 之后当天不再自动重试——重试多半也是同一个错误,只会再烧一次 runner 分钟、
+ * 再触发一封 GitHub 的「Run failed」邮件。手动 workflow_dispatch 不受限制。
+ */
+const generateFailedSize = (env, day) => fileSize(env, `state/generate-failed/${day}.txt`);
+
 /** 今天 GitHub 那边告过警没有(scripts/send_alert.sh 发完告警提交这份记录)。 */
 const alertedSize = (env, day) => fileSize(env, `state/alerted/${day}.txt`);
 
@@ -162,6 +169,8 @@ async function runGenerate(env) {
   const size = await reportSize(env, day);
   if (size > 0) return `远端已有 reports/${day}.md(${size} 字节),无需起跑`;
 
+  if ((await generateFailedSize(env, day)) > 0) return `${day} 生成已失败过并已告警,不再自动重试(手动 Run workflow 可以补跑)`;
+
   const running = await activeRuns(env, env.WORKFLOW_GENERATE);
   if (running > 0) return `已有 ${running} 道生成 run 在跑/排队(多半是 GitHub 的兜底 cron 已触发),不重复起跑`;
 
@@ -221,16 +230,21 @@ async function runSentinel(env, { last, canAlert }) {
     situation = `日报早已生成(${size} 字节),却一直没有投递回执,GitHub 那边也没告过警(多半是投递 job 没起来)。哨兵刚又补投了一次,群里随后收到的话忽略本条即可`;
   } else {
     // 连日报都还没有。
-    const generating = await activeRuns(env, env.WORKFLOW_GENERATE);
-    if (generating > 0) {
-      msg = last
-        ? `${day} 仍在生成中(${generating} 道 run),已是最后一道哨兵,生成完需要手动投递`
-        : `${day} 尚未生成完,但有 ${generating} 道生成 run 正在跑,等下一道哨兵再看`;
-      situation = `日报还在生成(${generating} 道 run 在跑)。这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线`;
+    if ((await generateFailedSize(env, day)) > 0) {
+      msg = `${day} 生成已失败过并已告警,不再自动重试`;
+      situation = "生成已失败过,流水线那边已经告过警。不再自动重试(重试多半也是同一个错误,只会再烧 runner 分钟、再触发 GitHub 的 Run failed 邮件)。去 Actions → AI Daily Radar 生成 → Run workflow 手动补跑";
     } else {
-      await dispatch(env, env.WORKFLOW_GENERATE);
-      msg = `${day} 仍未生成且无 run 在跑,已 dispatch 补跑生成`;
-      situation = "仍无日报,GitHub 上也没有任何 run 在跑,GitHub 那边也没告过警。已自动补跑生成,但这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线。若补跑也起不来、报 `job was not started`,那是 GitHub Actions 月度分钟额度耗尽";
+      const generating = await activeRuns(env, env.WORKFLOW_GENERATE);
+      if (generating > 0) {
+        msg = last
+          ? `${day} 仍在生成中(${generating} 道 run),已是最后一道哨兵,生成完需要手动投递`
+          : `${day} 尚未生成完,但有 ${generating} 道生成 run 正在跑,等下一道哨兵再看`;
+        situation = `日报还在生成(${generating} 道 run 在跑)。这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线`;
+      } else {
+        await dispatch(env, env.WORKFLOW_GENERATE);
+        msg = `${day} 仍未生成且无 run 在跑,已 dispatch 补跑生成`;
+        situation = "仍无日报,GitHub 上也没有任何 run 在跑,GitHub 那边也没告过警。已自动补跑生成,但这已是当天最后一道哨兵:生成完之后【不会】再自动投递,需要手动 Run 一次投递流水线。若补跑也起不来、报 `job was not started`,那是 GitHub Actions 月度分钟额度耗尽";
+      }
     }
   }
 
@@ -359,6 +373,7 @@ export default {
           reportSize: await reportSize(env, day),
           receiptSize: await receiptSize(env, day),
           deliveryFailedSize: await deliveryFailedSize(env, day),
+          generateFailedSize: await generateFailedSize(env, day),
           alertedSize: await alertedSize(env, day),
           activeGenerateRuns: await activeRuns(env, env.WORKFLOW_GENERATE),
           activeDeliverRuns: await activeRuns(env, env.WORKFLOW_DELIVER),

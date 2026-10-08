@@ -76,6 +76,9 @@ report_size() { remote_size "reports/$1.md"; }
 # 成功之后立刻提交它。早先生成即投递,那时查的就是日报文件本身。
 receipt_size() { remote_size "state/delivered/$1.txt"; }
 
+# 今天生成失败过没有。生成流水线失败时提交这份记录,之后不再自动重试。
+generate_failed_size() { remote_size "state/generate-failed/$1.txt"; }
+
 # 某条流水线有几道 run 正在跑或排队。同样区分 0 和「查不到」。
 # 这是防重复推送的关键:GitHub 那两道兜底 cron 万一已经在跑,或者你刚手动 Run 过一次,
 # 这时候再 dispatch 就是两道 run 各推一次钉钉。
@@ -173,6 +176,14 @@ MSG
   fi
 
   # 连日报都还没有。
+  # 先查生成是否已失败过:重试多半也是同一个错误,不再自动补跑。
+  if ! failed="$(generate_failed_size "$TODAY")"; then bail_unknown; fi
+  if [ "$failed" -gt 0 ]; then
+    log "$TODAY 生成已失败过并已告警,不再自动重试"
+    notify_local "AI 日报生成已失败" "$TODAY 生成已失败过,需手动补跑"
+    exit 0
+  fi
+
   if ! running="$(active_runs "$WF_GENERATE")"; then bail_unknown; fi
   if [ "$running" -gt 0 ]; then
     if [ "$last" = "last" ]; then
@@ -211,6 +222,11 @@ case "$MODE" in
     size="$(report_size "$TODAY")" || bail_unknown
     if [ "$size" -gt 0 ]; then
       log "远端已有 reports/$TODAY.md($size 字节),无需起跑"
+      exit 0
+    fi
+    failed="$(generate_failed_size "$TODAY")" || bail_unknown
+    if [ "$failed" -gt 0 ]; then
+      log "$TODAY 生成已失败过并已告警,不再自动重试(手动 Run workflow 可以补跑)"
       exit 0
     fi
     running="$(active_runs "$WF_GENERATE")" || bail_unknown
