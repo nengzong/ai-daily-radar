@@ -218,7 +218,7 @@ RADAR_DATE=2026-08-27 ./scripts/radar_watchdog.sh sentinel   # 换个日期查/�
 
 | Secret | 来源 |
 |---|---|
-| `CLAUDE_CODE_OAUTH_TOKEN` | 本机运行 `claude setup-token` 生成,走 Claude 订阅额度,不按 token 计费 |
+| `GEMINI_API_KEY` | Google AI Studio 生成的 Gemini API 密钥 |
 | `DINGTALK_WEBHOOK` | 钉钉群 → 群设置 → 机器人 → 添加自定义机器人,复制 Webhook 地址 |
 | `DINGTALK_SECRET` | 添加机器人时勾选「加签」,复制 `SEC` 开头的密钥 |
 | `GMAIL_APP_PASSWORD` | Google [应用专用密码页面](https://myaccount.google.com/apppasswords)生成的 16 位密码 |

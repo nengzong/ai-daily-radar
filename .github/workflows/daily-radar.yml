@@ -91,14 +91,11 @@ jobs:
 
       - name: 生成日报
         if: steps.guard.outputs.skip != 'true'
-        uses: anthropics/claude-code-action@v1
+        uses: google-github-actions/run-gemini-cli@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          show_full_output: true
-          # 不传这个的话,action 会尝试用 OIDC 换 Claude GitHub App 的 token,
-          # 既需要 id-token: write 权限,又要求该 App 已安装到本仓库。
-          # 我们只需要在工作区读写文件,没有 PR 交互,直接用 workflow 自带 token 即可。
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_model: 'gemini-2.5-pro'
+          gemini_debug: true
           prompt: |
             读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
             该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
@@ -107,14 +104,6 @@ jobs:
 
             这是无头环境,结束回合就等于进程退出。不要启动后台/异步代理,
             也不要为了等待任何东西而结束回合——必须一口气把两个日报文件写完再结束。
-          # 回合上限不是成本闸(成本闸是上面的 timeout-minutes),是防死循环的。
-          # 别设得贴着实际用量:2026-09-07 加了 G/H 两组源之后实际跑了 162 回合,
-          # 而当时上限是 120——Claude 把两份日报都写好了,claude-code-action 却因
-          # 「成功但回合数超上限」把这一步判为失败,后面的校验和提交被跳过,日报没推上去,
-          # 当天早报没发出去。
-          claude_args: |
-            --max-turns 300
-            --allowedTools Read,Write,Edit,Bash,WebFetch,WebSearch
 
       # 两个文件都在且非空,才允许提交存档。空文件被提交上去的后果是:
       # 08:30 的投递流水线看到「日报已生成」,把一份空日报推进公司群。
