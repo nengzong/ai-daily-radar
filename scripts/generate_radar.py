@@ -287,8 +287,93 @@ def call_gemini_text(prompt, api_key, max_retries=3):
             else:
                 raise
 
+def format_dingtalk_report(full_report, date_str):
+    """
+    根据完整版日报，确定性提取出符合钉钉格式的精简版本：
+    1. 提取今日 TL;DR
+    2. 提取各版块条目：加粗标题 + 关注理由 + 原文链接
+    3. 提取 App Store 异动概述
+    4. 移除表格，控制在 2000 字内
+    """
+    lines = full_report.split('\n')
+    out = [f"# AI Daily Radar | {date_str}"]
+    
+    tldr_lines = []
+    in_tldr = False
+    
+    current_section = ''
+    items = []
+    curr_item = {}
+    appstore_lines = []
+    in_appstore = False
+    
+    for line in lines:
+        stripped = line.strip()
+        if '📌 今日 TL;DR' in line or '今日 TL;DR' in line:
+            in_tldr = True
+            in_appstore = False
+            continue
+        elif '📱 App Store' in line:
+            in_appstore = True
+            in_tldr = False
+            current_section = '📱 App Store 榜单异动'
+            continue
+        elif '📡 源覆盖情况' in line:
+            in_appstore = False
+            in_tldr = False
+            continue
+        elif stripped.startswith('## '):
+            in_tldr = False
+            in_appstore = False
+            current_section = stripped.lstrip('#').strip()
+            continue
+            
+        if in_tldr:
+            if stripped and not stripped.startswith('##'):
+                tldr_lines.append(stripped)
+            continue
+            
+        if in_appstore:
+            if stripped and not stripped.startswith('##'):
+                appstore_lines.append(stripped)
+            continue
+            
+        if stripped.startswith('### '):
+            if curr_item and curr_item.get('title'):
+                items.append(curr_item)
+            title = stripped.lstrip('#').strip()
+            curr_item = {'section': current_section, 'title': title, 'why': '', 'link': ''}
+        elif '**为什么值得关注**' in stripped or '**关注理由**' in stripped:
+            why_text = re.sub(r'-\s*\*\*.*?\*\*:\s*', '', stripped).strip()
+            curr_item['why'] = why_text
+        elif '**原文**' in stripped or '**链接**' in stripped or '**来源**' in stripped:
+            link_m = re.search(r'https?://[^\s\)]+', stripped)
+            curr_item['link'] = link_m.group(0) if link_m else ""
+
+    if curr_item and curr_item.get('title'):
+        items.append(curr_item)
+        
+    if tldr_lines:
+        out.append('\n> **今日 TL;DR**\n> ' + '\n> '.join(tldr_lines))
+        
+    curr_sec = ''
+    for it in items:
+        if it['section'] != curr_sec:
+            curr_sec = it['section']
+            out.append(f'\n### {curr_sec}')
+        link_str = f" [原文]({it['link']})" if it.get('link') else ""
+        why_str = f": {it['why']}" if it.get('why') else ""
+        out.append(f"- **{it['title']}**{why_str}{link_str}")
+        
+    if appstore_lines:
+        out.append('\n### 📱 App Store 异动概述')
+        out.extend(appstore_lines[:4])
+        
+    out.append(f'\n---\n[查看完整归档](https://github.com/nengzong/ai-daily-radar/blob/main/reports/{date_str}.md)')
+    return '\n'.join(out)
+
 def generate_reports(date_str, app_diffs, signals, dex_item, api_key):
-    print("-> 1. 正在调用 Gemini 2.5 Flash 生成完整日报 Markdown...")
+    print("-> 正在调用 Gemini 2.5 Flash 生成完整日报 Markdown (每日仅需 1 次 API 调用)...")
     prompt_full = f"""你是一名 AI 行业情报分析师，为建筑、园区、工厂等「工程物理世界 AI」与设施管理 (FM) 领军企业（博锐尚格 Persagy）的产品经理和技术团队生成每日情报日报。
 今天是 {date_str}。请严格按以下要求对提供的当日候选素材进行筛选分析，直接输出符合 reports/{date_str}.md 规范的完整 Markdown 内容（不要输出任何多余的包裹标签或解释）：
 
@@ -330,31 +415,8 @@ def generate_reports(date_str, app_diffs, signals, dex_item, api_key):
         full_report = full_report[:-3]
     full_report = full_report.strip()
 
-    print("-> 2. 正在调用 Gemini 生成钉钉群版精简 Markdown...")
-    prompt_dingtalk = f"""请将以下完整的 AI Daily Radar 日报压缩转换为钉钉群投递版本（对应 reports/{date_str}.dingtalk.md）：
-
-### 转换要求：
-1. 字数控制在 2000 字以内，精炼易读。
-2. 包含今日 TL;DR。
-3. 保留所有精选条目，每个条目格式：加粗标题 + 一句话关注理由 + 原文链接。
-4. App Store 榜单异动精简概述（1-2句核心变化）。
-5. 严禁使用 Markdown 表格语法（钉钉群不兼容表格）。
-6. 文末附带仓库链接：[查看完整归档](https://github.com/nengzong/ai-daily-radar/blob/main/reports/{date_str}.md)。
-7. 直接输出 Markdown 正文，不要包裹任何代码块标签。
-
-### 完整日报内容：
-{full_report}
-"""
-    # 稍作间隔避免连续请求速率
-    time.sleep(2)
-    dingtalk_report = call_gemini_text(prompt_dingtalk, api_key)
-    if dingtalk_report.startswith("```markdown"):
-        dingtalk_report = dingtalk_report[11:]
-    elif dingtalk_report.startswith("```"):
-        dingtalk_report = dingtalk_report[3:]
-    if dingtalk_report.endswith("```"):
-        dingtalk_report = dingtalk_report[:-3]
-    dingtalk_report = dingtalk_report.strip()
+    print("-> 正在由脚本本地确定性生成钉钉群精简版 Markdown (不消耗模型配额)...")
+    dingtalk_report = format_dingtalk_report(full_report, date_str)
 
     return full_report, dingtalk_report
 
