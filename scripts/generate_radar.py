@@ -279,9 +279,9 @@ def call_gemini_text(prompt, api_key, max_retries=3):
                 err_body = e.read().decode('utf-8')
             except Exception:
                 pass
-            print(f"[WARN] HTTP {e.code} on attempt {attempt}: {err_body[:300]}", file=sys.stderr)
+            print(f"[WARN] HTTP {e.code} on attempt {attempt}:\n{err_body}", file=sys.stderr)
             if e.code in (429, 500, 503) and attempt < max_retries:
-                wait_sec = attempt * 10
+                wait_sec = attempt * 15
                 print(f"-> 遇到配额或服务波动，等待 {wait_sec} 秒后重试...")
                 time.sleep(wait_sec)
             else:
