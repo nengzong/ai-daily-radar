@@ -245,35 +245,7 @@ def fetch_all_signals(date_str):
     
     return app_diffs, signals, dex
 
-def call_gemini_generate(date_str, app_diffs, signals, dex_item, api_key):
-    print("-> 构造提示词并调用 Gemini API...")
-    
-    prompt = f"""你是一名 AI 行业情报分析师，为建筑、园区、工厂等「工程物理世界 AI」与设施管理 (FM) 领军企业（博锐尚格 Persagy）的产品经理和技术团队生成每日情报日报。
-今天是 {date_str}。请严格按以下要求对提供的当日候选素材进行筛选分析并生成两份日报文件。
-
-### 筛选要求：
-1. 精选 8-15 条条目，宁缺毋滥。
-2. 硬约束：至少 40% 的条目必须来自海外源（C/D/E/F 组）。所有英文标题与内容必须翻译成高质量中文，保留公司/产品英文原名。
-3. 重点分类：
-   - 🏭 行业动向：AI 在建筑、园区、工厂、能源、设施管理 (FM) 等空间/资产运营场景的落地信号（优先从 F 组和 D 组取材）。
-   - 🤖 技术与案例：Agent、世界模型、AIoT、大模型企业级落地的技术进展与实测案例。
-   - 💡 产品灵感：定位、交互范式、展示方式上有借鉴价值的新产品或开源工具。
-   {f"- 🎨 设计动态：本期来源为 DEX 周刊 #{dex_item['issue']} ({dex_item['link']})，挑 1-2 条对复杂系统界面或空间可视化有迁移价值的内容。" if dex_item else "- 🎨 设计动态：本周暂无新刊，整节省略。"}
-4. 读者背景：读者是公司同事与领导，所有条目都从「对公司物理世界 AI 业务、智能体与系统架构有什么参考价值」的视角来写，严禁出现“值得做”、“赚钱”、“副业”、“独立变现”等个人化措辞。
-5. 每条条目格式：加粗标题 + 摘要 + 为什么值得关注（1-2句） + 原文链接（必须是公网真实链接）。
-
-### 输入候选素材（抓取自各官方与前沿信源）：
-{json.dumps(signals, ensure_ascii=False, indent=1)}
-
-### App Store 榜单异动：
-{json.dumps(app_diffs, ensure_ascii=False, indent=1)}
-
-### 输出格式要求：
-请必须输出一个合法的 JSON 对象，不要添加任何 Markdown 代码块标签（如 ```json），直接返回 JSON 纯文本，包含两个字段：
-1. "full_report": 完整日报 Markdown（对应 reports/{date_str}.md），包含标题行、摘要行（条数、覆盖源数量、海外占比）、📌 今日 TL;DR、🏭 行业动向、🤖 技术与案例、💡 产品灵感、📱 App Store 榜单异动、📡 源覆盖情况。
-2. "dingtalk_report": 钉钉群版精简 Markdown（对应 reports/{date_str}.dingtalk.md），2500 字以内，包含 TL;DR、各分类加粗标题+一句话关注理由+原文链接、App Store 压缩概述，文末带仓库链接。钉钉版不能使用表格语法。
-"""
-
+def call_gemini_text(prompt, api_key, max_retries=3):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     payload = {
         "contents": [
@@ -283,8 +255,7 @@ def call_gemini_generate(date_str, app_diffs, signals, dex_item, api_key):
         ],
         "generationConfig": {
             "temperature": 0.2,
-            "maxOutputTokens": 8192,
-            "responseMimeType": "application/json"
+            "maxOutputTokens": 8192
         }
     }
     
@@ -294,18 +265,13 @@ def call_gemini_generate(date_str, app_diffs, signals, dex_item, api_key):
         headers={"Content-Type": "application/json"}
     )
     
-    max_retries = 3
     for attempt in range(1, max_retries + 1):
         try:
-            print(f"-> 正在调用 Gemini 2.5 Flash API (尝试 {attempt}/{max_retries})...")
             with urllib.request.urlopen(req, timeout=90, context=SSL_CTX) as resp:
                 res_data = json.loads(resp.read().decode('utf-8'))
-                content_text = res_data['candidates'][0]['content']['parts'][0]['text'].strip()
-                # 兼容清洗 ```json 包裹
-                if content_text.startswith("```"):
-                    content_text = re.sub(r"^```(?:json)?\s*", "", content_text)
-                    content_text = re.sub(r"\s*```$", "", content_text)
-                return json.loads(content_text)
+                candidate = res_data.get('candidates', [{}])[0]
+                text = candidate.get('content', {}).get('parts', [{}])[0].get('text', '').strip()
+                return text
         except urllib.error.HTTPError as e:
             err_body = ""
             try:
@@ -320,6 +286,77 @@ def call_gemini_generate(date_str, app_diffs, signals, dex_item, api_key):
             else:
                 raise
 
+def generate_reports(date_str, app_diffs, signals, dex_item, api_key):
+    print("-> 1. 正在调用 Gemini 2.5 Flash 生成完整日报 Markdown...")
+    prompt_full = f"""你是一名 AI 行业情报分析师，为建筑、园区、工厂等「工程物理世界 AI」与设施管理 (FM) 领军企业（博锐尚格 Persagy）的产品经理和技术团队生成每日情报日报。
+今天是 {date_str}。请严格按以下要求对提供的当日候选素材进行筛选分析，直接输出符合 reports/{date_str}.md 规范的完整 Markdown 内容（不要输出任何多余的包裹标签或解释）：
+
+### 筛选要求：
+1. 精选 8-15 条条目，宁缺毋滥。
+2. 硬约束：至少 40% 的条目必须来自海外源（C/D/E/F 组）。所有英文标题与内容必须翻译成高质量中文，保留公司/产品英文原名。
+3. 重点分类：
+   - 🏭 行业动向：AI 在建筑、园区、工厂、能源、设施管理 (FM) 等空间/资产运营场景的落地信号（优先从 F 组和 D 组取材）。
+   - 🤖 技术与案例：Agent、世界模型、AIoT、大模型企业级落地的技术进展与实测案例。
+   - 💡 产品灵感：定位、交互范式、展示方式上有借鉴价值的新产品或开源工具。
+   {f"- 🎨 设计动态：本期来源为 DEX 周刊 #{dex_item['issue']} ({dex_item['link']})，挑 1-2 条对复杂系统界面或空间可视化有迁移价值的内容。" if dex_item else "- 🎨 设计动态：本周暂无新刊，整节省略。"}
+4. 读者背景：读者是公司同事与领导，所有条目都从「对公司物理世界 AI 业务、智能体与系统架构有什么参考价值」的视角来写，严禁出现“值得做”、“赚钱”、“副业”、“独立变现”等个人化措辞。
+5. 每条条目格式：加粗标题 + 摘要 + 为什么值得关注（1-2句） + 原文链接（必须是公网真实链接）。
+
+### 输入候选素材：
+{json.dumps(signals, ensure_ascii=False, indent=1)}
+
+### App Store 榜单异动：
+{json.dumps(app_diffs, ensure_ascii=False, indent=1)}
+
+### 输出结构要求：
+1. 标题：# AI Daily Radar | YYYY-MM-DD
+2. 摘要行：> 共 N 条 · 覆盖 M 个源 · 海外信源占比 X%
+3. 📌 今日 TL;DR（3-4句核心洞察）
+4. 🏭 行业动向
+5. 🤖 技术与案例
+6. 💡 产品灵感
+{"" if not dex_item else "7. 🎨 设计动态"}
+8. 📱 App Store 榜单异动
+9. 📡 源覆盖情况
+"""
+    full_report = call_gemini_text(prompt_full, api_key)
+    # 去除可能的外层 markdown 代码块
+    if full_report.startswith("```markdown"):
+        full_report = full_report[11:]
+    elif full_report.startswith("```"):
+        full_report = full_report[3:]
+    if full_report.endswith("```"):
+        full_report = full_report[:-3]
+    full_report = full_report.strip()
+
+    print("-> 2. 正在调用 Gemini 生成钉钉群版精简 Markdown...")
+    prompt_dingtalk = f"""请将以下完整的 AI Daily Radar 日报压缩转换为钉钉群投递版本（对应 reports/{date_str}.dingtalk.md）：
+
+### 转换要求：
+1. 字数控制在 2000 字以内，精炼易读。
+2. 包含今日 TL;DR。
+3. 保留所有精选条目，每个条目格式：加粗标题 + 一句话关注理由 + 原文链接。
+4. App Store 榜单异动精简概述（1-2句核心变化）。
+5. 严禁使用 Markdown 表格语法（钉钉群不兼容表格）。
+6. 文末附带仓库链接：[查看完整归档](https://github.com/nengzong/ai-daily-radar/blob/main/reports/{date_str}.md)。
+7. 直接输出 Markdown 正文，不要包裹任何代码块标签。
+
+### 完整日报内容：
+{full_report}
+"""
+    # 稍作间隔避免连续请求速率
+    time.sleep(2)
+    dingtalk_report = call_gemini_text(prompt_dingtalk, api_key)
+    if dingtalk_report.startswith("```markdown"):
+        dingtalk_report = dingtalk_report[11:]
+    elif dingtalk_report.startswith("```"):
+        dingtalk_report = dingtalk_report[3:]
+    if dingtalk_report.endswith("```"):
+        dingtalk_report = dingtalk_report[:-3]
+    dingtalk_report = dingtalk_report.strip()
+
+    return full_report, dingtalk_report
+
 def main():
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
@@ -333,9 +370,7 @@ def main():
     print(f"-> 抓取完成，共获得 {len(signals)} 条候选信号")
     
     try:
-        res = call_gemini_generate(today_str, app_diffs, signals, dex_item, api_key)
-        full_md = res.get("full_report")
-        dingtalk_md = res.get("dingtalk_report")
+        full_md, dingtalk_md = generate_reports(today_str, app_diffs, signals, dex_item, api_key)
         
         if not full_md or not dingtalk_md:
             raise ValueError("Gemini 未能返回完整的 full_report 或 dingtalk_report")
