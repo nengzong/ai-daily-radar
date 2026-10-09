@@ -42,19 +42,16 @@ jobs:
     runs-on: ubuntu-latest
     # 生成日报实测 8~13 分钟(2026-09-01~06),提交是秒级的。留足余量即可。
     # 这个上限就是单次跑飞时的计费封顶,别再往大调——200 分钟那版把月额度烧穿过。
-    timeout-minutes: 60
+    timeout-minutes: 15
     env:
       TZ: Asia/Shanghai
-      GEMINI_CLI_TRUST_WORKSPACE: 'true'
 
     steps:
       - uses: actions/checkout@v4
 
       - name: 确定日期
         id: date
-        run: |
-          echo "today=$(date +%F)" >> "$GITHUB_OUTPUT"
-          echo "GEMINI_CLI_TRUST_WORKSPACE=true" >> "$GITHUB_ENV"
+        run: echo "today=$(date +%F)" >> "$GITHUB_OUTPUT"
 
       - name: 判断今天是否已生成
         id: guard
@@ -94,21 +91,10 @@ jobs:
 
       - name: 生成日报
         if: steps.guard.outputs.skip != 'true'
-        uses: google-github-actions/run-gemini-cli@v0
         env:
-          GEMINI_CLI_TRUST_WORKSPACE: 'true'
-        with:
-          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          gemini_model: 'gemini-2.5-flash'
-          gemini_debug: false
-          prompt: |
-            读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
-            该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
-            只需把文件写到工作区,不要执行任何 git 操作(不要 commit、不要建分支、不要 push),
-            提交由后续的 workflow 步骤负责。
-
-            这是无头环境,结束回合就等于进程退出。不要启动后台/异步代理,
-            也不要为了等待任何东西而结束回合——必须一口气把两个日报文件写完再结束。
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/generate_radar.py
 
       # 两个文件都在且非空,才允许提交存档。空文件被提交上去的后果是:
       # 08:30 的投递流水线看到「日报已生成」,把一份空日报推进公司群。
