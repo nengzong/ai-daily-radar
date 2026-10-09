@@ -1,0 +1,25 @@
+name: 测试模型配额
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 测试各大模型可用性与配额
+        env:
+          KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -uo pipefail
+          models=("gemini-2.5-flash" "gemini-2.5-flash-lite" "gemini-2.0-flash" "gemini-1.5-flash" "gemini-1.5-flash-8b" "gemini-2.0-flash-exp")
+          for m in "${models[@]}"; do
+            code=$(curl -s -o /tmp/resp.json -w '%{http_code}' \
+              "https://generativelanguage.googleapis.com/v1beta/models/$m:generateContent?key=$KEY" \
+              -H "content-type: application/json" \
+              -d '{"contents":[{"parts":[{"text":"hi"}]}]}')
+            echo "Model $m => HTTP $code"
+            if [ "$code" != "200" ]; then
+              cat /tmp/resp.json | grep -o '"message": "[^"]*"' | head -1 || cat /tmp/resp.json | head -2
+            fi
+          done
