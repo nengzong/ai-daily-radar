@@ -1,3 +1,0 @@
-failed_at=2026-10-09 08:11:02 CST
-event=workflow_dispatch
-run=https://github.com/nengzong/ai-daily-radar/actions/runs/37863415278
