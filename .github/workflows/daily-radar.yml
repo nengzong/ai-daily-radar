@@ -99,7 +99,7 @@ jobs:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          gemini_model: 'gemini-2.5-pro'
+          gemini_model: 'gemini-3.1-pro-preview'
           gemini_debug: true
           prompt: |
             读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
