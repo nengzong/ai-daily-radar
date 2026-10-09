@@ -111,15 +111,14 @@ def fetch_qmreader():
                     "source": f"QMReader/{e.get('sourceId')}",
                     "title": e.get("titleZh") or e.get("title") or "",
                     "link": e.get("link") or "",
-                    "summary": clean_html(e.get("summaryZh") or e.get("summary") or "")[:300],
-                    "published": e.get("published", "")
+                    "summary": clean_html(e.get("summaryZh") or e.get("summary") or "")[:150],
                 })
-        return filtered[:25]
+        return filtered[:12]
     except Exception as e:
         print(f"[WARN] QMReader parse error: {e}", file=sys.stderr)
         return []
 
-def fetch_rss_feed(source_name, url, max_items=5):
+def fetch_rss_feed(source_name, url, max_items=3):
     raw = http_get(url, timeout=12)
     if not raw:
         return []
@@ -130,7 +129,7 @@ def fetch_rss_feed(source_name, url, max_items=5):
         for item in root.findall(".//item")[:max_items]:
             t = item.findtext("title", "").strip()
             l = item.findtext("link", "").strip()
-            d = clean_html(item.findtext("description", ""))[:300]
+            d = clean_html(item.findtext("description", ""))[:150]
             if t and l:
                 items.append({"source": source_name, "title": t, "link": l, "summary": d})
         if not items:
@@ -139,7 +138,7 @@ def fetch_rss_feed(source_name, url, max_items=5):
                 t = entry.findtext("atom:title", "", ns).strip()
                 l_elem = entry.find("atom:link", ns)
                 l = l_elem.attrib.get("href", "") if l_elem is not None else ""
-                d = clean_html(entry.findtext("atom:summary", "", ns))[:300]
+                d = clean_html(entry.findtext("atom:summary", "", ns))[:150]
                 if t and l:
                     items.append({"source": source_name, "title": t, "link": l, "summary": d})
     except Exception:
@@ -152,7 +151,7 @@ def fetch_rss_feed(source_name, url, max_items=5):
             if title_m and link_m:
                 t = clean_html(title_m.group(1))
                 l = clean_html(link_m.group(1))
-                d = clean_html(desc_m.group(1) if desc_m else "")[:300]
+                d = clean_html(desc_m.group(1) if desc_m else "")[:150]
                 items.append({"source": source_name, "title": t, "link": l, "summary": d})
     return items
 
@@ -163,7 +162,7 @@ def fetch_hackernews():
     if not raw:
         return []
     try:
-        ids = json.loads(raw)[:8]
+        ids = json.loads(raw)[:5]
         items = []
         for sid in ids:
             item_raw = http_get(f"https://hacker-news.firebaseio.com/v0/item/{sid}.json", timeout=6)
@@ -216,29 +215,33 @@ def fetch_all_signals(date_str):
     # 1. App Store
     app_diffs = fetch_appstore(date_str)
     
-    # 2. QMReader
-    qm_entries = fetch_qmreader()
-    signals.extend(qm_entries)
-    
-    # 3. 官方与垂直 RSS
+    # 2. 官方与垂直 RSS (高优先：建筑、能源与大厂)
     rss_targets = [
+        ("AEC Magazine 建筑数字化 (F组)", "https://aecmag.com/feed/"),
+        ("Utility Dive 能源/数据中心 (F组)", "https://www.utilitydive.com/feeds/news/"),
         ("NVIDIA Blog (D组)", "https://blogs.nvidia.com/feed/"),
         ("OpenAI News (D组)", "https://openai.com/news/rss.xml"),
         ("Google DeepMind (D组)", "https://deepmind.google/blog/rss.xml"),
-        ("Utility Dive 能源/数据中心 (F组)", "https://www.utilitydive.com/feeds/news/"),
-        ("AEC Magazine 建筑数字化 (F组)", "https://aecmag.com/feed/"),
         ("TechCrunch AI (E组)", "https://techcrunch.com/category/artificial-intelligence/feed/"),
     ]
     for name, feed_url in rss_targets:
         print(f"-> 抓取 {name}...")
-        res = fetch_rss_feed(name, feed_url, max_items=4)
+        res = fetch_rss_feed(name, feed_url, max_items=2)
         signals.extend(res)
+
+    # 3. QMReader
+    qm_entries = fetch_qmreader()
+    signals.extend(qm_entries)
         
     # 4. Hacker News
     signals.extend(fetch_hackernews())
     
     # 5. DEX 周刊
     dex = fetch_dex_weekly()
+    
+    # 保留精选候选在 25 条以内，保证 Token 控制在 Free Tier 极佳阈值
+    print(f"-> 汇总共抓取到 {len(signals)} 条候选素材，保留精选子集以优化提示词上下文")
+    signals = signals[:25]
     
     return app_diffs, signals, dex
 
@@ -266,7 +269,7 @@ def call_gemini_generate(date_str, app_diffs, signals, dex_item, api_key):
 {json.dumps(app_diffs, ensure_ascii=False, indent=1)}
 
 ### 输出格式要求：
-请必须输出一个合法的 JSON 对象，不要添加任何非 JSON 字符或前缀，包含两个字段：
+请必须输出一个合法的 JSON 对象，不要添加任何 Markdown 代码块标签（如 ```json），直接返回 JSON 纯文本，包含两个字段：
 1. "full_report": 完整日报 Markdown（对应 reports/{date_str}.md），包含标题行、摘要行（条数、覆盖源数量、海外占比）、📌 今日 TL;DR、🏭 行业动向、🤖 技术与案例、💡 产品灵感、📱 App Store 榜单异动、📡 源覆盖情况。
 2. "dingtalk_report": 钉钉群版精简 Markdown（对应 reports/{date_str}.dingtalk.md），2500 字以内，包含 TL;DR、各分类加粗标题+一句话关注理由+原文链接、App Store 压缩概述，文末带仓库链接。钉钉版不能使用表格语法。
 """
@@ -291,10 +294,31 @@ def call_gemini_generate(date_str, app_diffs, signals, dex_item, api_key):
         headers={"Content-Type": "application/json"}
     )
     
-    with urllib.request.urlopen(req, timeout=60, context=SSL_CTX) as resp:
-        res_data = json.loads(resp.read().decode('utf-8'))
-        content_text = res_data['candidates'][0]['content']['parts'][0]['text']
-        return json.loads(content_text)
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"-> 正在调用 Gemini 2.5 Flash API (尝试 {attempt}/{max_retries})...")
+            with urllib.request.urlopen(req, timeout=90, context=SSL_CTX) as resp:
+                res_data = json.loads(resp.read().decode('utf-8'))
+                content_text = res_data['candidates'][0]['content']['parts'][0]['text'].strip()
+                # 兼容清洗 ```json 包裹
+                if content_text.startswith("```"):
+                    content_text = re.sub(r"^```(?:json)?\s*", "", content_text)
+                    content_text = re.sub(r"\s*```$", "", content_text)
+                return json.loads(content_text)
+        except urllib.error.HTTPError as e:
+            err_body = ""
+            try:
+                err_body = e.read().decode('utf-8')
+            except Exception:
+                pass
+            print(f"[WARN] HTTP {e.code} on attempt {attempt}: {err_body[:300]}", file=sys.stderr)
+            if e.code in (429, 500, 503) and attempt < max_retries:
+                wait_sec = attempt * 10
+                print(f"-> 遇到配额或服务波动，等待 {wait_sec} 秒后重试...")
+                time.sleep(wait_sec)
+            else:
+                raise
 
 def main():
     api_key = os.environ.get("GEMINI_API_KEY")
