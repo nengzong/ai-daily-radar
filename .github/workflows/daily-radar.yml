@@ -91,7 +91,7 @@ jobs:
 
       - name: 生成日报
         if: steps.guard.outputs.skip != 'true'
-        uses: google-github-actions/run-gemini-cli@v1
+        uses: google-github-actions/run-gemini-cli@v0
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           gemini_model: 'gemini-2.5-pro'
