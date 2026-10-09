@@ -100,7 +100,7 @@ jobs:
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           gemini_model: 'gemini-2.5-flash'
-          gemini_debug: true
+          gemini_debug: false
           prompt: |
             读取仓库根目录下的 prompts/daily-radar.md,严格按其中的步骤执行今天的日报生成任务。
             该文件是唯一的任务说明,不要脱离它自行发挥。今天的日期以 `date +%F` 的输出为准。
