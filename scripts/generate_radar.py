@@ -290,86 +290,149 @@ def call_gemini_text(prompt, api_key, max_retries=3):
 def format_dingtalk_report(full_report, date_str):
     """
     根据完整版日报，确定性提取出符合钉钉格式的精简版本：
-    1. 提取今日 TL;DR
-    2. 提取各版块条目：加粗标题 + 关注理由 + 原文链接
-    3. 提取 App Store 异动概述
-    4. 移除表格，控制在 2000 字内
+    1. 标题使用标准二级标题 ## 📡 AI 日报 · {date_str}（避免 H1 巨大标题）
+    2. 保留统计摘要行（> 共 N 条 · ...）
+    3. 提取今日 TL;DR 为独立小节，避免引用块吞并后续正文
+    4. 提取各版块条目：加粗标题 + 关注理由 + 原文链接
+    5. 提取 App Store 异动概述
+    6. 控制篇幅，格式清晰规整
     """
     lines = full_report.split('\n')
-    out = [f"# AI Daily Radar | {date_str}"]
+    out = [f"## 📡 AI 日报 · {date_str}"]
     
+    header_meta = ''
     tldr_lines = []
-    in_tldr = False
-    
-    current_section = ''
-    items = []
-    curr_item = {}
+    sections = {}
+    current_sec = None
+    curr_item = None
     appstore_lines = []
+    
+    in_tldr = False
     in_appstore = False
+    in_ignore = False
     
     for line in lines:
         stripped = line.strip()
-        if '📌 今日 TL;DR' in line or '今日 TL;DR' in line:
+        if not stripped:
+            continue
+            
+        # 统计摘要行: > 共 11 条... 或 > 11条精选...
+        if stripped.startswith('>') and ('条' in stripped or '源' in stripped) and not header_meta:
+            header_meta = stripped
+            continue
+            
+        # 检查是否进入 TL;DR
+        if '今日 TL;DR' in stripped or '今日TL;DR' in stripped:
             in_tldr = True
             in_appstore = False
+            in_ignore = False
             continue
-        elif '📱 App Store' in line:
+            
+        # 检查是否进入 App Store
+        if 'App Store' in stripped:
             in_appstore = True
             in_tldr = False
-            current_section = '📱 App Store 榜单异动'
+            in_ignore = False
             continue
-        elif '📡 源覆盖情况' in line:
-            in_appstore = False
+            
+        # 检查是否进入源覆盖或其它忽略区
+        if '源覆盖情况' in stripped or '完整归档' in stripped:
+            in_ignore = True
             in_tldr = False
+            in_appstore = False
             continue
-        elif stripped.startswith('## '):
+            
+        # 检查是否是主板块标题 (## 或 ### 开头，且包含图标或板块名称)
+        sec_match = re.match(r'^#{1,3}\s*([🏭🤖💡🎨]\s*[^#\n]+|[0-9一二三四五]\s*[\.、]\s*[^#\n]+|行业动向|技术与案例|产品灵感|设计动态)', stripped)
+        if sec_match:
             in_tldr = False
             in_appstore = False
-            current_section = stripped.lstrip('#').strip()
+            in_ignore = False
+            sec_name = sec_match.group(1).strip()
+            current_sec = sec_name
+            sections[current_sec] = []
+            curr_item = None
+            continue
+            
+        if stripped.startswith('---'):
+            continue
+            
+        if in_ignore:
             continue
             
         if in_tldr:
-            if stripped and not stripped.startswith('##'):
+            if stripped.startswith('#') or stripped.startswith('---'):
+                in_tldr = False
+            else:
                 tldr_lines.append(stripped)
-            continue
-            
+                continue
+                
         if in_appstore:
-            if stripped and not stripped.startswith('##'):
+            if stripped.startswith('#'):
+                in_appstore = False
+            else:
                 appstore_lines.append(stripped)
-            continue
-            
-        if stripped.startswith('### '):
-            if curr_item and curr_item.get('title'):
-                items.append(curr_item)
-            title = stripped.lstrip('#').strip()
-            curr_item = {'section': current_section, 'title': title, 'why': '', 'link': ''}
-        elif '**为什么值得关注**' in stripped or '**关注理由**' in stripped:
-            why_text = re.sub(r'-\s*\*\*.*?\*\*:\s*', '', stripped).strip()
-            curr_item['why'] = why_text
-        elif '**原文**' in stripped or '**链接**' in stripped or '**来源**' in stripped:
-            link_m = re.search(r'https?://[^\s\)]+', stripped)
-            curr_item['link'] = link_m.group(0) if link_m else ""
+                continue
+                
+        if current_sec:
+            if stripped.startswith('（本期') or stripped.startswith('(本期'):
+                continue
+                
+            # 匹配条目标题行 (支持 * **标题** / **标题** / ### 标题 / - **标题**)
+            title_match = re.match(r'^(?:[\*\-]\s*)?(?:\d+[\.、]\s*)?\*\*([^\*]+)\*\*', stripped)
+            if not title_match and stripped.startswith('### '):
+                title_match = re.match(r'^###\s+(.*)', stripped)
+                
+            if title_match:
+                title = title_match.group(1).strip()
+                if not any(k in title for k in ['行业动向', '技术与案例', '产品灵感', '设计动态', 'App Store']):
+                    curr_item = {'title': title, 'why': '', 'link': ''}
+                    sections[current_sec].append(curr_item)
+                    continue
+                    
+            if curr_item:
+                if any(k in stripped for k in ['为什么值得关注', '关注理由', '核心价值']):
+                    why = re.sub(r'^(?:[\*\-\s]*)(?:\*\*为什么值得关注\*\*|\*\*关注理由\*\*|为什么值得关注|关注理由)[:：\s]*', '', stripped).strip()
+                    curr_item['why'] = why
+                elif any(k in stripped for k in ['原文链接', '原文', '链接', '来源']) or 'http' in stripped:
+                    link_m = re.search(r'https?://[^\s\)\>\]]+', stripped)
+                    if link_m and not curr_item.get('link'):
+                        curr_item['link'] = link_m.group(0).rstrip('.')
 
-    if curr_item and curr_item.get('title'):
-        items.append(curr_item)
+    if header_meta:
+        out.append(header_meta)
         
     if tldr_lines:
-        out.append('\n> **今日 TL;DR**\n> ' + '\n> '.join(tldr_lines))
+        clean_tldr = ' '.join(l.lstrip('>').strip() for l in tldr_lines)
+        out.append(f'\n### 📌 今日 TL;DR\n{clean_tldr}')
         
-    curr_sec = ''
-    for it in items:
-        if it['section'] != curr_sec:
-            curr_sec = it['section']
-            out.append(f'\n### {curr_sec}')
-        link_str = f" [原文]({it['link']})" if it.get('link') else ""
-        why_str = f": {it['why']}" if it.get('why') else ""
-        out.append(f"- **{it['title']}**{why_str}{link_str}")
-        
+    for sec, itms in sections.items():
+        if not itms:
+            continue
+        out.append(f'\n### {sec}')
+        for it in itms:
+            link_str = f' [原文]({it["link"]})' if it.get('link') else ''
+            why_str = f' —— {it["why"]}' if it.get('why') else ''
+            out.append(f'- **{it["title"]}**{why_str}{link_str}')
+            
     if appstore_lines:
-        out.append('\n### 📱 App Store 异动概述')
-        out.extend(appstore_lines[:4])
+        out.append('\n### 📱 App Store 异动')
+        clean_app = []
+        for l in appstore_lines:
+            l_str = l.strip()
+            if l_str.startswith('（本期') or l_str.startswith('(本期'):
+                continue
+            if l_str.startswith('*') or l_str.startswith('-'):
+                clean_app.append(re.sub(r'^\s*[\*\-]\s*', '- ', l_str))
+            elif l_str.startswith('**'):
+                clean_app.append(f'- {l_str}')
+            elif l_str:
+                clean_app.append(f'  {l_str}')
+            if len(clean_app) >= 8:
+                break
+        out.extend(clean_app)
         
-    out.append(f'\n---\n[查看完整归档](https://github.com/nengzong/ai-daily-radar/blob/main/reports/{date_str}.md)')
+    out.append(f'\n> 完整日报:https://github.com/nengzong/ai-daily-radar/blob/main/reports/{date_str}.md (需仓库权限)')
     return '\n'.join(out)
 
 def generate_reports(date_str, app_diffs, signals, dex_item, api_key):
