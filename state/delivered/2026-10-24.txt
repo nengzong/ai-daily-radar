@@ -1,3 +1,0 @@
-delivered_at=2026-10-24 08:31:02 CST
-event=workflow_dispatch
-run=https://github.com/nengzong/ai-daily-radar/actions/runs/40045352462
