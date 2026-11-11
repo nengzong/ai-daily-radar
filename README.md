@@ -13,7 +13,7 @@
 | 日报全文 | `reports/YYYY-MM-DD.md`(自动提交回仓库) |
 | 钉钉群版 | `reports/YYYY-MM-DD.dingtalk.md`(凝练版,推送用) |
 | 钉钉群消息 | TL;DR + 各条目标题 + 原始链接,每条都可点进原文 |
-| 邮件 | HTML 渲染版,直发 nengzongtan@gmail.com |
+| 邮件 | HTML 渲染版,直发订阅邮箱（通过 Secret 配置） |
 
 ## 运行时间
 

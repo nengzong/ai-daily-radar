@@ -8,7 +8,16 @@
 set -euo pipefail
 
 PASS_FILE="$HOME/.config/ai-daily-radar/gmail_app_password"
-ADDR="nengzongtan@gmail.com"
+EMAIL_FILE="$HOME/.config/ai-daily-radar/email_address"
+ADDR="${GMAIL_TO:-}"
+if [ -z "$ADDR" ] && [ -s "$EMAIL_FILE" ]; then
+  ADDR=$(tr -d ' \r\n' < "$EMAIL_FILE")
+fi
+
+if [ -z "$ADDR" ]; then
+  echo "NO_RECIPIENT: 未设置 GMAIL_TO 环境变量，且未在 $EMAIL_FILE 找到接收邮箱"
+  exit 2
+fi
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 if [ -n "${GMAIL_APP_PASSWORD:-}" ]; then

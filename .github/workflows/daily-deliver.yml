@@ -198,6 +198,7 @@ jobs:
         if: always() && steps.verify.outcome == 'success'
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_TO: ${{ secrets.GMAIL_TO }}
         run: |
           bash scripts/send_email.sh \
             "AI 日报 ${{ steps.date.outputs.today }}｜${{ steps.verify.outputs.count }} 条精选" \
@@ -214,6 +215,7 @@ jobs:
           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
           DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_TO: ${{ secrets.GMAIL_TO }}
           TODAY: ${{ steps.date.outputs.today }}
           HHMM: ${{ steps.date.outputs.hhmm }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -237,6 +239,7 @@ jobs:
           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
           DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_TO: ${{ secrets.GMAIL_TO }}
           TODAY: ${{ steps.date.outputs.today }}
           EVENT: ${{ github.event_name }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

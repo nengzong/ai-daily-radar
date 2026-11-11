@@ -1,6 +1,6 @@
 # Cloudflare 部署与自定义域名 (如 radar.dpdns.org) 配置指南
 
-本项目已内置零依赖的静态网站生成器（[scripts/build_site.py](file:///Users/nengzongtan/persagy/ai-daily-radar/scripts/build_site.py)），已成功部署在 Cloudflare 上：
+本项目已内置零依赖的静态网站生成器（`scripts/build_site.py`），已成功部署在 Cloudflare 上：
 - **公共访问网址**：`https://ai-daily-radar.radar-watchdog.workers.dev/`
 - **0 成本、0 台服务器、免运维**
 - 全球 CDN 加速与全自动免费 HTTPS (SSL) 证书
@@ -62,7 +62,7 @@ DNS 保存后，还需要告诉 Cloudflare 将 `radar.dpdns.org` 的流量路由
 ```bash
 echo "https://radar.dpdns.org" > ~/.config/ai-daily-radar/radar_base_url
 ```
-运行 [scripts/send_dingtalk.py](file:///Users/nengzongtan/persagy/ai-daily-radar/scripts/send_dingtalk.py) 时便会自动使用该域名。
+运行 `scripts/send_dingtalk.py` 时便会自动使用该域名。
 
 ---
 

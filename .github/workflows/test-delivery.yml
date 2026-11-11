@@ -74,4 +74,5 @@ jobs:
         if: always()
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_TO: ${{ secrets.GMAIL_TO }}
         run: bash scripts/send_email.sh "投递链路自检｜来自 GitHub Actions" /tmp/fixture/full.md
