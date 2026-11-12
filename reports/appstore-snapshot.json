@@ -1,37 +1,37 @@
 {
- "date": "2026-11-12",
+ "date": "2026-11-13",
  "note": "top-free 50",
  "regions": {
-  "jp": [
+  "us": [
    {
     "rank": 1,
+    "id": "6741796873",
+    "name": "TikTok Pro - Events"
+   },
+   {
+    "rank": 2,
     "id": "6760173601",
     "name": "Muse from Meta"
    },
    {
-    "rank": 2,
-    "id": "1138196572",
-    "name": "ファミマのアプリ「ファミペイ」"
+    "rank": 3,
+    "id": "632064380",
+    "name": "Vinted: Pre-loved marketplace"
    },
    {
-    "rank": 3,
+    "rank": 4,
     "id": "6448311069",
     "name": "ChatGPT"
    },
    {
-    "rank": 4,
-    "id": "6587576438",
-    "name": "setlog"
-   },
-   {
     "rank": 5,
-    "id": "388497605",
-    "name": "Google Authenticator"
+    "id": "6473753684",
+    "name": "Claude by Anthropic"
    },
    {
     "rank": 6,
-    "id": "6471519217",
-    "name": "Bump（旧Zenly）"
+    "id": "6754134922",
+    "name": "PineDrama - Short Dramas"
    },
    {
     "rank": 7,
@@ -40,53 +40,305 @@
    },
    {
     "rank": 8,
-    "id": "732775964",
-    "name": "しまむらパーク"
+    "id": "407558537",
+    "name": "Capital One Mobile"
    },
    {
     "rank": 9,
-    "id": "1358622983",
-    "name": "スクウェア・エニックス アプリ"
+    "id": "1605170923",
+    "name": "GoWish - Your Digital Wishlist"
    },
    {
     "rank": 10,
-    "id": "882477693",
-    "name": "U-NEXT - 映画やドラマ、アニメなどの動画が見放題"
+    "id": "338137227",
+    "name": "Walmart: Shopping & Savings"
    },
    {
     "rank": 11,
-    "id": "1476359069",
-    "name": "マイナアプリ（旧マイナポータルアプリ）"
+    "id": "1632713844",
+    "name": "Kalshi: Trade Sports & Events"
    },
    {
     "rank": 12,
-    "id": "6473753684",
-    "name": "Claude by Anthropic"
-   },
-   {
-    "rank": 13,
-    "id": "1416481094",
-    "name": "My SoftBank"
-   },
-   {
-    "rank": 14,
-    "id": "6448176203",
-    "name": "GoodShort(グッドショート)-ショートドラマいつでも"
-   },
-   {
-    "rank": 15,
-    "id": "681752345",
-    "name": "Trip.com-航空券･ホテルの予約はトリップドットコムで"
-   },
-   {
-    "rank": 16,
     "id": "6446901002",
     "name": "Threads"
    },
    {
+    "rank": 13,
+    "id": "1641486558",
+    "name": "Temu: Shop Like a Billionaire"
+   },
+   {
+    "rank": 14,
+    "id": "1500855883",
+    "name": "CapCut: Photo & Video Editor"
+   },
+   {
+    "rank": 15,
+    "id": "983156458",
+    "name": "Microsoft Authenticator"
+   },
+   {
+    "rank": 16,
+    "id": "310633997",
+    "name": "WhatsApp"
+   },
+   {
     "rank": 17,
+    "id": "1113153706",
+    "name": "Microsoft Teams"
+   },
+   {
+    "rank": 18,
+    "id": "284815942",
+    "name": "Google"
+   },
+   {
+    "rank": 19,
+    "id": "518684914",
+    "name": "Depop - Buy & Sell Clothes"
+   },
+   {
+    "rank": 20,
+    "id": "422689480",
+    "name": "Gmail - Email by Google"
+   },
+   {
+    "rank": 21,
+    "id": "1488269261",
+    "name": "Whatnot: Shop, Sell, Connect"
+   },
+   {
+    "rank": 22,
+    "id": "1223471316",
+    "name": "Shop: Track, Pay, Discover"
+   },
+   {
+    "rank": 23,
+    "id": "585027354",
+    "name": "Google Maps"
+   },
+   {
+    "rank": 24,
+    "id": "835599320",
+    "name": "TikTok - Videos, Shop & LIVE"
+   },
+   {
+    "rank": 25,
+    "id": "686449807",
+    "name": "Telegram Messenger"
+   },
+   {
+    "rank": 26,
+    "id": "6745274862",
+    "name": "DealSeek: Coupons & Discounts"
+   },
+   {
+    "rank": 27,
+    "id": "6768593043",
+    "name": "BlinkDrama - Short Dramas"
+   },
+   {
+    "rank": 28,
+    "id": "333903271",
+    "name": "X"
+   },
+   {
+    "rank": 29,
+    "id": "436672029",
+    "name": "AliExpress - Shopping App"
+   },
+   {
+    "rank": 30,
+    "id": "6472232952",
+    "name": "Koupon: Promo Codes & Deals"
+   },
+   {
+    "rank": 31,
+    "id": "297606951",
+    "name": "Amazon Shopping"
+   },
+   {
+    "rank": 32,
+    "id": "1089294040",
+    "name": "Capital One Shopping: Save Now"
+   },
+   {
+    "rank": 33,
+    "id": "535886823",
+    "name": "Google Chrome"
+   },
+   {
+    "rank": 34,
+    "id": "6751921248",
+    "name": "Rips by Triumph"
+   },
+   {
+    "rank": 35,
+    "id": "284882215",
+    "name": "Facebook"
+   },
+   {
+    "rank": 36,
+    "id": "382952264",
+    "name": "MyChart"
+   },
+   {
+    "rank": 37,
+    "id": "389801252",
+    "name": "Instagram"
+   },
+   {
+    "rank": 38,
+    "id": "6670324846",
+    "name": "Grok"
+   },
+   {
+    "rank": 39,
+    "id": "1673567402",
+    "name": "Freecash - Get Paid Real Money"
+   },
+   {
+    "rank": 40,
+    "id": "309735670",
+    "name": "Indeed Job Search"
+   },
+   {
+    "rank": 41,
+    "id": "589653414",
+    "name": "7-Eleven: Rewards & Shopping"
+   },
+   {
+    "rank": 42,
+    "id": "951937596",
+    "name": "Microsoft Outlook"
+   },
+   {
+    "rank": 43,
+    "id": "546505307",
+    "name": "Zoom Workplace"
+   },
+   {
+    "rank": 44,
+    "id": "6448849666",
+    "name": "Bible Chat: Daily Devotional"
+   },
+   {
+    "rank": 45,
+    "id": "283646709",
+    "name": "PayPal - Pay, Send, Save"
+   },
+   {
+    "rank": 46,
+    "id": "719972451",
+    "name": "DoorDash: Food, Grocery, More"
+   },
+   {
+    "rank": 47,
+    "id": "324684580",
+    "name": "Spotify: Music and Podcasts"
+   },
+   {
+    "rank": 48,
+    "id": "6742024490",
+    "name": "Reco Social"
+   },
+   {
+    "rank": 49,
+    "id": "544007664",
+    "name": "YouTube"
+   },
+   {
+    "rank": 50,
+    "id": "500003565",
+    "name": "Ticketmaster－Buy, Sell Tickets"
+   }
+  ],
+  "jp": [
+   {
+    "rank": 1,
+    "id": "6760173601",
+    "name": "Muse from Meta"
+   },
+   {
+    "rank": 2,
+    "id": "6448311069",
+    "name": "ChatGPT"
+   },
+   {
+    "rank": 3,
+    "id": "6587576438",
+    "name": "setlog"
+   },
+   {
+    "rank": 4,
+    "id": "6471519217",
+    "name": "Bump（旧Zenly）"
+   },
+   {
+    "rank": 5,
+    "id": "6477489729",
+    "name": "Google Gemini"
+   },
+   {
+    "rank": 6,
+    "id": "388497605",
+    "name": "Google Authenticator"
+   },
+   {
+    "rank": 7,
+    "id": "1138196572",
+    "name": "ファミマのアプリ「ファミペイ」"
+   },
+   {
+    "rank": 8,
+    "id": "882477693",
+    "name": "U-NEXT - 映画やドラマ、アニメなどの動画が見放題"
+   },
+   {
+    "rank": 9,
+    "id": "1476359069",
+    "name": "マイナアプリ（旧マイナポータルアプリ）"
+   },
+   {
+    "rank": 10,
+    "id": "6473753684",
+    "name": "Claude by Anthropic"
+   },
+   {
+    "rank": 11,
+    "id": "732775964",
+    "name": "しまむらパーク"
+   },
+   {
+    "rank": 12,
+    "id": "6448176203",
+    "name": "GoodShort(グッドショート)-ショートドラマいつでも"
+   },
+   {
+    "rank": 13,
+    "id": "465887673",
+    "name": "e＋(イープラス)　チケット・ニュース・スマチケ"
+   },
+   {
+    "rank": 14,
+    "id": "983156458",
+    "name": "Microsoft Authenticator"
+   },
+   {
+    "rank": 15,
+    "id": "6446901002",
+    "name": "Threads"
+   },
+   {
+    "rank": 16,
     "id": "1223471316",
     "name": "Shop：追跡・購入・発見"
+   },
+   {
+    "rank": 17,
+    "id": "1416481094",
+    "name": "My SoftBank"
    },
    {
     "rank": 18,
@@ -95,28 +347,28 @@
    },
    {
     "rank": 19,
-    "id": "983156458",
-    "name": "Microsoft Authenticator"
+    "id": "681752345",
+    "name": "Trip.com-航空券･ホテルの予約はトリップドットコムで"
    },
    {
     "rank": 20,
+    "id": "662011115",
+    "name": "松屋フーズ公式アプリ"
+   },
+   {
+    "rank": 21,
+    "id": "1542920778",
+    "name": "ahamo（アハモ）"
+   },
+   {
+    "rank": 22,
     "id": "1562641276",
     "name": "セブン-イレブン マルチコピー"
    },
    {
-    "rank": 21,
-    "id": "1630058362",
-    "name": "はま楽"
-   },
-   {
-    "rank": 22,
+    "rank": 23,
     "id": "1552990335",
     "name": "かんたんnetprint－セブン‐イレブンでかんたん印刷"
-   },
-   {
-    "rank": 23,
-    "id": "662011115",
-    "name": "松屋フーズ公式アプリ"
    },
    {
     "rank": 24,
@@ -125,88 +377,88 @@
    },
    {
     "rank": 25,
-    "id": "587248280",
-    "name": "丸亀製麺"
-   },
-   {
-    "rank": 26,
-    "id": "6756647308",
-    "name": "詐欺対策 by NTTタウンページ"
-   },
-   {
-    "rank": 27,
-    "id": "422689480",
-    "name": "Gmail - Google のメール"
-   },
-   {
-    "rank": 28,
-    "id": "1672881483",
-    "name": "7NOW(byセブン-イレブン)デリバリー/フードデリバリー"
-   },
-   {
-    "rank": 29,
     "id": "290033990",
     "name": "ホットペッパーグルメ"
    },
    {
-    "rank": 30,
-    "id": "504542019",
-    "name": "ジーユー"
+    "rank": 26,
+    "id": "1630058362",
+    "name": "はま楽"
    },
    {
-    "rank": 31,
+    "rank": 27,
     "id": "1563102530",
     "name": "M3デジカルスマート診察券"
    },
    {
-    "rank": 32,
-    "id": "535886823",
-    "name": "Google Chrome - ウェブブラウザ"
-   },
-   {
-    "rank": 33,
-    "id": "6739188587",
-    "name": "Rocket Now : 出前/フードデリバリー"
-   },
-   {
-    "rank": 34,
-    "id": "413618155",
-    "name": "マクドナルド"
-   },
-   {
-    "rank": 35,
-    "id": "897446215",
-    "name": "Canva(キャンバ): 画像・動画編集 & AIデザイン"
-   },
-   {
-    "rank": 36,
-    "id": "1153448703",
-    "name": "EXアプリ | JR東海公式"
-   },
-   {
-    "rank": 37,
+    "rank": 28,
     "id": "570060128",
     "name": "Duolingo：英語、韓国語、中国語を学ぼう"
    },
    {
-    "rank": 38,
-    "id": "551942662",
-    "name": "PrintSmash"
+    "rank": 29,
+    "id": "1153448703",
+    "name": "EXアプリ | JR東海公式"
    },
    {
-    "rank": 39,
+    "rank": 30,
     "id": "1113037275",
     "name": "スターバックス ジャパン公式モバイルアプリ"
    },
    {
-    "rank": 40,
+    "rank": 31,
+    "id": "1496925861",
+    "name": "ゆうちょ通帳アプリ-銀行 アプリ"
+   },
+   {
+    "rank": 32,
+    "id": "897446215",
+    "name": "Canva(キャンバ): 画像・動画編集 & AIデザイン"
+   },
+   {
+    "rank": 33,
+    "id": "422689480",
+    "name": "Gmail - Google のメール"
+   },
+   {
+    "rank": 34,
+    "id": "551942662",
+    "name": "PrintSmash"
+   },
+   {
+    "rank": 35,
+    "id": "504542019",
+    "name": "ジーユー"
+   },
+   {
+    "rank": 36,
+    "id": "1527218749",
+    "name": "KAUCHE（カウシェ） - ショッピングアプリ"
+   },
+   {
+    "rank": 37,
+    "id": "532097000",
+    "name": "ユニバーサル・スタジオ・ジャパン 公式アプリ"
+   },
+   {
+    "rank": 38,
     "id": "507874739",
     "name": "Google ドライブ - 安全なオンライン ストレージ"
    },
    {
+    "rank": 39,
+    "id": "535886823",
+    "name": "Google Chrome - ウェブブラウザ"
+   },
+   {
+    "rank": 40,
+    "id": "6739188587",
+    "name": "Rocket Now : 出前/フードデリバリー"
+   },
+   {
     "rank": 41,
-    "id": "1496925861",
-    "name": "ゆうちょ通帳アプリ-銀行 アプリ"
+    "id": "6756647308",
+    "name": "詐欺対策 by NTTタウンページ"
    },
    {
     "rank": 42,
@@ -215,43 +467,295 @@
    },
    {
     "rank": 43,
-    "id": "6821308186",
-    "name": "Vistream"
+    "id": "838138452",
+    "name": "三井住友カード Vpassアプリ"
    },
    {
     "rank": 44,
-    "id": "6446607328",
-    "name": "SmartHR（スマートエイチアール）"
-   },
-   {
-    "rank": 45,
     "id": "6466987025",
     "name": "DAISOアプリ"
    },
    {
-    "rank": 46,
+    "rank": 45,
     "id": "6667104573",
     "name": "ジハンピ"
    },
    {
+    "rank": 46,
+    "id": "6446607328",
+    "name": "SmartHR（スマートエイチアール）"
+   },
+   {
     "rank": 47,
-    "id": "1527218749",
-    "name": "KAUCHE（カウシェ） - ショッピングアプリ"
+    "id": "6450801028",
+    "name": "はばタンPay ＋"
    },
    {
     "rank": 48,
-    "id": "1235601864",
-    "name": "TikTok ティックトック"
+    "id": "1672881483",
+    "name": "7NOW(byセブン-イレブン)デリバリー/フードデリバリー"
    },
    {
     "rank": 49,
-    "id": "6447160980",
-    "name": "TikTok Lite"
+    "id": "1313147771",
+    "name": "Tokyo Disney Resort App"
    },
    {
     "rank": 50,
+    "id": "545519333",
+    "name": "Amazon Prime Video"
+   }
+  ],
+  "gb": [
+   {
+    "rank": 1,
+    "id": "6737119425",
+    "name": "GOV.UK One Login"
+   },
+   {
+    "rank": 2,
+    "id": "1591214233",
+    "name": "InPost UK"
+   },
+   {
+    "rank": 3,
+    "id": "6448311069",
+    "name": "ChatGPT"
+   },
+   {
+    "rank": 4,
+    "id": "6473753684",
+    "name": "Claude by Anthropic"
+   },
+   {
+    "rank": 5,
+    "id": "6762010774",
+    "name": "CrownCards - Trading Cards"
+   },
+   {
+    "rank": 6,
+    "id": "1488269261",
+    "name": "Whatnot: Shop, Sell, Connect"
+   },
+   {
+    "rank": 7,
+    "id": "469964520",
+    "name": "Lloyds Mobile Banking"
+   },
+   {
+    "rank": 8,
+    "id": "1223471316",
+    "name": "Shop: Track, Pay, Discover"
+   },
+   {
+    "rank": 9,
+    "id": "983156458",
+    "name": "Microsoft Authenticator"
+   },
+   {
+    "rank": 10,
     "id": "1113153706",
     "name": "Microsoft Teams"
+   },
+   {
+    "rank": 11,
+    "id": "6477489729",
+    "name": "Google Gemini"
+   },
+   {
+    "rank": 12,
+    "id": "514561561",
+    "name": "HMRC"
+   },
+   {
+    "rank": 13,
+    "id": "1605170923",
+    "name": "GoWish - Your Digital Wishlist"
+   },
+   {
+    "rank": 14,
+    "id": "632064380",
+    "name": "Vinted: Shop & sell pre-loved"
+   },
+   {
+    "rank": 15,
+    "id": "1388411277",
+    "name": "NHS App"
+   },
+   {
+    "rank": 16,
+    "id": "1435168829",
+    "name": "Royal Mail"
+   },
+   {
+    "rank": 17,
+    "id": "389581236",
+    "name": "Tesco Grocery & Clubcard"
+   },
+   {
+    "rank": 18,
+    "id": "566325832",
+    "name": "Trading 212"
+   },
+   {
+    "rank": 19,
+    "id": "586447913",
+    "name": "Microsoft Word"
+   },
+   {
+    "rank": 20,
+    "id": "436672029",
+    "name": "AliExpress Shopping App"
+   },
+   {
+    "rank": 21,
+    "id": "500003565",
+    "name": "Ticketmaster－Buy, Sell Tickets"
+   },
+   {
+    "rank": 22,
+    "id": "385266473",
+    "name": "Nectar: Shop & Collect Points"
+   },
+   {
+    "rank": 23,
+    "id": "1500855883",
+    "name": "CapCut: Photo & Video Editor"
+   },
+   {
+    "rank": 24,
+    "id": "1052238659",
+    "name": "Monzo Bank - Mobile Banking"
+   },
+   {
+    "rank": 25,
+    "id": "1098233626",
+    "name": "Greggs App - Food & Drink"
+   },
+   {
+    "rank": 26,
+    "id": "1060683933",
+    "name": "Too Good To Go: End Food Waste"
+   },
+   {
+    "rank": 27,
+    "id": "422689480",
+    "name": "Gmail - Email by Google"
+   },
+   {
+    "rank": 28,
+    "id": "585027354",
+    "name": "Google Maps"
+   },
+   {
+    "rank": 29,
+    "id": "686449807",
+    "name": "Telegram Messenger"
+   },
+   {
+    "rank": 30,
+    "id": "1238611143",
+    "name": "Lidl Plus"
+   },
+   {
+    "rank": 31,
+    "id": "368677368",
+    "name": "Uber: Rides, eats, and more"
+   },
+   {
+    "rank": 32,
+    "id": "951937596",
+    "name": "Microsoft Outlook"
+   },
+   {
+    "rank": 33,
+    "id": "932493382",
+    "name": "Revolut — Mobile Finance"
+   },
+   {
+    "rank": 34,
+    "id": "880993267",
+    "name": "Boots: Beauty & Pharmacy"
+   },
+   {
+    "rank": 35,
+    "id": "335187483",
+    "name": "Amazon Shopping"
+   },
+   {
+    "rank": 36,
+    "id": "6446901002",
+    "name": "Threads"
+   },
+   {
+    "rank": 37,
+    "id": "1587003570",
+    "name": "Debenhams"
+   },
+   {
+    "rank": 38,
+    "id": "1558240027",
+    "name": "Meta AI"
+   },
+   {
+    "rank": 39,
+    "id": "1641486558",
+    "name": "Temu: Shop Like a Billionaire"
+   },
+   {
+    "rank": 40,
+    "id": "1502431233",
+    "name": "Scottish Widows"
+   },
+   {
+    "rank": 41,
+    "id": "284815942",
+    "name": "Google - More ways to search"
+   },
+   {
+    "rank": 42,
+    "id": "1115120118",
+    "name": "Klarna: Smarter everyday money"
+   },
+   {
+    "rank": 43,
+    "id": "309735670",
+    "name": "Indeed Job Search"
+   },
+   {
+    "rank": 44,
+    "id": "538410698",
+    "name": "M&S - Fashion, Food & Homeware"
+   },
+   {
+    "rank": 45,
+    "id": "1064977107",
+    "name": "DPD"
+   },
+   {
+    "rank": 46,
+    "id": "288429040",
+    "name": "LinkedIn: Community & Career"
+   },
+   {
+    "rank": 47,
+    "id": "835599320",
+    "name": "TikTok - Videos, Music & LIVE"
+   },
+   {
+    "rank": 48,
+    "id": "541164041",
+    "name": "Microsoft Copilot"
+   },
+   {
+    "rank": 49,
+    "id": "6768593043",
+    "name": "BlinkDrama - Short Dramas"
+   },
+   {
+    "rank": 50,
+    "id": "370371087",
+    "name": "Argos - Shop Tech, Toys & More"
    }
   ]
  }
